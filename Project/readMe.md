@@ -1,3 +1,8 @@
+
+# Project Title
+
+A brief description of what this project does and who it's for
+
 # Smart House (IoT)
 
 To properly set up the project and enable smooth importing of modules, follow these steps:
@@ -23,23 +28,29 @@ This command installs the project as an editable package, allowing you to import
   ```
 Now, you can import your modules using clean and relative imports throughout your project.
 
-diff@@ No matter where the modules are, as long as you add __init__.py file inside the directory you can call it wherever you need. @@
+diff
+@@ No matter where the modules are, as long as you add __init__.py file inside the directory you can call it wherever you need. @@
 
+---
 **Authentication:**
 - Authentication is Done implementing the Cherrypy Simple Authetication Mechanism. https://docs.cherrypy.dev/en/latest/basics.html#id28
-```
+``` bash
 + 1. Basic Authentication: CherryPy provides a basic authentication tool that can be used to require users to authenticate before accessing certain parts of your site.
 
 + 2. SSL/TLS Encryption:To secure the connection using SSL/TLS, you can use CherryPy's tools.https tool. You need to have an SSL certificate and private key.
 ```
 
+**Authorization:**
+- Lorem Impsum sdfsdf asdfasd asdfasdf
+
 **Database:**
 - InfluxDB is used In order to store the sensor records, InfluxDB is designed to store timeseries
 
 
-
+---
 **Project Structure**
 
+```bash
 project/
 ├── Auth/
 │   ├── init.py
@@ -81,3 +92,4 @@ project/
 ├── init.py  # Makes the project folder a Python package
 ├── README.md  # This file (project documentation)
 └── setup.py  # Configuration for packaging the project
+```
