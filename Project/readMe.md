@@ -27,11 +27,12 @@ diff@@ No matter where the modules are, as long as you add __init__.py file insi
 
 
 **Authentication:**
-Authentication is Done implementing the Cherrypy Simple Authetication Mechanism. https://docs.cherrypy.dev/en/latest/basics.html#id28
+- Authentication is Done implementing the Cherrypy Simple Authetication Mechanism. https://docs.cherrypy.dev/en/latest/basics.html#id28
+```
+diff + 1. Basic Authentication: CherryPy provides a basic authentication tool that can be used to require users to authenticate before accessing certain parts of your site.
 
-+ 1. Basic Authentication: CherryPy provides a basic authentication tool that can be used to require users to authenticate before accessing certain parts of your site.
-
-+ 2. SSL/TLS Encryption:To secure the connection using SSL/TLS, you can use CherryPy's tools.https tool. You need to have an SSL certificate and private key.
+diff + 2. SSL/TLS Encryption:To secure the connection using SSL/TLS, you can use CherryPy's tools.https tool. You need to have an SSL certificate and private key.
+```
 
 **Database:**
-In order to store the recorded data related to users and sensor records InfluxDB is used
+- InfluxDB is used In order to store the sensor records, InfluxDB is designed to store timeseries
