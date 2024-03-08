@@ -41,43 +41,43 @@ diff@@ No matter where the modules are, as long as you add __init__.py file insi
 **Project Structure**
 
 project/
-  ├── Auth/
-  │   ├── __init__.py
-  │   └── Authentication.py  # Handles authentication logic
-  ├── Catalog/
-  │   ├── __init__.py
-  ├── DAO/  # Data Access Object layer (may not be used yet)
-  │   ├── __init__.py
-  ├── DB/
-  │   ├── __init__.py  # Database configuration and interaction
-  ├── Microservices/  # Potential future microservices architecture
-  │   ├── __init__.py
-  ├── ML/  # Machine Learning for potential data analysis
-  │   ├── __init__.py
-  │   └── MIModel.py  # (placeholder for future ML model)
-  ├── Models/
-  │   ├── __init__.py
-  │   ├── House.py  # Defines the House model
-  │   ├── Sensor.py  # Defines the Sensor model
-  │   ├── SensorTypes.py  # Defines different sensor types
-  │   ├── Test.py  # Unit tests for models (optional)
-  │   └── User.py  # Defines the User model
-  ├── Simulators/
-  │   ├── __init__.py
-  │   ├── HumiditySim.py  # Simulates humidity data (for testing)
-  │   ├── TemperatureSim.py  # Simulates temperature data (for testing)
-  │   ├── Test.py  # Unit tests for simulators (optional)
-  │   ├── SmartHoselOT.egg-info/  # Generated files for packaging
-  │       ├── dependency_links.txt
-  │       ├── PKG-INFO
-  │       ├── SOURCES.txt
-  │       └── top_level.txt
-  │   └── Utils/
-  │       ├── __init__.py
-  │       └── Utils.py  # Utility functions
-  ├── Utils/
-  │   ├── __init__.py
-  │   └── Utils.py  # General utility functions
-  ├── __init__.py  # Makes the project folder a Python package
-  ├── README.md  # This file (project documentation)
-  └── setup.py  # Configuration for packaging the project
+├── Auth/
+│   ├── init.py
+│   └── Authentication.py  # Handles authentication logic
+├── Catalog/
+│   ├── init.py
+├── DAO/  # Data Access Object layer (may not be used yet)
+│   ├── init.py
+├── DB/
+│   ├── init.py  # Database configuration and interaction
+├── Microservices/  # Potential future microservices architecture
+│   ├── init.py
+├── ML/  # Machine Learning for potential data analysis
+│   ├── init.py
+│   └── MIModel.py  # (placeholder for future ML model)
+├── Models/
+│   ├── init.py
+│   ├── House.py  # Defines the House model
+│   ├── Sensor.py  # Defines the Sensor model
+│   ├── SensorTypes.py  # Defines different sensor types
+│   ├── Test.py  # Unit tests for models (optional)
+│   └── User.py  # Defines the User model
+├── Simulators/
+│   ├── init.py
+│   ├── HumiditySim.py  # Simulates humidity data (for testing)
+│   ├── TemperatureSim.py  # Simulates temperature data (for testing)
+│   ├── Test.py  # Unit tests for simulators (optional)
+│   ├── SmartHoselOT.egg-info/  # Generated files for packaging
+│       ├── dependency_links.txt
+│       ├── PKG-INFO
+│       ├── SOURCES.txt
+│       └── top_level.txt
+│   └── Utils/
+│       ├── init.py
+│       └── Utils.py  # Utility functions
+├── Utils/
+│   ├── init.py
+│   └── Utils.py  # General utility functions
+├── init.py  # Makes the project folder a Python package
+├── README.md  # This file (project documentation)
+└── setup.py  # Configuration for packaging the project
