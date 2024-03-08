@@ -24,7 +24,7 @@ This command installs the project as an editable package, allowing you to import
 Now, you can import your modules using clean and relative imports throughout your project.
 
 diff@@ No matter where the modules are, as long as you add __init__.py file inside the directory you can call it wherever you need. @@
-
+...
 
 **Authentication:**
 - Authentication is Done implementing the Cherrypy Simple Authetication Mechanism. https://docs.cherrypy.dev/en/latest/basics.html#id28
