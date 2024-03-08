@@ -11,7 +11,11 @@ cd /your/path/to/project
 ```
 pip install -e .
 pip insstall cherrypy
+pip install influxdb
+pip install paho_mqtt
+pip install pandas
 pip install requests
+pip install joblib
 ```
 
 This command installs the project as an editable package, allowing you to import modules seamlessly from any script within the project.
@@ -89,3 +93,4 @@ project/
 ├── README.md  # This file (project documentation)
 └── setup.py  # Configuration for packaging the project
 ```
+Tree Generated Using `tree-extended` needs to be installed via `npm install tree`
