@@ -21,6 +21,6 @@ This command installs the project as an editable package, allowing you to import
   python script_name.py
   ```
 
-- No matter where the modules are, as long as you add __init__.py file inside the directory you can call it wherever you need.
+<span style="color:red;">- No matter where the modules are, as long as you add __init__.py file inside the directory you can call it wherever you need.</span>
 
 Now, you can import your modules using clean and relative imports throughout your project.
