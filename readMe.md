@@ -5,6 +5,8 @@ This project aims to make any home smart using two sensors namely Humidity and T
 - web dashboard
 - mobile Application
 - Telegram Bot
+
+Needs to be mentioned that the data is not aquired using raspberry-pi and real sensors and instead is Emulated using python.
 ---
 **Backend:**
 Implemented with Microservice Pattern which makes the project modular and maitenance more convenient. it consists of:
