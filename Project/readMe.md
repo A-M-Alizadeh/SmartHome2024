@@ -1,8 +1,4 @@
 
-# Project Title
-
-A brief description of what this project does and who it's for
-
 # Smart House (IoT)
 
 To properly set up the project and enable smooth importing of modules, follow these steps:
