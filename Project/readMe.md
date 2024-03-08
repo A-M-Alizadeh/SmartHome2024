@@ -22,5 +22,5 @@ This command installs the project as an editable package, allowing you to import
   ```
 Now, you can import your modules using clean and relative imports throughout your project.
 
-[!IMPORTANT]
+$\color{yrllow}{!Important}$
 - No matter where the modules are, as long as you add __init__.py file inside the directory you can call it wherever you need.</span>
