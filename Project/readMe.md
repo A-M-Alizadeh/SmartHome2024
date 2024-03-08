@@ -25,7 +25,6 @@ Now, you can import your modules using clean and relative imports throughout you
 
 ```diff
 @@ No matter where the modules are, as long as you add __init__.py file inside the directory you can call it wherever you need. @@
-...
 
 
 **Authentication:**
@@ -35,3 +34,4 @@ Authentication is Done implementing the Cherrypy Simple Authetication Mechanism.
 
 **Database:**
 In order to store the recorded data related to users and sensor records InfluxDB is used
+${{\color{Goldenrod}\Huge{\textsf{  Hi\ there\ \}}}}\$
