@@ -1,4 +1,4 @@
-# Your Project Name
+# Smart House (IoT)
 
 To properly set up the project and enable smooth importing of modules, follow these steps:
 
