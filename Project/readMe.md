@@ -3,11 +3,14 @@
 To properly set up the project and enable smooth importing of modules, follow these steps:
 
 1. **Navigate to the Project Folder:**
+```
 cd /your/path/to/project
-
+```
 2. **Install the Project as an Editable Package:**
+```
 pip install -e .
 pip install requests
+```
 
 This command installs the project as an editable package, allowing you to import modules seamlessly from any script within the project.
 
