@@ -1,5 +1,5 @@
 from enum import Enum
 
 class SensorTypes(Enum):
-    Temperature = 1
-    Humidity = 2
+    TEMPERATURE = 1
+    HUMIDITY = 2
