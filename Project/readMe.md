@@ -41,43 +41,43 @@ diff@@ No matter where the modules are, as long as you add __init__.py file insi
 **Project Structure**
 
 project/
-├── Auth/
-│   ├── __init__.py
-│   └── Authentication.py
-├── Catalog/
-│   ├── __init__.py
-├── DAO/
-│   ├── __init__.py
-├── DB/
-│   ├── __init__.py
-├── Microservices/
-│   ├── __init__.py
-├── ML/
-│   ├── __init__.py
-│   └── MIModel.py
-├── Models/
-│   ├── __init__.py
-│   ├── House.py
-│   ├── Sensor.py
-│   ├── SensorTypes.py
-│   ├── Test.py
-│   └── User.py
-├── Simulators/
-│   ├── __init__.py
-│   ├── HumiditySim.py
-│   ├── TemperatureSim.py
-│   ├── Test.py
-│   ├── SmartHoselOT.egg-info/
-│   │   ├── dependency_links.txt
-│   │   ├── PKG-INFO
-│   │   ├── SOURCES.txt
-│   │   └── top_level.txt
-│   └── Utils/
-│       ├── __init__.py
-│       └── Utils.py
-├── Utils/
-│   ├── __init__.py
-│   └── Utils.py
-├── _init__.py
-├── readMe.md
-└── setup.py
+  ├── Auth/
+  │   ├── __init__.py
+  │   └── Authentication.py  # Handles authentication logic
+  ├── Catalog/
+  │   ├── __init__.py
+  ├── DAO/  # Data Access Object layer (may not be used yet)
+  │   ├── __init__.py
+  ├── DB/
+  │   ├── __init__.py  # Database configuration and interaction
+  ├── Microservices/  # Potential future microservices architecture
+  │   ├── __init__.py
+  ├── ML/  # Machine Learning for potential data analysis
+  │   ├── __init__.py
+  │   └── MIModel.py  # (placeholder for future ML model)
+  ├── Models/
+  │   ├── __init__.py
+  │   ├── House.py  # Defines the House model
+  │   ├── Sensor.py  # Defines the Sensor model
+  │   ├── SensorTypes.py  # Defines different sensor types
+  │   ├── Test.py  # Unit tests for models (optional)
+  │   └── User.py  # Defines the User model
+  ├── Simulators/
+  │   ├── __init__.py
+  │   ├── HumiditySim.py  # Simulates humidity data (for testing)
+  │   ├── TemperatureSim.py  # Simulates temperature data (for testing)
+  │   ├── Test.py  # Unit tests for simulators (optional)
+  │   ├── SmartHoselOT.egg-info/  # Generated files for packaging
+  │       ├── dependency_links.txt
+  │       ├── PKG-INFO
+  │       ├── SOURCES.txt
+  │       └── top_level.txt
+  │   └── Utils/
+  │       ├── __init__.py
+  │       └── Utils.py  # Utility functions
+  ├── Utils/
+  │   ├── __init__.py
+  │   └── Utils.py  # General utility functions
+  ├── __init__.py  # Makes the project folder a Python package
+  ├── README.md  # This file (project documentation)
+  └── setup.py  # Configuration for packaging the project
