@@ -3,8 +3,8 @@ from House import House
 from Sensor import Sensor
 from SensorTypes import SensorTypes
 
-usr1 = User("Johny01", "JohnDoe@gmail.com", "John", "Doe", "123456789")
-usr2 = User("Jane", "Doe", "a@a.com")
+usr1 = User("Johny01","123abc", "JohnDoe@gmail.com", "John", "Doe", "123456789")
+usr2 = User("Jane","123abc", "Doe", "a@a.com")
 
 house2 = House( "Corso Traiano","Ali's House")
 house1 = House( "Corso Francia","John's House")
