@@ -2,7 +2,7 @@ import cherrypy
 import os
 import json
 from pathlib import Path
-from Utils.Utils import ApiConfReader, fetchMicroservicesConf
+from Utils.Utils import ApiConfReader, fetchMicroservicesConf, getAllUsers, getUserById, colorPrinter
 import requests
 
 # http://localhost:8080?apiinfo=user this fills the param like this: {'apiinfo': 'user'}
@@ -12,7 +12,10 @@ class Server(object):
     exposed = True
 
     def GET(self, *uri, **params):
-        return "User GET  Server !"
+        if "userId" in params:
+            return json.dumps(getUserById(int(params.get("userId"))))
+        else:
+            return json.dumps(getAllUsers())
 
     def POST(self, *uri, **params):
         return "User POST  Server !"

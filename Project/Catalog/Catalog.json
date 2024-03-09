@@ -56,6 +56,60 @@
           ]
         }
       ]
+    },
+    {
+      "user_id": 2,
+      "username": "Ali",
+      "email": "ali@gmail.com",
+      "password": "123abc",
+      "first_name": "Ali",
+      "last_name": "Alizadeh",
+      "phone": "123-456-7890",
+      "houses": [
+        {
+          "house_id": 10,
+          "address": "123 Main St",
+          "title": "John's Home",
+          "sensors": [
+            {
+              "id": 100,
+              "type": "TEMPERATURE",
+              "measurement": [
+                {
+                  "id": 1,
+                  "value": 72,
+                  "unit": "C",
+                  "time": "Date"
+                },
+                {
+                  "id": 2,
+                  "value": 70,
+                  "unit": "C",
+                  "time": "Date"
+                }
+              ]
+            },
+            {
+              "id": 200,
+              "type": "HUMIDITY",
+              "measurement": [
+                {
+                  "id": 1,
+                  "value": 50,
+                  "unit": "%",
+                  "time": "Date"
+                },
+                {
+                  "id": 2,
+                  "value": 55,
+                  "unit": "%",
+                  "time": "Date"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "microservices": {

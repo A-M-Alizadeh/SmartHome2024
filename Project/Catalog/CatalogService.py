@@ -11,12 +11,8 @@ class Server(object):
     exposed = True
 
     def GET(self, *uri, **params):
-        print(params.get("apiinfo"))
-        if params:
-            if params.get("apiinfo"):
+        if "apiinfo" in params:
               return json.dumps(ApiConfReader(params.get("apiinfo")))
-        print(uri)
-        print(params)
         return "Catalog GET  Server !"
 
     def POST(self, *uri, **params):
