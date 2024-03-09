@@ -52,45 +52,64 @@ iii. **Database:**
 
 ```bash
 project/
-├── Auth/
-│   ├── init.py
-│   └── Authentication.py  # Handles authentication logic
-├── Catalog/
-│   ├── init.py
-├── DAO/  # Data Access Object layer (may not be used yet)
-│   ├── init.py
-├── DB/
-│   ├── init.py  # Database configuration and interaction
-├── Microservices/  # Potential future microservices architecture
-│   ├── init.py
-├── ML/  # Machine Learning for potential data analysis
-│   ├── init.py
-│   └── MIModel.py  # (placeholder for future ML model)
-├── Models/
-│   ├── init.py
-│   ├── House.py  # Defines the House model
-│   ├── Sensor.py  # Defines the Sensor model
-│   ├── SensorTypes.py  # Defines different sensor types
-│   ├── Test.py  # Unit tests for models (optional)
-│   └── User.py  # Defines the User model
-├── Simulators/
-│   ├── init.py
-│   ├── HumiditySim.py  # Simulates humidity data (for testing)
-│   ├── TemperatureSim.py  # Simulates temperature data (for testing)
-│   ├── Test.py  # Unit tests for simulators (optional)
-│   ├── SmartHoselOT.egg-info/  # Generated files for packaging
-│       ├── dependency_links.txt
-│       ├── PKG-INFO
-│       ├── SOURCES.txt
-│       └── top_level.txt
-│   └── Utils/
-│       ├── init.py
-│       └── Utils.py  # Utility functions
-├── Utils/
-│   ├── init.py
-│   └── Utils.py  # General utility functions
-├── init.py  # Makes the project folder a Python package
-├── README.md  # This file (project documentation)
-└── setup.py  # Configuration for packaging the project
+├───Auth/
+│   ├───Authenticatio.py
+│   └───__init__.py
+├───Catalog/
+│   ├───__pycache__/
+│   │   └───__init__.cpython-39.pyc
+│   ├───Catalog.json
+│   ├───CatalogService.py
+│   └───__init__.py
+├───DAO/
+│   └───__init__.py
+├───DB/
+│   ├───Test.py
+│   └───__init__.py
+├───ML/
+│   ├───MlModel.py
+│   └───__init__.py
+├───Microservices/
+│   ├───MQTT/
+│   │   └───__init__.py
+│   ├───REST/
+│   │   ├───UserService.py
+│   │   ├───__init__.py
+│   │   └───index.py
+│   └───__init__.py
+├───Models/
+│   ├───__pycache__/
+│   │   ├───House.cpython-39.pyc
+│   │   ├───Sensor.cpython-39.pyc
+│   │   ├───SensorTypes.cpython-39.pyc
+│   │   └───User.cpython-39.pyc
+│   ├───House.py
+│   ├───Sensor.py
+│   ├───SensorTypes.py
+│   ├───Test.py
+│   ├───User.py
+│   └───__init__.py
+├───Simulators/
+│   ├───__pycache__/
+│   │   ├───HumiditySim.cpython-39.pyc
+│   │   └───TemperatureSim.cpython-39.pyc
+│   ├───HumiditySim.py
+│   ├───TemperatureSim.py
+│   ├───Test.py
+│   └───__init__.py
+├───SmartHoseIOT.egg-info/
+│   ├───PKG-INFO
+│   ├───SOURCES.txt
+│   ├───dependency_links.txt
+│   └───top_level.txt
+├───Utils/
+│   ├───__pycache__/
+│   │   ├───Utils.cpython-39.pyc
+│   │   └───__init__.cpython-39.pyc
+│   ├───Utils.py
+│   └───__init__.py
+├───__init__.py
+├───readMe.md
+└───setup.py
 ```
 Tree Generated Using `tree-extended` needs to be installed via `npm install tree`
