@@ -2,7 +2,7 @@ import cherrypy
 import os
 import json
 from pathlib import Path
-from Utils.Utils import ApiConfReader, fetchMicroservicesConf, getAllUsers, getUserById, colorPrinter
+from Utils.Utils import fetchMicroservicesConf, getAllUsers, getUserById
 import requests
 
 # http://localhost:8080?apiinfo=user this fills the param like this: {'apiinfo': 'user'}

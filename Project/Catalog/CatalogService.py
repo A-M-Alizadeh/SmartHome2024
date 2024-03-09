@@ -2,7 +2,7 @@ import cherrypy
 import os
 import json
 from pathlib import Path
-from Utils.Utils import ApiConfReader
+from Utils.Utils import ApiConfReader, getUserById
 
 # http://localhost:8080?apiinfo=user this fills the param like this: {'apiinfo': 'user'}
 # http://localhost:8080/apiinfo/user this fills the uri like this: ('apiinfo', 'user')
@@ -13,6 +13,8 @@ class Server(object):
     def GET(self, *uri, **params):
         if "apiinfo" in params:
               return json.dumps(ApiConfReader(params.get("apiinfo")))
+        # if "userId" in params:
+        #     return json.dumps(getUserById(int(params.get("userId"))))
         return "Catalog GET  Server !"
 
     def POST(self, *uri, **params):

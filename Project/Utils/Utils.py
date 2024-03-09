@@ -25,7 +25,6 @@ def colorPrinter(text, color): # Print colored text- only accepts string and col
 #-------------------------------------------- Catalog --------------------------------------------
 def CatalogReader(): # Read the Catalog.json file / path in each file is different so we need to use the parentDir() function in one file
     path = parentDir()
-    print(path)
     with open(f'{path}/Catalog/Catalog.json') as json_file:
         data = json.load(json_file)
         return data
@@ -45,17 +44,7 @@ def fetchMicroservicesConf(name): # Fetch the microservice configuration from th
         "port": result.json()["port"]
         }
 
-#-------------------------------------------- User --------------------------------------------
-def getAllUsers(): # Get all users from the Catalog.json file
-    result = CatalogReader()
-    return result["users"]
-
-def getUserById(id): # Get a user by id from the Catalog.json file - only accepts Integers - in futue it will be a UUID
-    result = CatalogReader()
-    users = result["users"]
-    for user in users:
-        # colorPrinter(user["user_id"], "green")
-        if user["user_id"] == id:
-            return user
-    return None
-
+#-------------------------------------------- requests --------------------------------------------
+def requestUserById(id): # Get a user by id from the UserService - only accepts Integers - in futue it will be a UUID
+    result = requests.get(f"http://localhost:8080?userId={id}")
+    return result.json()
