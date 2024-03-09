@@ -3,10 +3,13 @@ Auth/Authenticatio.py
 Auth/__init__.py
 Catalog/__init__.py
 DAO/__init__.py
+DB/Test.py
 DB/__init__.py
 ML/MlModel.py
 ML/__init__.py
 Microservices/__init__.py
+Microservices/MQTT/__init__.py
+Microservices/REST/__init__.py
 Models/House.py
 Models/Sensor.py
 Models/SensorTypes.py

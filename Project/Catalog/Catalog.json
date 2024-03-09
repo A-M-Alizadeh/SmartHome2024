@@ -1,0 +1,96 @@
+{
+  "ProjectOwner": "GrayDev",
+  "ProjectName": "SmartHouse",
+  "lastUpdate": "Date",
+  "users": [
+    {
+      "user_id": 1,
+      "username": "Johnyyy",
+      "email": "agraydev@gmail.com",
+      "password": "password",
+      "first_name": "John",
+      "last_name": "Doe",
+      "phone": "123-456-7890",
+      "houses": [
+        {
+          "house_id": 1,
+          "address": "123 Main St",
+          "title": "John's Home",
+          "sensors": [
+            {
+              "id": 1,
+              "type": "TEMPERATURE",
+              "measurement": [
+                {
+                  "id": 1,
+                  "value": 72,
+                  "unit": "C",
+                  "time": "Date"
+                },
+                {
+                  "id": 2,
+                  "value": 70,
+                  "unit": "C",
+                  "time": "Date"
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "type": "HUMIDITY",
+              "measurement": [
+                {
+                  "id": 1,
+                  "value": 50,
+                  "unit": "%",
+                  "time": "Date"
+                },
+                {
+                  "id": 2,
+                  "value": 55,
+                  "unit": "%",
+                  "time": "Date"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "microservices": {
+    "config":{},
+    "micros": [
+      {
+        "name": "catalog",
+        "url": "http://localhost:",
+        "port": 8080
+      },
+      {
+        "name": "home",
+        "url": "http://localhost:",
+        "port": 8081
+      },
+      {
+        "name": "auth",
+        "url": "http://localhost:",
+        "port": 8082
+      },
+      {
+        "name": "user",
+        "url": "http://localhost:",
+        "port": 8083
+      },
+      {
+        "name": "house",
+        "url": "http://localhost:",
+        "port": 8084
+      },
+      {
+        "name": "sensor",
+        "url": "http://localhost:",
+        "port": 8085
+      }
+    ]
+  }
+}
