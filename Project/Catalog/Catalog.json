@@ -20,14 +20,12 @@
             {
               "sensor_id": 1,
               "type": "TEMPERATURE",
-              "task": "publisher",
-              "topic": "some topic here it can be like sensor/temperature/house_id/sensor_id"
+              "status": "on"
             },
             {
               "sensor_id": 2,
               "type": "HUMIDITY",
-              "task": "subscriber",
-              "topic": "some topic here it can be like sensor/humidity/house_id/sensor_id"
+              "status": "on"
             }
           ]
         }
@@ -50,14 +48,12 @@
             {
               "sensor_id": 10,
               "type": "TEMPERATURE",
-              "task": "publisher",
-              "topic": "some topic here it can be like sensor/temperature/house_id/sensor_id"
+              "status": "on"
             },
             {
               "sensor_id": 20,
               "type": "HUMIDITY",
-              "task": "subscriber",
-              "topic": "some topic here it can be like sensor/humidity/house_id/sensor_id"
+              "status": "on"
             }
           ]
         }
@@ -97,6 +93,35 @@
         "url": "http://localhost:",
         "port": 8085
       }
-    ]
+    ],
+    "mqtt": {
+      "temperature":[
+      {
+        "name": "tempmqtt",
+        "task": "publisher",
+        "topic": "sensor/temperature/",
+        "status": "on"
+      },
+      {
+        "name": "tempmqtt",
+        "task": "subscriber",
+        "topic": "sensor/temperature/",
+        "status": "on"
+      }],
+      "humidity":[
+        {
+          "name": "humidmqtt",
+          "task": "publisher",
+          "topic": "sensor/humidity",
+          "status": "on"
+        },
+        {
+          "name": "humidmqtt",
+          "task": "subscriber",
+          "topic": "sensor/humidity",
+          "status": "on"
+        }
+      ]
+    }
   }
 }

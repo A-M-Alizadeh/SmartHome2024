@@ -2,8 +2,9 @@ import cherrypy
 import os
 import json
 from pathlib import Path
-from Utils.Utils import fetchMicroservicesConf, getAllUsers, getUserById
+from Utils.Utils import fetchMicroservicesConf
 import requests
+from Catalog.CatalogManager import get_all_users, get_user_by_id
 
 # http://localhost:8080?apiinfo=user this fills the param like this: {'apiinfo': 'user'}
 # http://localhost:8080/apiinfo/user this fills the uri like this: ('apiinfo', 'user')
@@ -13,9 +14,9 @@ class Server(object):
 
     def GET(self, *uri, **params):
         if "userId" in params:
-            return json.dumps(getUserById(int(params.get("userId"))))
+            return json.dumps(get_user_by_id(int(params.get("userId"))))
         else:
-            return json.dumps(getAllUsers())
+            return json.dumps(get_all_users())
 
     def POST(self, *uri, **params):
         return "User POST  Server !"

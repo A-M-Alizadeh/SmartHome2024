@@ -3,6 +3,8 @@ import json
 import os
 import requests
 
+# /Users/graybook/Documents/Projects/Polito/IOT/SmartHome2024/Project
+
 #-------------------------------------------- Utils --------------------------------------------
 def parentDir(): # Get the parent directory of the current file
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
