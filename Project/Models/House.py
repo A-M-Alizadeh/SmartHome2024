@@ -12,7 +12,7 @@ class House:
         self.sensors.append(sensor)
     
     def toJson(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=None)
 
     def __str__(self) -> str:
         return f"\033[92mHouse: {self.house_id} - {self.address} - {self.title} - {self.sensors}\033[0m"

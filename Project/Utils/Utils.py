@@ -39,6 +39,21 @@ def ApiConfReader(name): # Read the microservice configuration from the Catalog.
             return i
     return None
 
+def CatalogWriter(data):  # Write the Catalog.json file
+    path = parentDir()
+    with open(f'{path}/Catalog/Catalog.json', 'w') as outfile:
+        outfile.write(json.dumps(data, indent=4, separators=(',', ':')))
+
+def addUsertoCatalog(user): # Add a user to the Catalog.json file
+    # colorPrinter(str(user), "green")
+    data = CatalogReader()
+    data["users"].append(json.loads(user))
+    colorPrinter(str(data), "blue")
+    CatalogWriter(data)
+
+
+#-------------------------------------------- Requests --------------------------------------------
+
 def fetchMicroservicesConf(name): # Fetch the microservice configuration from the Catalog.json file using CatalogService - this is used in the microservices
     result = requests.get("http://localhost:8080?apiinfo=" + name)
     return {
@@ -46,7 +61,6 @@ def fetchMicroservicesConf(name): # Fetch the microservice configuration from th
         "port": result.json()["port"]
         }
 
-#-------------------------------------------- requests --------------------------------------------
 def requestUserById(id): # Get a user by id from the UserService - only accepts Integers - in futue it will be a UUID
     result = requests.get(f"http://localhost:8080?userId={id}")
     return result.json()

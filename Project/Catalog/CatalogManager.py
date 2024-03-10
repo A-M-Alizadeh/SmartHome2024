@@ -2,16 +2,16 @@ import uuid
 import json
 import os
 import requests
-from Utils.Utils import CatalogReader, colorPrinter, IdGenerator
+from Utils.Utils import CatalogReader, colorPrinter, addUsertoCatalog
 from Models.Sensor import Sensor
 from Models.House import House
 from Models.User import User
 from Models.SensorTypes import SensorTypes
 
+#-------------------------------------------- Update Json File --------------------------------------------
 
 #-------------------------------------------- Full --------------------------------------------\
 def full_register(input):
-    # colorPrinter(str(input), "green")
     user = input["user"]
     house = input["house"]
     sensors = input["sensors"]
@@ -21,6 +21,7 @@ def full_register(input):
         newSensor = Sensor(SensorTypes[sensor["type"]])
         newHouse.add_sensor(newSensor)
     newUser.add_house(newHouse)
+    addUsertoCatalog(newUser.toJson())
     return newUser.toJson()
 
 #-------------------------------------------- User CRUD --------------------------------------------
@@ -99,27 +100,6 @@ def new_sensor(user_id, house_id, sensor):
                     return newSensor.toJson()
     return None
 
-#-------------------------------------------- Sample Data --------------------------------------------
-
-sampleSensor = {
-    "sensor_id": 1,
-    "name": "Temperature",
-    "type": "Temperature",
-    "value": 23.0,
-    "unit": "Celsius"
-}
-sampleHouse= {
-    "house_id": 1,
-    "name": "House 1",
-    "address": "Budapest",
-    "sensors": [sampleSensor]
-}
-sampleUser = {
-    "user_id": 1,
-    "name": "User 1",
-    "email": "aaa@a.com",
-    "houses": [sampleHouse]
-}
 
 #-------------------------------------------- Main --------------------------------------------
 

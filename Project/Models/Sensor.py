@@ -9,7 +9,7 @@ class Sensor:
         self.status = "on"
 
     def toJson(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=None)
 
     def __str__(self) -> str:
         return f"\033[95mSensor: {self.sensor_id} - {self.type} - {self.status}\033[0m"
