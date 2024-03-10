@@ -1,102 +1,212 @@
 {
-  "ProjectOwner": "GrayDev",
-  "ProjectName": "SmartHouse",
-  "lastUpdate": "Date",
-  "users": [
-    {
-      "user_id": 1,
-      "username": "Johnyyy",
-      "email": "john@gmail.com",
-      "password": "password",
-      "first_name": "John",
-      "last_name": "Doe",
-      "phone": "123-456-7890",
-      "houses": [
-        {
-          "house_id": 1,
-          "address": "123 Main St",
-          "title": "John's Home",
-          "sensors": [
-            {
-              "sensor_id": 1,
-              "type": "TEMPERATURE",
-              "task": "publisher",
-              "topic": "some topic here it can be like sensor/temperature/house_id/sensor_id"
-            },
-            {
-              "sensor_id": 2,
-              "type": "HUMIDITY",
-              "task": "subscriber",
-              "topic": "some topic here it can be like sensor/humidity/house_id/sensor_id"
-            }
+  "ProjectOwner":"GrayDev",
+  "ProjectName":"SmartHouse",
+  "lastUpdate":"Date",
+  "users":[
+      {
+          "user_id":1,
+          "username":"Johnyyy",
+          "email":"john@gmail.com",
+          "password":"password",
+          "first_name":"John",
+          "last_name":"Doe",
+          "phone":"123-456-7890",
+          "houses":[
+              {
+                  "house_id":1,
+                  "address":"123 Main St",
+                  "title":"John's Home",
+                  "sensors":[
+                      {
+                          "sensor_id":1,
+                          "type":"TEMPERATURE",
+                          "status":"on"
+                      },
+                      {
+                          "sensor_id":2,
+                          "type":"HUMIDITY",
+                          "status":"on"
+                      }
+                  ]
+              }
           ]
-        }
-      ]
-    },
-    {
-      "user_id": 2,
-      "username": "Ali",
-      "email": "ali@gmail.com",
-      "password": "123abc",
-      "first_name": "Ali",
-      "last_name": "Alizadeh",
-      "phone": "123-456-7890",
-      "houses": [
-        {
-          "house_id": 10,
-          "address": "Corso Traiano",
-          "title": "Ali's Home",
-          "sensors": [
-            {
-              "sensor_id": 10,
-              "type": "TEMPERATURE",
-              "task": "publisher",
-              "topic": "some topic here it can be like sensor/temperature/house_id/sensor_id"
-            },
-            {
-              "sensor_id": 20,
-              "type": "HUMIDITY",
-              "task": "subscriber",
-              "topic": "some topic here it can be like sensor/humidity/house_id/sensor_id"
-            }
+      },
+      {
+          "user_id":2,
+          "username":"Ali",
+          "email":"ali@gmail.com",
+          "password":"123abc",
+          "first_name":"Ali",
+          "last_name":"Alizadeh",
+          "phone":"123-456-7890",
+          "houses":[
+              {
+                  "house_id":10,
+                  "address":"Corso Traiano",
+                  "title":"Ali's Home",
+                  "sensors":[
+                      {
+                          "sensor_id":10,
+                          "type":"TEMPERATURE",
+                          "status":"on"
+                      },
+                      {
+                          "sensor_id":20,
+                          "type":"HUMIDITY",
+                          "status":"on"
+                      }
+                  ]
+              }
           ]
-        }
-      ]
-    }
-  ],
-  "microservices": {
-    "config": {},
-    "micros": [
-      {
-        "name": "catalog",
-        "url": "http://localhost:",
-        "port": 8080
       },
       {
-        "name": "home",
-        "url": "http://localhost:",
-        "port": 8081
+          "email":"newuser@mail.com",
+          "first_name":"Alex",
+          "houses":[
+              {
+                  "address":"Monte Grappa 163",
+                  "house_id":"e524f858-ef45-4976-9011-7ed3fa6b2b6f",
+                  "sensors":[
+                      {
+                          "sensor_id":"ebf53852-5e99-41a9-9644-8e48a7fb2212",
+                          "status":"on",
+                          "type":"TEMPERATURE"
+                      },
+                      {
+                          "sensor_id":"c8875f59-651e-40c6-ba3b-66d189b24976",
+                          "status":"on",
+                          "type":"HUMIDITY"
+                      }
+                  ],
+                  "title":"Casa Blanca"
+              }
+          ],
+          "last_name":"Gray",
+          "password":"123abc",
+          "phone":"123-456-789",
+          "user_id":"d94641d3-902f-4e0b-89ac-b2f095aa6544",
+          "username":"GrayDev"
       },
       {
-        "name": "auth",
-        "url": "http://localhost:",
-        "port": 8082
+          "email":"newuser@mail.com",
+          "first_name":"Alex",
+          "houses":[
+              {
+                  "address":"Monte Grappa 163",
+                  "house_id":"41df12d4-83d6-4ab7-bdb4-2648c5cc9eea",
+                  "sensors":[
+                      {
+                          "sensor_id":"a5a263b4-bcf3-42c3-a5ac-9d248b3e047e",
+                          "status":"on",
+                          "type":"TEMPERATURE"
+                      },
+                      {
+                          "sensor_id":"7e96d19c-2312-4ca6-8271-bea88c56ff03",
+                          "status":"on",
+                          "type":"HUMIDITY"
+                      }
+                  ],
+                  "title":"Casa Blanca"
+              }
+          ],
+          "last_name":"Gray",
+          "password":"123abc",
+          "phone":"123-456-789",
+          "user_id":"7287abf5-3a0a-44eb-ac6c-210519dd2de5",
+          "username":"GrayDev"
       },
       {
-        "name": "user",
-        "url": "http://localhost:",
-        "port": 8083
-      },
-      {
-        "name": "house",
-        "url": "http://localhost:",
-        "port": 8084
-      },
-      {
-        "name": "sensor",
-        "url": "http://localhost:",
-        "port": 8085
+          "email":"newuser@mail.com",
+          "first_name":"Alex",
+          "houses":[
+              {
+                  "address":"Monte Grappa 163",
+                  "house_id":"9c954a11-b9b3-42e8-9573-58158f00c4d0",
+                  "sensors":[
+                      {
+                          "sensor_id":"3e22cfb9-79fe-4751-b370-c7d6c89ce87b",
+                          "status":"on",
+                          "type":"TEMPERATURE"
+                      },
+                      {
+                          "sensor_id":"5e5fa683-e753-4cf1-8e94-e3ced83cce82",
+                          "status":"on",
+                          "type":"HUMIDITY"
+                      }
+                  ],
+                  "title":"Casa Blanca"
+              }
+          ],
+          "last_name":"Gray",
+          "password":"123abc",
+          "phone":"123-456-789",
+          "user_id":"fec8a9d0-06b0-4ad8-bbac-b749baa62b39",
+          "username":"GrayDev"
       }
-    ]
+  ],
+  "microservices":{
+      "config":{},
+      "micros":[
+          {
+              "name":"catalog",
+              "url":"http://localhost:",
+              "port":8080
+          },
+          {
+              "name":"home",
+              "url":"http://localhost:",
+              "port":8081
+          },
+          {
+              "name":"auth",
+              "url":"http://localhost:",
+              "port":8082
+          },
+          {
+              "name":"user",
+              "url":"http://localhost:",
+              "port":8083
+          },
+          {
+              "name":"house",
+              "url":"http://localhost:",
+              "port":8084
+          },
+          {
+              "name":"sensor",
+              "url":"http://localhost:",
+              "port":8085
+          }
+      ],
+      "mqtt":{
+          "temperature":[
+              {
+                  "name":"tempmqtt",
+                  "task":"publisher",
+                  "topic":"sensor/temperature/",
+                  "status":"on"
+              },
+              {
+                  "name":"tempmqtt",
+                  "task":"subscriber",
+                  "topic":"sensor/temperature/",
+                  "status":"on"
+              }
+          ],
+          "humidity":[
+              {
+                  "name":"humidmqtt",
+                  "task":"publisher",
+                  "topic":"sensor/humidity",
+                  "status":"on"
+              },
+              {
+                  "name":"humidmqtt",
+                  "task":"subscriber",
+                  "topic":"sensor/humidity",
+                  "status":"on"
+              }
+          ]
+      }
   }
 }

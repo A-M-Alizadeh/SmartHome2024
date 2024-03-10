@@ -86,6 +86,62 @@
             "phone":"123-456-789",
             "user_id":"d94641d3-902f-4e0b-89ac-b2f095aa6544",
             "username":"GrayDev"
+        },
+        {
+            "email":"newuser@mail.com",
+            "first_name":"Alexander",
+            "houses":[
+                {
+                    "address":"Monte Grappa 163",
+                    "house_id":"41df12d4-83d6-4ab7-bdb4-2648c5cc9eea",
+                    "sensors":[
+                        {
+                            "sensor_id":"a5a263b4-bcf3-42c3-a5ac-9d248b3e047e",
+                            "status":"on",
+                            "type":"TEMPERATURE"
+                        },
+                        {
+                            "sensor_id":"7e96d19c-2312-4ca6-8271-bea88c56ff03",
+                            "status":"on",
+                            "type":"HUMIDITY"
+                        }
+                    ],
+                    "title":"Casa Blanca"
+                }
+            ],
+            "last_name":"Gray",
+            "password":"123abc",
+            "phone":"123-456-789",
+            "user_id":"7287abf5-3a0a-44eb-ac6c-210519dd2de5",
+            "username":"GrayDev"
+        },
+        {
+            "email":"newuser@mail.com",
+            "first_name":"Alex",
+            "houses":[
+                {
+                    "address":"Monte Grappa 163",
+                    "house_id":"9c954a11-b9b3-42e8-9573-58158f00c4d0",
+                    "sensors":[
+                        {
+                            "sensor_id":"3e22cfb9-79fe-4751-b370-c7d6c89ce87b",
+                            "status":"on",
+                            "type":"TEMPERATURE"
+                        },
+                        {
+                            "sensor_id":"5e5fa683-e753-4cf1-8e94-e3ced83cce82",
+                            "status":"on",
+                            "type":"HUMIDITY"
+                        }
+                    ],
+                    "title":"Casa Blanca"
+                }
+            ],
+            "last_name":"Gray",
+            "password":"123abc",
+            "phone":"123-456-789",
+            "user_id":"fec8a9d0-06b0-4ad8-bbac-b749baa62b39",
+            "username":"GrayDev"
         }
     ],
     "microservices":{

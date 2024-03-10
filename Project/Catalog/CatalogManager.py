@@ -2,7 +2,8 @@ import uuid
 import json
 import os
 import requests
-from Utils.Utils import CatalogReader, colorPrinter, addUsertoCatalog
+from Utils.Utils import CatalogReader, colorPrinter, addUsertoCatalog, addUserHouseToCatalog, addUserSensorToCatalog,\
+    updateUser, updateHouse, updateSensor, deleteHouse, deleteSensor, deleteUser
 from Models.Sensor import Sensor
 from Models.House import House
 from Models.User import User
@@ -33,7 +34,7 @@ def get_user_by_id(user_id):
 
 def new_user(user:User):
     newUser = User(user["username"], user["password"], user["email"], user["first_name"], user["last_name"], user["phone"])
-    # CatalogReader()["users"].append(newUser)
+    addUsertoCatalog(newUser.toJson())
     return newUser.toJson()
 
 #-------------------------------------------- House CRUD --------------------------------------------
@@ -52,7 +53,9 @@ def find_house_only_by_id(house_id):
     users = CatalogReader()["users"]
     for user in users:
         user_houses = user.get("houses", [])
-        return next((house for house in user_houses if house.get("house_id") == house_id), None)
+        for house in user_houses:
+            if house.get("house_id") == house_id:
+                return house
     return None
 
 def new_house(user_id, house:House):
@@ -60,7 +63,7 @@ def new_house(user_id, house:House):
     for user in users:
         if user["user_id"] == user_id:
             newHouse = House(house["address"], house["title"])
-            # user["houses"].append(newHouse)
+            addUserHouseToCatalog(user_id, newHouse.toJson())
             return newHouse.toJson()
     return None
 
@@ -86,7 +89,9 @@ def find_sensor_only_by_id(sensor_id):
         user_houses = user.get("houses", [])
         for house in user_houses:
             sensors = house.get("sensors", [])
-            return next((sensor for sensor in sensors if sensor.get("sensor_id") == sensor_id), None)
+            for sensor in sensors:
+                if sensor.get("sensor_id") == sensor_id:
+                    return sensor
     return None
 
 def new_sensor(user_id, house_id, sensor):
@@ -96,9 +101,30 @@ def new_sensor(user_id, house_id, sensor):
             for house in user["houses"]:
                 if house["house_id"] == house_id:
                     newSensor = Sensor(SensorTypes[sensor["type"]])
-                    # house["sensors"].append(newSensor)
+                    addUserSensorToCatalog(user_id, house_id, newSensor.toJson())
                     return newSensor.toJson()
     return None
+
+#-------------------------------------------- Update --------------------------------------------
+def update_user(user_id, user):
+    return updateUser(user_id, user)
+
+def update_house(user_id, house_id, house):
+    return updateHouse(user_id, house_id, house)
+
+def update_sensor(user_id, house_id, sensor_id, sensor):
+    return updateSensor(user_id, house_id, sensor_id, sensor)
+
+#-------------------------------------------- Delete --------------------------------------------
+def delete_user(user_id):
+    return deleteUser(user_id)
+
+def delete_house(user_id, house_id):
+    return deleteHouse(user_id, house_id)
+
+def delete_sensor(user_id, house_id, sensor_id):
+    return deleteSensor(user_id, house_id, sensor_id)
+
 
 
 #-------------------------------------------- Main --------------------------------------------
