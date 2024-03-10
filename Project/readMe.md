@@ -57,8 +57,11 @@ project/
 │   └───__init__.py
 ├───Catalog/
 │   ├───__pycache__/
+│   │   ├───CatalogManager.cpython-39.pyc
 │   │   └───__init__.cpython-39.pyc
 │   ├───Catalog.json
+│   ├───CatalogBackup.json
+│   ├───CatalogManager.py
 │   ├───CatalogService.py
 │   └───__init__.py
 ├───DAO/
@@ -82,13 +85,15 @@ project/
 │   │   ├───House.cpython-39.pyc
 │   │   ├───Sensor.cpython-39.pyc
 │   │   ├───SensorTypes.cpython-39.pyc
-│   │   └───User.cpython-39.pyc
+│   │   ├───User.cpython-39.pyc
+│   │   └───__init__.cpython-39.pyc
 │   ├───House.py
 │   ├───Sensor.py
 │   ├───SensorTypes.py
 │   ├───Test.py
 │   ├───User.py
-│   └───__init__.py
+│   ├───__init__.py
+│   └───tempCodeRunnerFile.py
 ├───Simulators/
 │   ├───__pycache__/
 │   │   ├───HumiditySim.cpython-39.pyc
