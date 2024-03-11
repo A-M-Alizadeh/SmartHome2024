@@ -44,6 +44,36 @@ def CatalogWriter(data):  # Write the Catalog.json file
     with open(f'{path}/Catalog/Catalog.json', 'w') as outfile:
         outfile.write(json.dumps(data, indent=4, separators=(',', ':')))
 
+
+
+#-------------------------------------------- Auth --------------------------------------------
+def newActiveSession(user_id, token): # Add a new active session to the Catalog.json file
+    isActive = checkActiveSession(user_id)
+    if isActive is not None:
+        return isActive
+    data = CatalogReader()
+    data["activeSessions"].append({"user_id": user_id, "token": token})
+    CatalogWriter(data)
+    return token
+
+def deleteActiveSession(token): # Delete an active session from the Catalog.json file
+    data = CatalogReader()
+    for i in range(len(data["activeSessions"])):
+        if data["activeSessions"][i]["token"] == token:
+            del data["activeSessions"][i]
+            if len(data["activeSessions"]) == 0:
+                data["activeSessions"] = []
+            CatalogWriter(data)
+            return "Session deleted"
+    return None
+
+def checkActiveSession(user_id): # Check if a session is active in the Catalog.json file
+    data = CatalogReader()
+    for i in range(len(data["activeSessions"])):
+        if data["activeSessions"][i]["user_id"] == user_id:
+            return data["activeSessions"][i]
+    return None
+
 #-------------------------------------------- CRUD --------------------------------------------
 #-------------------------------------------- Create --------------------------------------------
 
@@ -53,14 +83,16 @@ def addUsertoCatalog(user): # Add a user to the Catalog.json file
     data["users"].append(json.loads(user))
     colorPrinter(str(data), "blue")
     CatalogWriter(data)
+    return user
 
 def addUserHouseToCatalog(user_id, house): # Add a house to a user in the Catalog.json file
     data = CatalogReader()
     for user in data["users"]:
         if user["user_id"] == user_id:
             user["houses"].append(json.loads(house))
-            # return
-    CatalogWriter(data)
+            CatalogWriter(data)
+            return house
+    return None
 
 def addUserSensorToCatalog(user_id, house_id, sensor): # Add a sensor to a house in the Catalog.json file
     data = CatalogReader()
@@ -69,8 +101,9 @@ def addUserSensorToCatalog(user_id, house_id, sensor): # Add a sensor to a house
             for house in user["houses"]:
                 if house["house_id"] == house_id:
                     house["sensors"].append(json.loads(sensor))
-                    # return
-    CatalogWriter(data)
+                    CatalogWriter(data)
+                    return sensor
+    return None
 
 #-------------------------------------------- Update --------------------------------------------
 def updateUser(user_id, user): # Update a user in the Catalog.json file

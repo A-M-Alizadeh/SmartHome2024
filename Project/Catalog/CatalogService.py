@@ -71,6 +71,10 @@ class Server(object):
         if "deletesensor" in uri:
             return delete_sensor(params.get("userId"), params.get("houseId"), params.get("sensorId"))
         return "URL not found !"
+    
+    def stopServer(self):
+        cherrypy.engine.exit()
+        return "Server stopped !"
 
 
 # -------------------------------------------- Main --------------------------------------------

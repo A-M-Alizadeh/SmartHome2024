@@ -14,10 +14,12 @@ pip insstall cherrypy
 pip install influxdb
 pip install paho_mqtt
 pip install pandas
+pip install jwt
 pip install requests
 pip install joblib
 ```
 
+you might need to use `pip3` instead of `pip`
 This command installs the project as an editable package, allowing you to import modules seamlessly from any script within the project.
 
 

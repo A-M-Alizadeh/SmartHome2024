@@ -3,11 +3,12 @@ import json
 import os
 import requests
 from Utils.Utils import CatalogReader, colorPrinter, addUsertoCatalog, addUserHouseToCatalog, addUserSensorToCatalog,\
-    updateUser, updateHouse, updateSensor, deleteHouse, deleteSensor, deleteUser
+    updateUser, updateHouse, updateSensor, deleteHouse, deleteSensor, deleteUser, newActiveSession, deleteActiveSession
 from Models.Sensor import Sensor
 from Models.House import House
 from Models.User import User
 from Models.SensorTypes import SensorTypes
+from Auth.utils import encode_token, decode_token, check_token
 
 #-------------------------------------------- Update Json File --------------------------------------------
 
@@ -25,7 +26,39 @@ def full_register(input):
     addUsertoCatalog(newUser.toJson())
     return newUser.toJson()
 
+#-------------------------------------------- Auth --------------------------------------------
+def register_user(user):
+    if if_user_exists(user["username"]):
+        return "User already exists"
+    user["password"] = encode_token(user["password"])
+    newUser = User(user["username"], user["password"], user["email"])
+    addUsertoCatalog(newUser.toJson())
+    return newUser.toJson()
+
+def login_user(user):
+    colorPrinter(str(user), "yellow")
+    username = user["username"]
+    password = user["password"]
+    users = CatalogReader()["users"]
+    for user in users:
+        if user.get("username") == username and decode_token(user.get("password")) == password:
+            colorPrinter("this is called", "green")
+            newActiveSession(user.get("user_id"), user.get("password"))
+            return json.dumps(user)
+    return "User not found"
+
+def logout_user(user_id):
+    return deleteActiveSession(user_id)
+
+
 #-------------------------------------------- User CRUD --------------------------------------------
+def if_user_exists(username):
+    users = CatalogReader()["users"]
+    for user in users:
+        if user.get("username") == username:
+            return True
+    return False
+
 def get_all_users():
     return CatalogReader()["users"]
 
@@ -33,6 +66,8 @@ def get_user_by_id(user_id):
     return next((user for user in CatalogReader()["users"] if user["user_id"] == user_id), None)
 
 def new_user(user:User):
+    if if_user_exists(user["username"]):
+        return "User already exists"
     newUser = User(user["username"], user["password"], user["email"], user["first_name"], user["last_name"], user["phone"])
     addUsertoCatalog(newUser.toJson())
     return newUser.toJson()
