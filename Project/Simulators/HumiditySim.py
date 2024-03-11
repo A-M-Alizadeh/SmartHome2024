@@ -7,7 +7,7 @@ class HumiditySensor:
         self.current_value = initial_value
         self.variability = variability
 
-    def generate_humidity_data(self):
+    def generate_humidity_data(self,sensor_id,type,unit):
         # Introduce a bit of randomness around the current value
         noise = random.uniform(-self.variability, self.variability)
         # Update the current value with some memory of the past value
@@ -17,14 +17,14 @@ class HumiditySensor:
 
         # Create a SenML record
         senml_record = {
-            "bn": "urn:dev:humidity:",
-            "n": "humidity",
-            "u": "%",  # Unit: Percentage
+            "bn": sensor_id,
+            "n": type,
+            "u": unit,  # Unit: Percentage
             "v": round(self.current_value, 2),
             "t": int(datetime.now().timestamp())
         }
 
-        return json.dumps(senml_record, indent=2)
+        return senml_record
 
     def set_initial_value(self, new_initial_value):
         self.current_value = new_initial_value

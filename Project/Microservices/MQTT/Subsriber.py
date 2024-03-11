@@ -34,9 +34,7 @@ class SensorsSubscriber:
 if __name__ == "__main__":
     connectionInfo = getConnectionInfo()
 
-    subscriber = SensorsSubscriber(connectionInfo['clientId']+'Subscriber', connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic'])
-    #staticversion to debug
-    # subscriber = SensorsSubscriber("sensor1", "broker.hivemq.com", 1883, "IoT/grp4/temperature")
+    subscriber = SensorsSubscriber(connectionInfo['clientId']+'Subscriber', connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic']+"+")#ids are unique for publisher and subscriber
     subscriber.start()
 
     colorPrinter(f'Subscriber Started', 'pink')

@@ -281,13 +281,15 @@
                     "name":"tempmqtt",
                     "task":"publisher",
                     "topic":"sensor/temperature/",
-                    "status":"on"
+                    "status":"on",
+                    "unit":"c"
                 },
                 {
                     "name":"tempmqtt",
                     "task":"subscriber",
                     "topic":"sensor/temperature/",
-                    "status":"on"
+                    "status":"on",
+                    "unit":"c"
                 }
             ],
             "humidity":[
@@ -295,13 +297,15 @@
                     "name":"humidmqtt",
                     "task":"publisher",
                     "topic":"sensor/humidity",
-                    "status":"on"
+                    "status":"on",
+                    "unit":"%"
                 },
                 {
                     "name":"humidmqtt",
                     "task":"subscriber",
                     "topic":"sensor/humidity",
-                    "status":"on"
+                    "status":"on",
+                    "unit":"%"
                 }
             ]
         }
