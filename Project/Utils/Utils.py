@@ -21,6 +21,9 @@ def colorPrinter(text, color): # Print colored text- only accepts string and col
         "purple": "\033[95m",
         "cyan": "\033[96m",
         "white": "\033[97m",
+        "orange": "\033[33m",
+        "pink": "\033[95m",
+        "lightblue": "\033[94m",
         "end": "\033[0m"
     }
     print(colors[color] + text + colors["end"])

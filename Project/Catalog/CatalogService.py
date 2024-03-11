@@ -5,7 +5,7 @@ from pathlib import Path
 from Utils.Utils import ApiConfReader,colorPrinter
 from Catalog.CatalogManager import get_user_by_id, get_all_users, get_house_by_id, get_user_houses, get_all_sensors,\
     get_sensor_by_id, find_sensor_only_by_id, find_house_only_by_id, new_sensor, new_house, new_user, full_register,\
-    update_user, update_sensor, update_house, delete_user, delete_sensor, delete_house
+    update_user, update_sensor, update_house, delete_user, delete_sensor, delete_house, full_Sensors, getMqttInfo
 from Auth.tools import check_jwt
 
 # http://localhost:8080?apiinfo=user this fills the param like this: {'apiinfo': 'user'}
@@ -17,6 +17,10 @@ class PublicServer(object):
     def GET(self, *uri, **params):
         if "apiinfo" in params:
             return json.dumps(ApiConfReader(params.get("apiinfo")))
+        if "fullsensors" in uri:
+            return json.dumps(full_Sensors())
+        if "mqtt" in uri:
+            return json.dumps(getMqttInfo())
 
 
 class Server(object):
@@ -33,7 +37,7 @@ class Server(object):
         if "allhouses" in uri:
             return json.dumps(get_user_houses(params.get("userId")))
         if "allsensors" in uri:
-            return json.dumps(get_all_sensors(params.get("userId")), params.get("houseId"))
+            return json.dumps(get_all_sensors(params.get("userId"), params.get("houseId")))
         # -------------------------------------------- Find By Id --------------------------------------------
         if "finduser" in uri:
             return json.dumps(get_user_by_id(params.get("userId")))

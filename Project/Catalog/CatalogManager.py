@@ -72,6 +72,17 @@ def new_user(user:User):
     addUsertoCatalog(newUser.toJson())
     return newUser.toJson()
 
+def full_Sensors():
+    users = CatalogReader()["users"]
+    sensors = []
+    for user in users:
+        user_houses = user.get("houses", [])
+        for house in user_houses:
+            house_sensors = house.get("sensors", [])
+            for sensor in house_sensors:
+                sensors.append(sensor)
+    return sensors
+
 #-------------------------------------------- House CRUD --------------------------------------------
 def get_user_houses(user_id):
     return next((user["houses"] for user in CatalogReader()["users"] if user["user_id"] == user_id), [])
@@ -160,14 +171,16 @@ def delete_house(user_id, house_id):
 def delete_sensor(user_id, house_id, sensor_id):
     return deleteSensor(user_id, house_id, sensor_id)
 
-
+#-------------------------------------------- MQTT --------------------------------------------
+def getMqttInfo():
+    mqtt = CatalogReader()["microservices"]["mqtt"]
+    return mqtt
 
 #-------------------------------------------- Main --------------------------------------------
-
-if __name__ == '__main__':
-    colorPrinter(str(get_all_users()), "green")
-    colorPrinter(str(get_user_by_id(1)), "yellow")
-    colorPrinter(str(get_user_houses(1)), "blue")
-    colorPrinter(str(get_house_by_id(1, 1)), "purple")
-    colorPrinter(str(get_all_sensors(1, 1)), "cyan")
-    colorPrinter(str(get_sensor_by_id(1, 1, 1)), "red")
+# if __name__ == '__main__':
+#     colorPrinter(str(get_all_users()), "green")
+#     colorPrinter(str(get_user_by_id(1)), "yellow")
+#     colorPrinter(str(get_user_houses(1)), "blue")
+#     colorPrinter(str(get_house_by_id(1, 1)), "purple")
+#     colorPrinter(str(get_all_sensors(1, 1)), "cyan")
+#     colorPrinter(str(get_sensor_by_id(1, 1, 1)), "red")
