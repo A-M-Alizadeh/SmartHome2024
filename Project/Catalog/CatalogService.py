@@ -6,18 +6,27 @@ from Utils.Utils import ApiConfReader,colorPrinter
 from Catalog.CatalogManager import get_user_by_id, get_all_users, get_house_by_id, get_user_houses, get_all_sensors,\
     get_sensor_by_id, find_sensor_only_by_id, find_house_only_by_id, new_sensor, new_house, new_user, full_register,\
     update_user, update_sensor, update_house, delete_user, delete_sensor, delete_house
+from Auth.tools import check_jwt
 
 # http://localhost:8080?apiinfo=user this fills the param like this: {'apiinfo': 'user'}
 # http://localhost:8080/apiinfo/user this fills the uri like this: ('apiinfo', 'user')
 
+
+class PublicServer(object):
+    exposed =True
+    def GET(self, *uri, **params):
+        if "apiinfo" in params:
+            return json.dumps(ApiConfReader(params.get("apiinfo")))
+
+
 class Server(object):
     exposed = True
-
+    @cherrypy.tools.check_jwt()
 # -------------------------------------------- CRUD --------------------------------------------
 # -------------------------------------------- Read --------------------------------------------
     def GET(self, *uri, **params):
-        if "apiinfo" in params:
-              return json.dumps(ApiConfReader(params.get("apiinfo")))
+        # if "apiinfo" in params:
+        #       return json.dumps(ApiConfReader(params.get("apiinfo")))
         # -------------------------------------------- Full --------------------------------------------
         if "allusers" in uri:
             return json.dumps(get_all_users())
@@ -31,7 +40,7 @@ class Server(object):
         if "findhouse" in uri:
             return json.dumps(get_house_by_id(params.get("userId"), params.get("houseId")))
         if "findsensor" in uri:
-            return json.dumps(get_sensor_by_id(params.get("userId"), params.get("houseId")), params.get("sensorId"))
+            return json.dumps(get_sensor_by_id(params.get("userId"), params.get("houseId"), params.get("sensorId")))
         # -------------------------------------------- Find Only By Id --------------------------------------------
         if "findhouseonly" in uri:
             return json.dumps(find_house_only_by_id(params.get("houseId")))
@@ -90,6 +99,7 @@ if __name__ == '__main__':
     }
     cherrypy.config.update(conf)
     cherrypy.tree.mount(Server(), '/', conf)
+    cherrypy.tree.mount(PublicServer(), '/public', conf)
     cherrypy.config.update({'web.socket_ip': apiConf["url"], 'server.socket_port': apiConf["port"]})
 
     cherrypy.engine.start()

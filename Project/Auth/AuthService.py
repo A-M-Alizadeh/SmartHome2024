@@ -1,10 +1,6 @@
 import cherrypy
 import json
-import jwt
-import requests
 from Utils.Utils import fetchMicroservicesConf, colorPrinter
-from tools import check_jwt
-from Auth.config import SECRET_KEY
 from Catalog.CatalogManager import register_user, login_user, logout_user
 
 # http://localhost:8080?apiinfo=user this fills the param like this: {'apiinfo': 'user'}
@@ -16,7 +12,6 @@ class Server(object):
     def GET(self, *uri, **params):
         return "Auth GET  Server !"
     
-    # @cherrypy.tools.check_jwt()
     def POST(self, *uri, **params):
         if "login" in uri:
             colorPrinter("Login Called", "red")

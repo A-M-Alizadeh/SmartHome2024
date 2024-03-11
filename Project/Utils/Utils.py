@@ -74,6 +74,13 @@ def checkActiveSession(user_id): # Check if a session is active in the Catalog.j
             return data["activeSessions"][i]
     return None
 
+def isValideToken(token): # Check if a token is valid in the Catalog.json file
+    data = CatalogReader()
+    for i in range(len(data["activeSessions"])):
+        if data["activeSessions"][i]["token"] == token:
+            return True
+    return False
+
 #-------------------------------------------- CRUD --------------------------------------------
 #-------------------------------------------- Create --------------------------------------------
 
@@ -189,7 +196,7 @@ def deleteSensor(user_id, house_id, sensor_id): # Delete a sensor from a house i
 #-------------------------------------------- Requests --------------------------------------------
 
 def fetchMicroservicesConf(name): # Fetch the microservice configuration from the Catalog.json file using CatalogService - this is used in the microservices
-    result = requests.get("http://localhost:8080?apiinfo=" + name)
+    result = requests.get("http://localhost:8080/public?apiinfo=" + name)
     return {
         "url": result.json()["url"],
         "port": result.json()["port"]
