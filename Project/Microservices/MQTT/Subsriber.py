@@ -18,7 +18,10 @@ class SensorsSubscriber:
 
     def notify(self, topic, payload): #use senML
         try:
-            colorPrinter( f'sensor ${topic}:  ${payload}recieved','green')
+            if "temperature" in topic:
+                colorPrinter( f'sensor ${topic}:  ${payload}recieved','green')
+            elif "humidity" in topic:
+                colorPrinter( f'sensor ${topic}:  ${payload}recieved','blue')
         except:
             colorPrinter('Error saving data', 'red')
 

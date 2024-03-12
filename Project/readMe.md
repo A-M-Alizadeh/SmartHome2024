@@ -14,6 +14,7 @@ pip insstall cherrypy
 pip install influxdb
 pip install paho_mqtt
 pip install pandas
+pip install 'influxdb-client[ciso]' -- i think this one works
 pip install jwt
 pip install requests
 pip install joblib
