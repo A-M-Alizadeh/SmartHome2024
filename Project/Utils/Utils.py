@@ -81,6 +81,7 @@ def isValideToken(token): # Check if a token is valid in the Catalog.json file
     data = CatalogReader()
     for i in range(len(data["activeSessions"])):
         if data["activeSessions"][i]["token"] == token:
+            colorPrinter(str(data["activeSessions"][i]), "green")
             return True
     return False
 
