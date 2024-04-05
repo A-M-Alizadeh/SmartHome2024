@@ -9,15 +9,16 @@ cd /your/path/to/project
 ```
 2. **Install the Project as an Editable Package:**
 ```
-pip install -e .
 pip insstall cherrypy
 pip install influxdb
 pip install paho_mqtt
 pip install pandas
 pip install 'influxdb-client[ciso]' -- i think this one works
-pip install jwt
+pip install jwt #or pip install pyjwt in case of error
 pip install requests
 pip install joblib
+pip install cherrypy-cors
+pip install -e .
 ```
 
 you might need to use `pip3` instead of `pip`

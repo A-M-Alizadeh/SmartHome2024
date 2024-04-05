@@ -7,10 +7,9 @@ from Catalog.CatalogManager import get_user_by_id, get_all_users, get_house_by_i
     get_sensor_by_id, find_sensor_only_by_id, find_house_only_by_id, new_sensor, new_house, new_user, full_register,\
     update_user, update_sensor, update_house, delete_user, delete_sensor, delete_house, full_Sensors, getMqttInfo
 from Auth.tools import check_jwt
-
+import cherrypy_cors
 # http://localhost:8080?apiinfo=user this fills the param like this: {'apiinfo': 'user'}
 # http://localhost:8080/apiinfo/user this fills the uri like this: ('apiinfo', 'user')
-
 
 class PublicServer(object):
     exposed =True
@@ -21,6 +20,8 @@ class PublicServer(object):
             return json.dumps(full_Sensors())
         if "mqtt" in uri:
             return json.dumps(getMqttInfo())
+    def OPTIONS(self, *args, **kwargs):
+        cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
         
 class UserServer(object):
     exposed = True
@@ -45,7 +46,9 @@ class UserServer(object):
         if "deleteuser" in uri:
             return delete_user(params.get("userId"))
         return "URL not found !"
-        
+    def OPTIONS(self, *args, **kwargs):
+        cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
+
 class HouseServer(object):
     exposed = True
     @cherrypy.tools.check_jwt()
@@ -70,7 +73,11 @@ class HouseServer(object):
         if "deletehouse" in uri:
             return delete_house(params.get("userId"), params.get("houseId"))
         return "URL not found !"
+    
+    def OPTIONS(self, *args, **kwargs):
+        cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
         
+
 class DeviceServer(object):
     exposed = True
     @cherrypy.tools.check_jwt()
@@ -91,10 +98,13 @@ class DeviceServer(object):
         if "updatesensor" in uri:
             return update_sensor(params.get("userId"), params.get("houseId"), params.get("sensorId"), json.loads(cherrypy.request.body.read()))
         return "URL not found !"
+    
     def DELETE(self, *uri, **params):
         if "deletesensor" in uri:
             return delete_sensor(params.get("userId"), params.get("houseId"), params.get("sensorId"))
 
+    def OPTIONS(self, *args, **kwargs):
+        cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
 
 
 # class Server(object):
@@ -165,14 +175,17 @@ class DeviceServer(object):
 
 
 # -------------------------------------------- Main --------------------------------------------
+
 if __name__ == '__main__':
     apiConf = ApiConfReader("catalog")
+    headers = [('Access-Control-Allow-Origin', '*'), ('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')]
     conf = {
         '/': {
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
             'tools.response_headers.on': True,
-            'tools.response_headers.headers': [('Access-Control-Allow-Origin', '*')],
+            'tools.response_headers.headers': headers,
             'tools.sessions.on': True,
+            'cors.expose.on': True,
         }
     }
     cherrypy.config.update(conf)
@@ -181,6 +194,5 @@ if __name__ == '__main__':
     cherrypy.tree.mount(DeviceServer(), '/device', conf)
     cherrypy.tree.mount(PublicServer(), '/public', conf)
     cherrypy.config.update({'web.socket_ip': apiConf["url"], 'server.socket_port': apiConf["port"]})
-
     cherrypy.engine.start()
     cherrypy.engine.block()
