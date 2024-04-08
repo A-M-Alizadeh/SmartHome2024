@@ -242,10 +242,27 @@
                         },
                         {
                             "sensor_id":"3912fee4-af3f-43cf-9024-1c259f6a0459",
-                            "status":"off",
-                            "type":"HUMIDITY"
+                            "status":"on",
+                            "type":"TEMPERATURE"
+                        },
+                        {
+                            "sensor_id":"e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
+                            "status":"on",
+                            "type":"AIR_CONDITIONER"
                         }
                     ]
+                },
+                {
+                    "address":"Monte G33 dsdfsdf",
+                    "house_id":"8fb7c276-ee8b-4935-8e16-413f72e4872a",
+                    "sensors":[
+                        {
+                            "sensor_id":"e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
+                            "status":"on",
+                            "type":"AIR_CONDITIONER"
+                        }
+                    ],
+                    "title":"Casa Blanca"
                 }
             ],
             "last_name":"",
