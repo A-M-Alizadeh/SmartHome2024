@@ -120,15 +120,12 @@ def addUserSensorToCatalog(user_id, house_id, sensor): # Add a sensor to a house
 def updateUser(user_id, user): # Update a user in the Catalog.json file
     data = CatalogReader()
     for i in range(len(data["users"])):
-        colorPrinter(str(i), "red")
-        colorPrinter(str(data["users"][i]["user_id"]), "green")
-        colorPrinter(str(user_id), "yellow")
         if data["users"][i]["user_id"] == user_id:
             user["houses"] = data["users"][i]["houses"]
             data["users"][i] = user
             CatalogWriter(data)
-            return
-    return None
+            return data["users"][i]
+    return json.dumps({"error": "User not found"})
 
 def updateHouse(user_id, house_id, house): # Update a house in the Catalog.json file
     data = CatalogReader()
@@ -152,7 +149,7 @@ def updateSensor(user_id, house_id, sensor_id, sensor): # Update a sensor in the
                         if house["sensors"][i]["sensor_id"] == sensor_id:
                             house["sensors"][i] = sensor
                             CatalogWriter(data)
-                            return
+                            return json.dumps(house["sensors"][i])
     return None
 
 #-------------------------------------------- Delete --------------------------------------------

@@ -107,6 +107,8 @@ def find_house_only_by_id(house_id):
 def new_house(user_id, house:House):
     users = CatalogReader()["users"]
     for user in users:
+        colorPrinter(user_id, "green")
+        colorPrinter(str(user["user_id"]), "green")
         if user["user_id"] == user_id:
             newHouse = House(house["address"], house["title"])
             addUserHouseToCatalog(user_id, newHouse.toJson())
@@ -153,6 +155,7 @@ def new_sensor(user_id, house_id, sensor):
 
 #-------------------------------------------- Update --------------------------------------------
 def update_user(user_id, user):
+    # colorPrinter("this is called", "green")
     return updateUser(user_id, user)
 
 def update_house(user_id, house_id, house):

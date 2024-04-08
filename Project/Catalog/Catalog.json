@@ -229,12 +229,68 @@
         {
             "email":"useremail@mail.com",
             "first_name":"",
-            "houses":[],
+            "houses":[
+                {
+                    "address":"Monte Carlo 51",
+                    "house_id":"cc4f3045-4a19-4857-8155-2e131f8c7f11",
+                    "title":"Casa Blanca 2",
+                    "sensors":[
+                        {
+                            "sensor_id":"d04c5452-e9af-445b-adf4-415d7bfd31e7",
+                            "status":"on",
+                            "type":"HUMIDITY"
+                        },
+                        {
+                            "sensor_id":"3912fee4-af3f-43cf-9024-1c259f6a0459",
+                            "status":"off",
+                            "type":"HUMIDITY"
+                        }
+                    ]
+                }
+            ],
             "last_name":"",
             "password":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM",
             "phone":"",
             "user_id":"eac499f4-7c72-4f55-85ae-4ce1e173b096",
             "username":"newAuthUsername"
+        },
+        {
+            "email":"postman@mail.com",
+            "first_name":"",
+            "houses":[],
+            "last_name":"",
+            "password":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM",
+            "phone":"",
+            "user_id":"cd5ec430-b5bf-41ac-95c7-680e3c2da492",
+            "username":"PostmanUser"
+        },
+        {
+            "email":"postgray@mail.com",
+            "first_name":"Alex",
+            "houses":[
+                {
+                    "address":"Monte Grappa 163",
+                    "house_id":"1172e396-25ce-4fa0-ace9-34f2b13d11a1",
+                    "sensors":[
+                        {
+                            "sensor_id":"4fbe6411-a2fa-487e-af32-86333965de57",
+                            "status":"on",
+                            "type":"TEMPERATURE"
+                        },
+                        {
+                            "sensor_id":"668342af-415a-4f17-8fc3-16af43e8d372",
+                            "status":"on",
+                            "type":"HUMIDITY"
+                        }
+                    ],
+                    "title":"Casa Blanca"
+                }
+            ],
+            "last_name":"Gray",
+            "password":"123abc",
+            "phone":"123-456-789",
+            "user_id":"91eb7798-bb8e-4151-9a8c-97e894347d50",
+            "username":"postGray"
         }
     ],
     "microservices":{
@@ -274,7 +330,7 @@
         "mqtt":{
             "broker":"test.mosquitto.org",
             "common_topic":"iot/2024/smartHouse/",
-            "port": 1883,
+            "port":1883,
             "clientId":"IOT2024SmartHousePolito",
             "temperature":[
                 {

@@ -34,13 +34,14 @@ class UserServer(object):
         return "URL not found !"
 
     def POST(self, *uri, **params):
-        if "fullregister" in uri:
-            return full_register(json.loads(cherrypy.request.body.read()))
+        # if "fullregister" in uri:
+        #     return full_register(json.loads(cherrypy.request.body.read()))
         if "newuser" in uri:
             return new_user(json.loads(cherrypy.request.body.read()))
     def PUT(self, *uri, **params):
         if "updateuser" in uri:
-            return update_user(params.get("userId"), json.loads(cherrypy.request.body.read()))
+            updatedUser = update_user(params.get("userId").replace('"', ''), json.loads(cherrypy.request.body.read()))
+            return json.dumps(updatedUser)
         return "URL not found !"
     def DELETE(self, *uri, **params):
         if "deleteuser" in uri:
@@ -54,24 +55,24 @@ class HouseServer(object):
     @cherrypy.tools.check_jwt()
     def GET(self, *uri, **params):
         if "allhouses" in uri:
-            return json.dumps(get_user_houses(params.get("userId")))
+            return json.dumps(get_user_houses(params.get("userId").replace('"', '')))
         if "findhouse" in uri:
-            return json.dumps(get_house_by_id(params.get("userId"), params.get("houseId")))
+            return json.dumps(get_house_by_id(params.get("userId").replace('"', ''), params.get("houseId").replace('"', '')))
         if "findhouseonly" in uri:
-            return json.dumps(find_house_only_by_id(params.get("houseId")))
+            return json.dumps(find_house_only_by_id(params.get("houseId").replace('"', '')))
         return "URL not found !"
 
     def POST(self, *uri, **params):
         if "newhouse" in uri:
-            return new_house(params.get("userId"), json.loads(cherrypy.request.body.read()))
+            return new_house(params.get("userId").replace('"', ''), json.loads(cherrypy.request.body.read()))
         return "URL not found !"
     def PUT(self, *uri, **params):
         if "updatehouse" in uri:
-              return update_house(params.get("userId"), params.get("houseId"), json.loads(cherrypy.request.body.read()))
+            return update_house(params.get("userId").replace('"', ''), params.get("houseId").replace('"', ''), json.loads(cherrypy.request.body.read()))
         return "URL not found !"
     def DELETE(self, *uri, **params):
         if "deletehouse" in uri:
-            return delete_house(params.get("userId"), params.get("houseId"))
+            return delete_house(params.get("userId").replace('"', ''), params.get("houseId").replace('"', ''))
         return "URL not found !"
     
     def OPTIONS(self, *args, **kwargs):
@@ -83,25 +84,26 @@ class DeviceServer(object):
     @cherrypy.tools.check_jwt()
     def GET(self, *uri, **params):
         if "allsensors" in uri:
-            return json.dumps(get_all_sensors(params.get("userId"), params.get("houseId")))
+            return json.dumps(get_all_sensors(params.get("userId").replace('"', ''), params.get("houseId").replace('"', '')))
         if "findsensor" in uri:
-            return json.dumps(get_sensor_by_id(params.get("userId"), params.get("houseId"), params.get("sensorId")))
+            return json.dumps(get_sensor_by_id(params.get("userId").replace('"', ''), params.get("houseId").replace('"', ''), params.get("sensorId").replace('"', '')))
         if "findsensoronly" in uri:
-              return json.dumps(find_sensor_only_by_id(params.get("sensorId")))
+              return json.dumps(find_sensor_only_by_id(params.get("sensorId").replace('"', '')))
         return "URL not found !"
     def POST(self, *uri, **params):
         if "newsensor" in uri:
-            return new_sensor(params.get("userId"), params.get("houseId"), json.loads(cherrypy.request.body.read()))
+            return new_sensor(params.get("userId").replace('"', ''), params.get("houseId").replace('"', ''), json.loads(cherrypy.request.body.read()))
         return "URL not found !"
         
     def PUT(self, *uri, **params):
         if "updatesensor" in uri:
-            return update_sensor(params.get("userId"), params.get("houseId"), params.get("sensorId"), json.loads(cherrypy.request.body.read()))
+            return update_sensor(params.get("userId").replace('"', ''), params.get("houseId").replace('"', ''), params.get("sensorId").replace('"', ''), json.loads(cherrypy.request.body.read()))
         return "URL not found !"
     
     def DELETE(self, *uri, **params):
         if "deletesensor" in uri:
-            return delete_sensor(params.get("userId"), params.get("houseId"), params.get("sensorId"))
+            colorPrinter("deleting sensor", "red")
+            return delete_sensor(params.get("userId").replace('"', ''), params.get("houseId").replace('"', ''), params.get("sensorId").replace('"', ''))
 
     def OPTIONS(self, *args, **kwargs):
         cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
@@ -185,7 +187,7 @@ if __name__ == '__main__':
             'tools.response_headers.on': True,
             'tools.response_headers.headers': headers,
             'tools.sessions.on': True,
-            'cors.expose.on': True,
+            # 'cors.expose.on': True,
         }
     }
     cherrypy.config.update(conf)

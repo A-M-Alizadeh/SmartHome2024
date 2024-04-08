@@ -1,7 +1,7 @@
 import cherrypy
 import json
 from Utils.Utils import fetchMicroservicesConf, colorPrinter
-from Catalog.CatalogManager import register_user, login_user, logout_user
+from Catalog.CatalogManager import register_user, login_user, logout_user, full_register
 # http://localhost:8080?apiinfo=user this fills the param like this: {'apiinfo': 'user'}
 # http://localhost:8080/apiinfo/user this fills the uri like this: ('apiinfo', 'user')
 import cherrypy_cors
@@ -14,12 +14,12 @@ class Server(object):
     
     def POST(self, *uri, **params):
         if "login" in uri:
-            # print('-------> ',json.loads(cherrypy.request.body.read()))
-            # return "login"
             return login_user(json.loads(cherrypy.request.body.read()))
         if "register" in uri:
             return register_user(json.loads(cherrypy.request.body.read()))
-        #this one needs check_jwt
+        if "fullRegister" in uri:
+            return full_register(json.loads(cherrypy.request.body.read()))
+        #TODO this one needs check_jwt
         if "logout" in uri:
             bearer = cherrypy.request.headers.get("Authorization").split(" ")[1]
             return logout_user(bearer)
