@@ -33,8 +33,7 @@ class SensorPublisher:
         self.mqttClient = MyMQTT(clientID, broker, port, self)
         self.statusToBool = {"ON": True, "OFF": False}
         self.topic = topic
-        # self.topic = 'IoT/grp4/temperature'
-        self.__message = {"bn":clientID, "t": None,  "u":"Cel", "n":"humidity", "v":None}
+        self.__message = {"bn":clientID, "t": None,  "u":"Percentage", "n":"humidity", "v":None}
         self.sensorData = getSensorData()
         self.connectionDetails = getConnectionInfo()
         self.sensGen = CombinedSim()
@@ -47,7 +46,7 @@ class SensorPublisher:
 
     def publish(self):
         message = self.__message
-        message = self.sensGen.getTemperature(self.sensorData['sensor_id'], 'humidity', '%' )
+        message = self.sensGen.getHumidity(self.sensorData['sensor_id'], 'humidity', '%') 
         self.topic = self.connectionDetails['common_topic']+self.sensorData['type'].lower()
         self.mqttClient.myPublish(self.topic, message)
         colorPrinter(f'Published {message} to {self.topic}', 'blue')
@@ -57,10 +56,10 @@ if __name__ == "__main__":
     connectionInfo = getConnectionInfo()
     # sensorData = getSensorData()
 
-    publisher = SensorPublisher(connectionInfo['clientId']+"Publisher", connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    publisher = SensorPublisher(connectionInfo['clientId']+"Publisher_humid", connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
     publisher.start()
 
-    colorPrinter(f'Publisher Started', 'blue')
+    colorPrinter(f'HUMIDITY Publisher Started', 'blue')
     colorPrinter(f'{publisher.topic}', 'blue')
     colorPrinter(f'{publisher.mqttClient.clientID}', 'blue')
     while True:

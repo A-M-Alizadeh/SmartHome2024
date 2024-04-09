@@ -14,14 +14,15 @@ class SensorsSubscriber:
     def __init__(self,clientID, broker, port, topic):
         self.mqttClient = MyMQTT(clientID, broker, port, self)
         self.topic = topic
-        # self.topic = 'IoT/grp4/temperature'
 
     def notify(self, topic, payload): #use senML
         try:
-            if "temperature" in topic:
-                colorPrinter( f'sensor ${topic}:  ${payload}recieved','red')
-            elif "humidity" in topic:
+            if "humidity" in topic:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','blue')
+            elif "temperature" in topic:
+                colorPrinter( f'sensor ${topic}:  ${payload}recieved','red')
+            elif "air_conditioner" in topic:
+                colorPrinter( f'sensor ${topic}:  ${payload}recieved','green')
         except:
             colorPrinter('Error saving data', 'red')
 
@@ -37,12 +38,11 @@ class SensorsSubscriber:
 if __name__ == "__main__":
     connectionInfo = getConnectionInfo()
 
-    subscriber = SensorsSubscriber(connectionInfo['clientId']+'Subscriber', connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic']+"+")#ids are unique for publisher and subscriber
+    subscriber = SensorsSubscriber(connectionInfo['clientId']+'Subscriber_full', connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic']+"+")#ids are unique for publisher and subscriber
     subscriber.start()
 
-    colorPrinter(f'Subscriber Started', 'pink')
+    colorPrinter(f'HUMIDITY Subscriber Started', 'pink')
     colorPrinter(f'{subscriber.topic}', 'pink')
     colorPrinter(f'{subscriber.mqttClient.clientID}', 'pink')
-
     while True:
         time.sleep(1)

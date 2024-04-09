@@ -2,8 +2,8 @@ from Simulators import HumiditySim, TemperatureSim
 
 class CombinedSim:
     def __init__(self):
-        self.humiditySim = HumiditySim.HumiditySensor(20, 3)
-        self.temperatureSim = TemperatureSim.TemperatureSensor(40, 1)
+        self.humiditySim = HumiditySim.HumiditySensor(40, 3)
+        self.temperatureSim = TemperatureSim.TemperatureSensor(20, 1)
 
     def getHumidity(self,sensor_id,type,unit):
         return self.humiditySim.generate_humidity_data(sensor_id,type,unit)
