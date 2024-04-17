@@ -33,7 +33,7 @@ class SensorPublisher:
         self.mqttClient = MyMQTT(clientID, broker, port, self)
         self.statusToBool = {"ON": True, "OFF": False}
         self.topic = topic
-        self.__message = {"bn":clientID, "t": None,  "u":"act", "n":"command", "v": self.statusToBool["OFF"]}
+        self.__message = {"bn":clientID, "t": None,  "u":"act", "n":"command", "v": random.choice([True, False])}#self.statusToBool["OFF"]}
         self.sensorData = getSensorData()
         self.connectionDetails = getConnectionInfo()
         self.sensGen = CombinedSim()
@@ -46,7 +46,7 @@ class SensorPublisher:
 
     def publish(self):
         message = self.__message
-        message = self.sensGen.getTemperature(self.sensorData['sensor_id'], 'humidity', '%' )
+        message = self.sensGen.getAirConditionCommand(self.sensorData['sensor_id'], 'air_condition', 'act' )
         self.topic = self.connectionDetails['common_topic']+self.sensorData['type'].lower()
         self.mqttClient.myPublish(self.topic, message)
         colorPrinter(f'Published {message} to {self.topic}', 'cyan')

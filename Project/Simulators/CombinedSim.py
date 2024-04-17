@@ -1,4 +1,6 @@
 from Simulators import HumiditySim, TemperatureSim
+from datetime import datetime
+import random
 
 class CombinedSim:
     def __init__(self):
@@ -10,3 +12,12 @@ class CombinedSim:
 
     def getTemperature(self,sensor_id,type,unit):
         return self.temperatureSim.generate_temperature_data(sensor_id,type,unit)
+    
+    def getAirConditionCommand(self,sensor_id,type,unit):
+        return {
+            "bn": sensor_id,
+            "n": type,
+            "u": unit,  # Unit: Celsius
+            "v": random.choice([True, False]),
+            "t": int(datetime.now().timestamp())
+        }

@@ -1,6 +1,5 @@
 import time
 import requests
-import requests
 from Microservices.MQTT.MQTT import MyMQTT
 from Utils.Utils import colorPrinter
 #--------------------------------------------REST API------------------------------------------------
@@ -23,8 +22,8 @@ class SensorsSubscriber:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','red')
             elif "air_conditioner" in topic:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','green')
-        except:
-            colorPrinter('Error saving data', 'red')
+        except Exception as e:
+            colorPrinter(f'Error saving data {e}', 'orange')
 
     def start(self):
         self.mqttClient.start()

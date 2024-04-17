@@ -13,31 +13,31 @@ full_sub_path=$(pwd)"/Microservices/MQTT/fullSubscriber.py"
 
 # Run Catalog Service --- this will run in a new terminal ***This is the first service to run***
 
-Run the Pub and Sub services for Humidity
+# Run the Pub and Sub services for Humidity
 osascript -e 'tell app "Terminal"
-    do script "python '$hum_Pub_path'"
+    do script "python3 '$hum_Pub_path'"
 end tell'
 osascript -e 'tell app "Terminal"
-    do script "python '$hum_Sub_path'"
+    do script "python3 '$hum_Sub_path'"
 end tell'
 
 # Run the Pub and Sub services for Temperature
 osascript -e 'tell app "Terminal"
-    do script "python '$temp_Pub_path'"
+    do script "python3 '$temp_Pub_path'"
 end tell'
 osascript -e 'tell app "Terminal"
-    do script "python '$temp_Sub_path'"
+    do script "python3 '$temp_Sub_path'"
 end tell'
 # Run the Pub and Sub services for Air Condition
 
 osascript -e 'tell app "Terminal"
-    do script "python '$air_Sub_path'"
+    do script "python3 '$air_Sub_path'"
 end tell'
 osascript -e 'tell app "Terminal"
-    do script "python '$command_Pub_path'"
+    do script "python3 '$command_Pub_path'"
 end tell'
 
 # Run the full subscriber
 osascript -e 'tell app "Terminal"
-    do script "python '$full_sub_path'"
+    do script "python3 '$full_sub_path'"
 end tell'
