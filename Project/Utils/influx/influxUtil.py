@@ -30,24 +30,76 @@ class InfluxDBManager:
         self.Point = Point
 
     def writeData(self, point):
-        print('Called->',point)
-        self.write_api.write(bucket=self.bucketName, org= self.orgName, record=point)
-        self.write_api.close()
+        try:
+            print('Called->',point)
+            self.write_api.write(bucket=self.bucketName, org= self.orgName, record=point)
+            self.write_api.close()
+        except Exception as e:
+            print(f'Error writing data {e}')
 
-    def readData(self, measurement, tags, fields):
-        print('Reading data=========================================')
-        query = """from(bucket: "READINGS")
-        |> range(start: -30m)
-        |> filter(fn: (r) => r._measurement == "Measurement")"""
-        tables = self.query_api.query(query, org="IOTPolito")
+    def readSensorData(self, sensorId, period='30m'):
+        counter = 0
+        type = None
+        unit = None
         records = []
+        print('Reading data=========================================')
+        query = f"""from(bucket: "READINGS")
+        |> range(start: -{period})
+        |> filter(fn: (r) => r._measurement == "Measurement" and r.sensorId == "{sensorId}")"""
+        tables = self.query_api.query(query, org="IOTPolito")
         for table in tables:
             for record in table.records:
-                records.append(record['_value'])
-        return {"records": records}
+                if counter == 0:
+                    type = record['type']
+                    unit = record['unit']
+                    counter += 1
+                print(record)
+                records.append({"value": record['_value'], "time": record['_time'].isoformat()})
+        return {"records": records, "type": type, "unit": unit, "sensorId": sensorId, "period": period}
+    
+    def readAllSensorsData(self,sensorIds, period='30m'):
+        result = {}
+        for sensorId in sensorIds:
+            counter = 0
+            type = None
+            unit = None
+            records = []
+            print(f'Reading data for sensor {sensorId} =========================================')
+            query = f"""from(bucket: "READINGS")
+            |> range(start: -{period})
+            |> filter(fn: (r) => r._measurement == "Measurement" and r.sensorId == "{sensorId}")"""
+            tables = self.query_api.query(query, org="IOTPolito")
+            for table in tables:
+                for record in table.records:
+                    if counter == 0:
+                        type = record['type']
+                        unit = record['unit']
+                        counter += 1
+                    records.append({"value": record['_value'], "time": record['_time'].isoformat()})
+                result[sensorId] = {"records": records, "type": type, "unit": unit, "sensorId": sensorId, "period": period}
+        return result
 
-    # def deleteData(self, measurement, tags, fields):
-    #     self.delete_api.delete(start=0, stop=0, predicate='r._measurement == "measurement1"', bucket="READINGS", org="IOTPolito")
+    def readCommands(self, sensorId, period='30m'):
+        counter = 0
+        unit = None
+        type = None
+        records = []
+        query = f"""from(bucket: "READINGS")
+        |> range(start: -{period})
+        |> filter(fn: (r) => r._measurement == "Measurement" and r.sensorId == "{sensorId}")"""
+        tables = self.query_api.query(query, org="IOTPolito")
+        for table in tables:
+            for record in table.records:
+                if counter == 0:
+                    type = record['type']
+                    unit = record['unit']
+                    counter += 1
+                print('---> ',record)
+                records.append({"value": record['_value'], "time": record['_time'].isoformat(), "fields": record['_field']})
+        return {"records": records, "type": type, "unit": unit, "sensorId": sensorId, "period": period}
+
+
+
 # Point =Point
 # # Usage
 # if __name__ == "__main__":

@@ -11,20 +11,30 @@ class Server(object):
     exposed = True
 
     def GET(self, *uri, **params):
-        return "Auth GET  Server !"
+        if "deleter" in uri:
+            colorPrinter("Deleting data", "red")
+            dbConnector.myDelete()
+            return "Analytics GET  Server !"
     
     def POST(self, *uri, **params):
         if "analytics" in uri:
             print(params)
-            print(json.loads(cherrypy.request.body.read()))
-            return json.dumps(dbConnector.readData("measurement1", "tags", "fields"))
-        return "Auth POST  Server !"
+            data = json.loads(cherrypy.request.body.read())
+            return json.dumps(dbConnector.readSensorData(data["sensorId"], data["period"]))
+        if "fullAnalytics" in uri:
+            print(params)
+            data = json.loads(cherrypy.request.body.read())
+            return json.dumps(dbConnector.readAllSensorsData(data["sensorIds"], data["period"]))
+        if "commandAnalytics" in uri:
+            print(params)
+            data = json.loads(cherrypy.request.body.read())
+            return json.dumps(dbConnector.readCommands(data["sensorId"], data["period"]))
 
     def PUT(self, *uri, **params):
-        return "Auth PUT  Server !"
+        return "Analytics PUT  Server !"
 
     def DELETE(self, *uri, **params):
-        return "Auth DELET  Server !"
+        return "Analytics DELET  Server !"
     
     #fixing cors preflight by OPTIONS method
     def OPTIONS(self, *args, **kwargs):

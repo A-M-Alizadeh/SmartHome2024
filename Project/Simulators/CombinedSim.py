@@ -13,11 +13,17 @@ class CombinedSim:
     def getTemperature(self,sensor_id,type,unit):
         return self.temperatureSim.generate_temperature_data(sensor_id,type,unit)
     
-    def getAirConditionCommand(self,sensor_id,type,unit):
+    def getAirConditionCommand(self,sensor_id,type,temp,humid, actionType,status):
         return {
             "bn": sensor_id,
             "n": type,
-            "u": unit,  # Unit: Celsius
-            "v": random.choice([True, False]),
+            "u": 'act',  # Unit: Celsius
+            'type': type, #manual or auto
+            "v": {
+                "temperature": temp,
+                "humidity": humid,
+                "actionType": actionType,
+                "status": status
+            },
             "t": int(datetime.now().timestamp())
         }

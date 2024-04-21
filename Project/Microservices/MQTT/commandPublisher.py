@@ -44,9 +44,9 @@ class CommandPublisher:
     def stop(self):
         self.mqttClient.stop()
 
-    def publish(self):
+    def publish(self, temp=None, humid=None, actionType=None, status=None):
         message = self.__message
-        message = self.sensGen.getAirConditionCommand(self.sensorData['sensor_id'], 'air_condition', 'act' )
+        message = self.sensGen.getAirConditionCommand(self.sensorData['sensor_id'], 'air_condition', temp, humid, actionType, status)
         self.topic = self.connectionDetails['common_topic']+self.sensorData['type'].lower()
         self.mqttClient.myPublish(self.topic, message)
         colorPrinter(f'Published {message} to {self.topic}', 'cyan')

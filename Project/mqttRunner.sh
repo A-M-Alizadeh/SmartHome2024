@@ -7,7 +7,7 @@ temp_Pub_path=$(pwd)"/Microservices/MQTT/temperaturePublisher.py"
 temp_Sub_path=$(pwd)"/Microservices/MQTT/tempratureSubscriber.py"
 
 air_Sub_path=$(pwd)"/Microservices/MQTT/airConditionSubscriber.py"
-command_Pub_path=$(pwd)"/Microservices/MQTT/commandPublisher.py"
+# command_Pub_path=$(pwd)"/Microservices/MQTT/commandPublisher.py"
 
 full_sub_path=$(pwd)"/Microservices/MQTT/fullSubscriber.py"
 
@@ -33,9 +33,9 @@ end tell'
 osascript -e 'tell app "Terminal"
     do script "python3 '$air_Sub_path'"
 end tell'
-osascript -e 'tell app "Terminal"
-    do script "python3 '$command_Pub_path'"
-end tell'
+# osascript -e 'tell app "Terminal"
+#     do script "python3 '$command_Pub_path'"
+# end tell'
 
 # Run the full subscriber
 osascript -e 'tell app "Terminal"

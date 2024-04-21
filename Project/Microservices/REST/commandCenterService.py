@@ -15,15 +15,15 @@ class Server(object):
     def POST(self, *uri, **params):
         if "command" in uri:
             colorPrinter("POST /command", "yellow")
-            print(params)
-            print(json.loads(cherrypy.request.body.read()))
-            commandPublisher.publish()
+            data = json.loads(cherrypy.request.body.read())
+            colorPrinter(str(data), "orange")
+            commandPublisher.publish(data["temperature"], data["humidity"], data["type"])
             return json.dumps({"status": "success", "message": "Command received successfully !"})
         if "airConiditioner" in uri:
             colorPrinter("POST /airConiditioner", "yellow")
-            print(params)
-            print(json.loads(cherrypy.request.body.read()))
-            commandPublisher.publish()
+            data = json.loads(cherrypy.request.body.read())
+            colorPrinter(str(data), "orange")
+            commandPublisher.publish(data["temperature"], data["humidity"], data["actionType"], data["status"])
             return json.dumps({"status": "success", "message": "Command received successfully 2 !"})
         return "Auth POST  Server !"
 

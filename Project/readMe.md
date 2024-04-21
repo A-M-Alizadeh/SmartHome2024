@@ -20,6 +20,7 @@ pip install pyjwt #or pip install jwt in case of error
 pip install requests
 pip install joblib
 pip install cherrypy-cors
+pip install schedule
 pip install -e .
 ```
 

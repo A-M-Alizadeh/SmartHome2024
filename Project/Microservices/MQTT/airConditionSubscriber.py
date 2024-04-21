@@ -2,6 +2,8 @@ import time
 import requests
 from Microservices.MQTT.MQTT import MyMQTT
 from Utils.Utils import colorPrinter
+from Utils.influx.influxUtil import InfluxDBManager
+import json
 #--------------------------------------------REST API------------------------------------------------
 def getConnectionInfo():
     response = requests.get('http://localhost:8080/public/mqtt')
@@ -13,12 +15,29 @@ class SensorsSubscriber:
     def __init__(self,clientID, broker, port, topic):
         self.mqttClient = MyMQTT(clientID, broker, port, self)
         self.topic = topic
-        # self.topic = 'IoT/grp4/temperature'
+        self.dbConnector = InfluxDBManager()
 
     def notify(self, topic, payload): #use senML
         try:
             if "air_condition" in topic:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','green')
+                try:
+                    json_string = payload.decode('utf-8')
+                    data = json.loads(json_string)
+                    point = (
+                        self.dbConnector.Point("Measurement")
+                        .tag("sensorId", data['bn'])
+                        .tag("unit", data['u'])
+                        .tag("type", data['n'])
+                        .tag("status", data['v']['status'])
+                        .tag("actionType", data['v']['actionType'])
+                        .field("humidity", data['v']['humidity'])
+                        .field("temperature", data['v']['temperature'])
+                    )
+                    self.dbConnector.writeData(point)
+                    colorPrinter(f'Writing data to InfluxDB: {str(point)}', 'yellow')
+                except Exception as e:
+                    colorPrinter(f'Error saving data {e}', 'orange')
         except Exception as e:
             colorPrinter(f'Error saving data {e}', 'orange')
 

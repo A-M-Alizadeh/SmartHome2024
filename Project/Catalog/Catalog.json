@@ -227,8 +227,13 @@
             "username":"GrayDevrrrrrr"
         },
         {
+            "user_id":"eac499f4-7c72-4f55-85ae-4ce1e173b096",
+            "username":"newAuthUsername",
+            "password":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM",
             "email":"useremail@mail.com",
-            "first_name":"",
+            "first_name":"Alexiiii",
+            "last_name":"Gray345555",
+            "phone":"123-456-789",
             "houses":[
                 {
                     "address":"Monte Carlo 51",
@@ -263,13 +268,20 @@
                         }
                     ],
                     "title":"Casa Blanca"
+                },
+                {
+                    "address":"Monte G33 dsdfsdf",
+                    "house_id":"524b2f7f-8c57-4356-ac16-eba3bd4ef8c3",
+                    "sensors":[],
+                    "title":"Casa Blanca"
+                },
+                {
+                    "address":"Monte G33 dsdfsdf",
+                    "house_id":"d61c7afc-a053-44e9-ab01-cbac05ccf678",
+                    "sensors":[],
+                    "title":"Casa Blanca"
                 }
-            ],
-            "last_name":"",
-            "password":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM",
-            "phone":"",
-            "user_id":"eac499f4-7c72-4f55-85ae-4ce1e173b096",
-            "username":"newAuthUsername"
+            ]
         },
         {
             "email":"postman@mail.com",
@@ -369,6 +381,22 @@
                     "topic":"sensor/humidity",
                     "status":"on",
                     "unit":"%"
+                }
+            ],
+            "command":[
+                {
+                    "name":"commmand",
+                    "task":"publisher",
+                    "topic":"sensor/command",
+                    "status":"on",
+                    "unit":"act"
+                },
+                {
+                    "name":"humidmqtt",
+                    "task":"subscriber",
+                    "topic":"sensor/command",
+                    "status":"on",
+                    "unit":"act"
                 }
             ]
         }
