@@ -1,5 +1,7 @@
 
 # Smart House (IoT)
+python version = 3.11.6
+influxDB version = 2.7.5
 
 To properly set up the project and enable smooth importing of modules, follow these steps:
 
@@ -14,7 +16,7 @@ pip install influxdb
 pip install paho_mqtt
 pip install pandas
 pip install 'influxdb-client[ciso]' -- i think this one works
-pip install jwt #or pip install pyjwt in case of error
+pip install pyjwt #or pip install jwt in case of error
 pip install requests
 pip install joblib
 pip install cherrypy-cors
@@ -49,7 +51,6 @@ ii. **Authorization:**
 
 iii. **Database:**
 - `InfluxDB` is used In order to store the sensor records, InfluxDB is designed to store timeseries
-
 
 ---
 **Project Structure**

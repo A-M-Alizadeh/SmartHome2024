@@ -36,11 +36,14 @@ def register_user(user):
     return newUser.toJson()
 
 def login_user(user):
+    colorPrinter("this is called", "green")
     colorPrinter(str(user), "yellow")
+    colorPrinter(user["password"], "yellow")
     username = user["username"]
     password = user["password"]
     users = CatalogReader()["users"]
     for user in users:
+        # colorPrinter(decode_token(user.get("password")), "yellow")
         if user.get("username") == username and decode_token(user.get("password")) == password:
             colorPrinter("this is called", "green")
             newActiveSession(user.get("user_id"), user.get("password"))

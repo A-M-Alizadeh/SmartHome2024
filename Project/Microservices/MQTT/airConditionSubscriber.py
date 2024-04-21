@@ -34,7 +34,7 @@ class SensorsSubscriber:
 if __name__ == "__main__":
     connectionInfo = getConnectionInfo()
 
-    subscriber = SensorsSubscriber(connectionInfo['clientId']+'Subscriber', connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic']+"+")#ids are unique for publisher and subscriber
+    subscriber = SensorsSubscriber(connectionInfo['clientId']+'Subscriber_command', connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic']+"+")#ids are unique for publisher and subscriber
     subscriber.start()
 
     colorPrinter(f'AIRCONDITION Subscriber Started', 'pink')

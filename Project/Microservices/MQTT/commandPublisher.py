@@ -28,7 +28,7 @@ def getSensorData():
     return data
 
 #--------------------------------------------MQTT------------------------------------------------
-class SensorPublisher:
+class CommandPublisher:
     def __init__(self, clientID, broker, port, topic):
         self.mqttClient = MyMQTT(clientID, broker, port, self)
         self.statusToBool = {"ON": True, "OFF": False}
@@ -52,16 +52,19 @@ class SensorPublisher:
         colorPrinter(f'Published {message} to {self.topic}', 'cyan')
 
 #--------------------------------------------MAIN------------------------------------------------
-if __name__ == "__main__":
-    connectionInfo = getConnectionInfo()
-    # sensorData = getSensorData()
+connectionInfo = getConnectionInfo()
+commandPublisher = CommandPublisher(connectionInfo['clientId']+"Publisher_command", connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
 
-    publisher = SensorPublisher(connectionInfo['clientId']+"Publisher", connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
-    publisher.start()
+# if __name__ == "__main__":
+#     connectionInfo = getConnectionInfo()
+#     # sensorData = getSensorData()
 
-    colorPrinter(f'Publisher Started', 'cyan')
-    colorPrinter(f'{publisher.topic}', 'cyan')
-    colorPrinter(f'{publisher.mqttClient.clientID}', 'cyan')
-    while True:
-        publisher.publish()
-        time.sleep(10)
+#     publisher = CommandPublisher(connectionInfo['clientId']+"Publisher_command", connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+#     publisher.start()
+
+#     colorPrinter(f'Publisher Started', 'cyan')
+#     colorPrinter(f'{publisher.topic}', 'cyan')
+#     colorPrinter(f'{publisher.mqttClient.clientID}', 'cyan')
+#     while True:
+#         publisher.publish()
+#         time.sleep(10)

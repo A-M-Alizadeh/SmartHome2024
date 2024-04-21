@@ -319,29 +319,19 @@
                 "port":8080
             },
             {
-                "name":"home",
-                "url":"http://localhost:",
-                "port":8081
-            },
-            {
                 "name":"auth",
                 "url":"http://localhost:",
                 "port":8082
             },
             {
-                "name":"user",
+                "name":"command",
                 "url":"http://localhost:",
                 "port":8083
             },
             {
-                "name":"house",
+                "name":"analytics",
                 "url":"http://localhost:",
                 "port":8084
-            },
-            {
-                "name":"sensor",
-                "url":"http://localhost:",
-                "port":8085
             }
         ],
         "mqtt":{

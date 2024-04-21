@@ -34,15 +34,17 @@ class InfluxDBManager:
         self.write_api.write(bucket=self.bucketName, org= self.orgName, record=point)
         self.write_api.close()
 
-    # def readData(self, measurement, tags, fields):
-    #     query = """from(bucket: "READINGS")
-    #     |> range(start: -10m)
-    #     |> filter(fn: (r) => r._measurement == "measurement1")"""
-    #     tables = self.query_api.query(query, org="IOTPolito")
-    #     for table in tables:
-    #         print(len(table.records))
-    #         for record in table.records:
-    #             print(record)
+    def readData(self, measurement, tags, fields):
+        print('Reading data=========================================')
+        query = """from(bucket: "READINGS")
+        |> range(start: -30m)
+        |> filter(fn: (r) => r._measurement == "Measurement")"""
+        tables = self.query_api.query(query, org="IOTPolito")
+        records = []
+        for table in tables:
+            for record in table.records:
+                records.append(record['_value'])
+        return {"records": records}
 
     # def deleteData(self, measurement, tags, fields):
     #     self.delete_api.delete(start=0, stop=0, predicate='r._measurement == "measurement1"', bucket="READINGS", org="IOTPolito")

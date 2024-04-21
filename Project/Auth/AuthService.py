@@ -14,6 +14,8 @@ class Server(object):
     
     def POST(self, *uri, **params):
         if "login" in uri:
+            # print("login", json.loads(cherrypy.request.body.read()))
+            # colorPrinter("login", str(json.loads(cherrypy.request.body.read())), "yellow")
             return login_user(json.loads(cherrypy.request.body.read()))
         if "register" in uri:
             return register_user(json.loads(cherrypy.request.body.read()))
