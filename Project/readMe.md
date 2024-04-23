@@ -124,3 +124,5 @@ project/
 └───setup.py
 ```
 Tree Generated Using `tree-extended` needs to be installed via `npm install tree`
+
+https://stackoverflow.com/questions/45368535/influxdb-single-or-multiple-measurement

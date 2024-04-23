@@ -21,11 +21,12 @@ class SensorsSubscriber:
         try:
             if "air_condition" in topic:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','green')
+                # colorPrinter( str(json.loads(payload.decode('utf-8'))['v']['temperature']), 'yellow')
                 try:
                     json_string = payload.decode('utf-8')
                     data = json.loads(json_string)
                     point = (
-                        self.dbConnector.Point("Measurement")
+                        self.dbConnector.Point("Command")
                         .tag("sensorId", data['bn'])
                         .tag("unit", data['u'])
                         .tag("type", data['n'])

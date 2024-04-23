@@ -28,7 +28,7 @@ class Server(object):
         if "commandAnalytics" in uri:
             print(params)
             data = json.loads(cherrypy.request.body.read())
-            return json.dumps(dbConnector.readCommands(data["sensorId"], data["period"]))
+            return json.dumps(dbConnector.readCommands(data["sensorId"], data["period"])) #this one does not work properly
 
     def PUT(self, *uri, **params):
         return "Analytics PUT  Server !"

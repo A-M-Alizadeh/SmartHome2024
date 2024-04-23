@@ -13,18 +13,16 @@ class Server(object):
         return "Auth GET  Server !"
     
     def POST(self, *uri, **params):
-        if "command" in uri:
-            colorPrinter("POST /command", "yellow")
-            data = json.loads(cherrypy.request.body.read())
-            colorPrinter(str(data), "orange")
-            commandPublisher.publish(data["temperature"], data["humidity"], data["type"])
-            return json.dumps({"status": "success", "message": "Command received successfully !"})
         if "airConiditioner" in uri:
             colorPrinter("POST /airConiditioner", "yellow")
             data = json.loads(cherrypy.request.body.read())
             colorPrinter(str(data), "orange")
-            commandPublisher.publish(data["temperature"], data["humidity"], data["actionType"], data["status"])
-            return json.dumps({"status": "success", "message": "Command received successfully 2 !"})
+            if data["status"] == "OFF":
+                print("Turning off the air conditioner") # this needs more work if we want to implement it
+                return json.dumps({"status": "success", "message": "Turning off the air conditioner !"})
+            else:
+                commandPublisher.publish(data["temperature"], data["humidity"], data["actionType"], data["status"])
+                return json.dumps({"status": "success", "message": "Command received successfully 2 !"})
         return "Auth POST  Server !"
 
     def PUT(self, *uri, **params):

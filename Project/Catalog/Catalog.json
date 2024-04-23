@@ -280,6 +280,12 @@
                     "house_id":"d61c7afc-a053-44e9-ab01-cbac05ccf678",
                     "sensors":[],
                     "title":"Casa Blanca"
+                },
+                {
+                    "address":"Monte G33 dsdfsdf",
+                    "house_id":"0e97063e-d744-4f0f-b44b-c313b47518ba",
+                    "sensors":[],
+                    "title":"Casa Blanca"
                 }
             ]
         },
@@ -320,6 +326,39 @@
             "phone":"123-456-789",
             "user_id":"91eb7798-bb8e-4151-9a8c-97e894347d50",
             "username":"postGray"
+        },
+        {
+            "email":"newuser@gmail.com",
+            "first_name":"newname",
+            "houses":[
+                {
+                    "address":"New House 1 Address.sq 1 block 1",
+                    "house_id":"eeda44a4-f5d3-44d8-8eab-51a78ec732ef",
+                    "sensors":[
+                        {
+                            "sensor_id":"4e736323-62ad-4af6-9699-592ca235c328",
+                            "status":"on",
+                            "type":"TEMPERATURE"
+                        },
+                        {
+                            "sensor_id":"f4ca9d0a-92d7-45df-92c1-6cd41e57eca1",
+                            "status":"on",
+                            "type":"HUMIDITY"
+                        },
+                        {
+                            "sensor_id":"57436523-5420-42b3-bca6-36803b0b0689",
+                            "status":"on",
+                            "type":"AIR_CONDITIONER"
+                        }
+                    ],
+                    "title":"New House 1"
+                }
+            ],
+            "last_name":"newFamilyName",
+            "password":"123456789",
+            "phone":"123-456-789",
+            "user_id":"a8a9fd16-0e01-4ef1-a2e3-30e2fae129e6",
+            "username":"newUser1"
         }
     ],
     "microservices":{

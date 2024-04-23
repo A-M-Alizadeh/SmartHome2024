@@ -1,6 +1,7 @@
 import influxdb_client
 from influxdb_client import Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
+from Utils.Utils import colorPrinter
 import random
 import time
 
@@ -45,7 +46,9 @@ class InfluxDBManager:
         print('Reading data=========================================')
         query = f"""from(bucket: "READINGS")
         |> range(start: -{period})
-        |> filter(fn: (r) => r._measurement == "Measurement" and r.sensorId == "{sensorId}")"""
+        |> filter(fn: (r) => r._measurement == "Measurement" and r.sensorId == "{sensorId}")
+        |> sort(columns: ["_time"], desc: true)
+        """
         tables = self.query_api.query(query, org="IOTPolito")
         for table in tables:
             for record in table.records:
@@ -57,46 +60,130 @@ class InfluxDBManager:
                 records.append({"value": record['_value'], "time": record['_time'].isoformat()})
         return {"records": records, "type": type, "unit": unit, "sensorId": sensorId, "period": period}
     
+    def periodMin(self, period, sensorId):
+        result = {}
+        query = f"""
+            from(bucket: "READINGS")
+            |> range(start: -{period})
+            |> filter(fn: (r) => r["_measurement"] == "Measurement")
+            |> filter(fn: (r) => r["sensorId"] == "{sensorId}")
+            |> aggregateWindow(every: {period}, fn: min)
+            |> first()
+            |> yield(name: "min")
+            """
+        tables = self.query_api.query(query, org="IOTPolito")
+        for table in tables:
+            for record in table.records:
+                print('Record:', record['result'],record['_value'])
+                # result = {record['result']: record['_value']}
+                result = record['_value']
+        return result
+
+    def periodMax(self, period, sensorId):
+        result = {}
+        query = f"""
+            from(bucket: "READINGS")
+            |> range(start: -{period})
+            |> filter(fn: (r) => r["_measurement"] == "Measurement")
+            |> filter(fn: (r) => r["sensorId"] == "{sensorId}")
+            |> aggregateWindow(every: {period}, fn: max)
+            |> first()
+            |> yield(name: "max")
+            """
+        tables = self.query_api.query(query, org="IOTPolito")
+        for table in tables:
+            for record in table.records:
+                print('Record:', record['result'],record['_value'])
+                # result = {record['result']: record['_value']}
+                result = record['_value']
+        return result
+
+    def periodMean(self, period, sensorId):
+        result = {}
+        query = f"""
+            from(bucket: "READINGS")
+            |> range(start: -{period})
+            |> filter(fn: (r) => r["_measurement"] == "Measurement")
+            |> filter(fn: (r) => r["sensorId"] == "{sensorId}")
+            |> aggregateWindow(every: {period}, fn: mean)
+            |> first()
+            |> yield(name: "mean")
+            """
+        tables = self.query_api.query(query, org="IOTPolito")
+        for table in tables:
+            for record in table.records:
+                print('Record:', record['result'],record['_value'])
+                # result = {record['result']: record['_value']}
+                result = record['_value']
+        return result
+    
+    def lastValue(self, sensorId, period='30m'):
+        result = {}
+        query = f"""
+        from(bucket: "READINGS")
+        |> range(start: -{period})
+        |> filter(fn: (r) => r["_measurement"] == "Measurement")
+        |> filter(fn: (r) => r["sensorId"] == "{sensorId}")
+        |> last()
+        """
+        tables = self.query_api.query(query, org="IOTPolito")
+        for table in tables:
+            for record in table.records:
+                print('Record:', record['result'],record['_value'])
+                # result = {record['result']: record['_value']}
+                result = record['_value']
+        return result
+
+
+
+    
     def readAllSensorsData(self,sensorIds, period='30m'):
         result = {}
         for sensorId in sensorIds:
+            # colorPrinter('Min', 'yellow')
+            # print(sensorId, self.periodMin(period, sensorId))
+            # colorPrinter('Max', 'yellow')
+            # print(sensorId, self.periodMax(period, sensorId))
+            # colorPrinter('Mean', 'yellow')
+            # print(sensorId, self.periodMean(period, sensorId))
             counter = 0
             type = None
             unit = None
             records = []
-            print(f'Reading data for sensor {sensorId} =========================================')
             query = f"""from(bucket: "READINGS")
             |> range(start: -{period})
-            |> filter(fn: (r) => r._measurement == "Measurement" and r.sensorId == "{sensorId}")"""
+            |> filter(fn: (r) => r._measurement == "Measurement" and r.sensorId == "{sensorId}")
+            |> sort(columns: ["_time"], desc: true)
+            """
             tables = self.query_api.query(query, org="IOTPolito")
             for table in tables:
                 for record in table.records:
+                    # print('Record:', record)
                     if counter == 0:
                         type = record['type']
                         unit = record['unit']
                         counter += 1
                     records.append({"value": record['_value'], "time": record['_time'].isoformat()})
-                result[sensorId] = {"records": records, "type": type, "unit": unit, "sensorId": sensorId, "period": period}
+                result[sensorId] = {"records": records, "type": type, "unit": unit, "sensorId": sensorId, "period": period, "min": self.periodMin(period, sensorId), "max": self.periodMax(period, sensorId), "mean": self.periodMean(period, sensorId), "lastValue": self.lastValue(sensorId, period)}
+
         return result
 
     def readCommands(self, sensorId, period='30m'):
-        counter = 0
-        unit = None
-        type = None
-        records = []
-        query = f"""from(bucket: "READINGS")
-        |> range(start: -{period})
-        |> filter(fn: (r) => r._measurement == "Measurement" and r.sensorId == "{sensorId}")"""
+        result = []
+        query = f"""from(bucket: "READINGS") 
+            |> range(start: -{period}) 
+            |> filter(fn: (r) => r["_measurement"] == "Command" and r["type"] == "air_condition" and r["sensorId"] == "{sensorId}")
+            |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
+            |> keep(columns: ["_time", "temperature", "humidity", "status", "actionType"])
+            |> sort(columns: ["_time"], desc: true)
+            """
         tables = self.query_api.query(query, org="IOTPolito")
         for table in tables:
             for record in table.records:
-                if counter == 0:
-                    type = record['type']
-                    unit = record['unit']
-                    counter += 1
-                print('---> ',record)
-                records.append({"value": record['_value'], "time": record['_time'].isoformat(), "fields": record['_field']})
-        return {"records": records, "type": type, "unit": unit, "sensorId": sensorId, "period": period}
+                print('Record:', record)
+                result.append({"time": str(record['_time']),"temperature": record['temperature'], "humidity": record['humidity'], "status": record['status'], "actionType": record['actionType']})
+        return {"records": result, "sensorId": sensorId, "period": period}
+        # return {}
 
 
 
