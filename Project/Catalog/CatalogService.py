@@ -5,7 +5,8 @@ from pathlib import Path
 from Utils.Utils import ApiConfReader,colorPrinter
 from Catalog.CatalogManager import get_user_by_id, get_all_users, get_house_by_id, get_user_houses, get_all_sensors,\
     get_sensor_by_id, find_sensor_only_by_id, find_house_only_by_id, new_sensor, new_house, new_user, full_register,\
-    update_user, update_sensor, update_house, delete_user, delete_sensor, delete_house, full_Sensors, getMqttInfo
+    update_user, update_sensor, update_house, delete_user, delete_sensor, delete_house, full_Sensors, getMqttInfo,\
+    login_user, register_user, logout_user, updateSensorStatus
 from Auth.tools import check_jwt
 import cherrypy_cors
 # http://localhost:8080?apiinfo=user this fills the param like this: {'apiinfo': 'user'}
@@ -97,7 +98,10 @@ class DeviceServer(object):
         
     def PUT(self, *uri, **params):
         if "updatesensor" in uri:
+            colorPrinter("updating sensor", "red")
             return update_sensor(params.get("userId").replace('"', ''), params.get("houseId").replace('"', ''), params.get("sensorId").replace('"', ''), json.loads(cherrypy.request.body.read()))
+        # if "updateStatus":
+        #     return updateSensorStatus(params.get("userId").replace('"', ''), params.get("houseId").replace('"', ''), params.get("sensorId").replace('"', ''), json.loads(cherrypy.request.body.read()))
         return "URL not found !"
     
     def DELETE(self, *uri, **params):
@@ -105,6 +109,36 @@ class DeviceServer(object):
             colorPrinter("deleting sensor", "red")
             return delete_sensor(params.get("userId").replace('"', ''), params.get("houseId").replace('"', ''), params.get("sensorId").replace('"', ''))
 
+    def OPTIONS(self, *args, **kwargs):
+        cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
+
+# -------------------------------------------- Auth --------------------------------------------
+class AuthServer(object):
+    exposed = True
+
+    def GET(self, *uri, **params):
+        return "Auth GET  Server !"
+    
+    def POST(self, *uri, **params):
+        if "login" in uri:
+            return login_user(json.loads(cherrypy.request.body.read()))
+        if "register" in uri:
+            return register_user(json.loads(cherrypy.request.body.read()))
+        if "fullRegister" in uri:
+            return full_register(json.loads(cherrypy.request.body.read()))
+        #TODO this one needs check_jwt
+        if "logout" in uri:
+            bearer = cherrypy.request.headers.get("Authorization").split(" ")[1]
+            return logout_user(bearer)
+        return "Auth POST  Server !"
+
+    def PUT(self, *uri, **params):
+        return "Auth PUT  Server !"
+
+    def DELETE(self, *uri, **params):
+        return "Auth DELET  Server !"
+    
+    #fixing cors preflight by OPTIONS method
     def OPTIONS(self, *args, **kwargs):
         cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
 
@@ -195,6 +229,7 @@ if __name__ == '__main__':
     cherrypy.tree.mount(HouseServer(), '/house', conf)
     cherrypy.tree.mount(DeviceServer(), '/device', conf)
     cherrypy.tree.mount(PublicServer(), '/public', conf)
+    cherrypy.tree.mount(AuthServer(), '/auth', conf)
     cherrypy.config.update({'web.socket_ip': apiConf["url"], 'server.socket_port': apiConf["port"]})
     cherrypy.engine.start()
     cherrypy.engine.block()

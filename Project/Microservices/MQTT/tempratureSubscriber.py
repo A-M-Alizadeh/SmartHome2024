@@ -12,7 +12,9 @@ def getConnectionInfo():
     data = response.json()
     return data
 
-# dbConnector = InfluxDBManager()
+def sendDataToDB(data):
+    response = requests.post('http://localhost:8084/db/measurement', json=data)
+    return response.json()
 
 #--------------------------------------------MQTT------------------------------------------------
 class SensorsSubscriber:
@@ -27,16 +29,8 @@ class SensorsSubscriber:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','red')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
-                point = (
-                    self.dbConnector.Point("Measurement")
-                    .tag("sensorId", data['bn'])
-                    .tag("unit", data['u'])
-                    .tag("type", data['n'])
-                    .field("value", data['v'])
-                )
-                self.dbConnector.writeData(point)
-                colorPrinter(f'Writing data to InfluxDB: {str(point)}', 'yellow')
-                # print(point)
+                sendDataToDB(data)
+                colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
 
         except Exception as e:
             colorPrinter(f'Error saving data {e}', 'orange')

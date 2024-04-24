@@ -19,11 +19,12 @@ class Server(object):
             colorPrinter(str(data), "orange")
             if data["status"] == "OFF":
                 print("Turning off the air conditioner") # this needs more work if we want to implement it
-                return json.dumps({"status": "success", "message": "Turning off the air conditioner !"})
+                commandPublisher.publish(0, 0, data["actionType"], data["status"])
+                return json.dumps({"status": "success", "message": "Air conditioner turned off successfully !", "data": data})
             else:
                 commandPublisher.publish(data["temperature"], data["humidity"], data["actionType"], data["status"])
-                return json.dumps({"status": "success", "message": "Command received successfully 2 !"})
-        return "Auth POST  Server !"
+                return json.dumps({"status": "success", "message": "Command received successfully 2 !", "data": data})
+        return json.dumps({"status": "error", "message": "Invalid request !"})
 
     def PUT(self, *uri, **params):
         return "Auth PUT  Server !"

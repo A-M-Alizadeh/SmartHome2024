@@ -36,7 +36,6 @@ def register_user(user):
     return newUser.toJson()
 
 def login_user(user):
-    colorPrinter("this is called", "green")
     colorPrinter(str(user), "yellow")
     colorPrinter(user["password"], "yellow")
     username = user["username"]
@@ -45,7 +44,6 @@ def login_user(user):
     for user in users:
         # colorPrinter(decode_token(user.get("password")), "yellow")
         if user.get("username") == username and decode_token(user.get("password")) == password:
-            colorPrinter("this is called", "green")
             newActiveSession(user.get("user_id"), user.get("password"))
             return json.dumps(user)
     return "User not found"
@@ -156,9 +154,15 @@ def new_sensor(user_id, house_id, sensor):
                     return newSensor.toJson()
     return None
 
+def updateSensorStatus(sensor_id, status):
+    sensor = find_sensor_only_by_id(sensor_id)
+    sensor["status"] = status
+    print('============??>> ',sensor)
+    # updateSensor(sensor["user_id"], sensor["house_id"], sensor["sensor_id"], sensor)
+    return sensor
+
 #-------------------------------------------- Update --------------------------------------------
 def update_user(user_id, user):
-    # colorPrinter("this is called", "green")
     return updateUser(user_id, user)
 
 def update_house(user_id, house_id, house):

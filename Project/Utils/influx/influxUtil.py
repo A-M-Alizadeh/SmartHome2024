@@ -32,7 +32,6 @@ class InfluxDBManager:
 
     def writeData(self, point):
         try:
-            print('Called->',point)
             self.write_api.write(bucket=self.bucketName, org= self.orgName, record=point)
             self.write_api.close()
         except Exception as e:
@@ -138,14 +137,8 @@ class InfluxDBManager:
 
     
     def readAllSensorsData(self,sensorIds, period='30m'):
-        result = {}
+        result = []
         for sensorId in sensorIds:
-            # colorPrinter('Min', 'yellow')
-            # print(sensorId, self.periodMin(period, sensorId))
-            # colorPrinter('Max', 'yellow')
-            # print(sensorId, self.periodMax(period, sensorId))
-            # colorPrinter('Mean', 'yellow')
-            # print(sensorId, self.periodMean(period, sensorId))
             counter = 0
             type = None
             unit = None
@@ -158,13 +151,12 @@ class InfluxDBManager:
             tables = self.query_api.query(query, org="IOTPolito")
             for table in tables:
                 for record in table.records:
-                    # print('Record:', record)
                     if counter == 0:
                         type = record['type']
                         unit = record['unit']
                         counter += 1
                     records.append({"value": record['_value'], "time": record['_time'].isoformat()})
-                result[sensorId] = {"records": records, "type": type, "unit": unit, "sensorId": sensorId, "period": period, "min": self.periodMin(period, sensorId), "max": self.periodMax(period, sensorId), "mean": self.periodMean(period, sensorId), "lastValue": self.lastValue(sensorId, period)}
+                result.append({"records": records, "type": type, "unit": unit, "sensorId": sensorId, "period": period, "min": self.periodMin(period, sensorId), "max": self.periodMax(period, sensorId), "mean": self.periodMean(period, sensorId), "lastValue": self.lastValue(sensorId, period)})
 
         return result
 
@@ -181,9 +173,8 @@ class InfluxDBManager:
         for table in tables:
             for record in table.records:
                 print('Record:', record)
-                result.append({"time": str(record['_time']),"temperature": record['temperature'], "humidity": record['humidity'], "status": record['status'], "actionType": record['actionType']})
+                result.append({"time": record['_time'].isoformat(),"temperature": record['temperature'], "humidity": record['humidity'], "status": record['status'], "actionType": record['actionType']})
         return {"records": result, "sensorId": sensorId, "period": period}
-        # return {}
 
 
 
