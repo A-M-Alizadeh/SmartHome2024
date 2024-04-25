@@ -2,7 +2,7 @@ import cherrypy
 import os
 import json
 from pathlib import Path
-from Utils.Utils import ApiConfReader,colorPrinter
+from Utils.Utils import ApiConfReader,colorPrinter, getFullServices
 from Catalog.CatalogManager import get_user_by_id, get_all_users, get_house_by_id, get_user_houses, get_all_sensors,\
     get_sensor_by_id, find_sensor_only_by_id, find_house_only_by_id, new_sensor, new_house, new_user, full_register,\
     update_user, update_sensor, update_house, delete_user, delete_sensor, delete_house, full_Sensors, getMqttInfo,\
@@ -21,6 +21,8 @@ class PublicServer(object):
             return json.dumps(full_Sensors())
         if "mqtt" in uri:
             return json.dumps(getMqttInfo())
+        if "fullservices" in uri:
+            return json.dumps(getFullServices())
     def OPTIONS(self, *args, **kwargs):
         cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
         

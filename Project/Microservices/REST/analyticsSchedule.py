@@ -5,7 +5,7 @@ import random
 
 def send_request():
     # Define the URL for your API endpoint
-    url = 'http://127.0.0.1:8083/airConiditioner'
+    url = 'http://127.0.0.1:8083/command/airConiditioner'
 
     payload = {
         "sensorId": "e8073adc-38a8-44e6-a8e2-532bce5cd8bb",

@@ -81,6 +81,11 @@ def ApiConfReader(name): # Read the microservice configuration from the Catalog.
             return i
     return None
 
+def getFullServices(): # Read the microservice configuration from the Catalog.json file
+    data = CatalogReader()
+    info = data["microservices"]
+    return info
+
 def CatalogWriter(data):  # Write the Catalog.json file
     path = parentDir()
     with open(f'{path}/Catalog/Catalog.json', 'w') as outfile:

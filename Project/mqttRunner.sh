@@ -7,9 +7,10 @@ temp_Pub_path=$(pwd)"/Microservices/MQTT/temperaturePublisher.py"
 temp_Sub_path=$(pwd)"/Microservices/MQTT/tempratureSubscriber.py"
 
 air_Sub_path=$(pwd)"/Microservices/MQTT/airConditionSubscriber.py"
+
 # command_Pub_path=$(pwd)"/Microservices/MQTT/commandPublisher.py"
 
-full_sub_path=$(pwd)"/Microservices/MQTT/fullSubscriber.py"
+# full_sub_path=$(pwd)"/Microservices/MQTT/fullSubscriber.py"
 
 # Run Catalog Service --- this will run in a new terminal ***This is the first service to run***
 
@@ -38,6 +39,6 @@ end tell'
 # end tell'
 
 # Run the full subscriber
-osascript -e 'tell app "Terminal"
-    do script "python3 '$full_sub_path'"
-end tell'
+# osascript -e 'tell app "Terminal"
+#     do script "python3 '$full_sub_path'"
+# end tell'

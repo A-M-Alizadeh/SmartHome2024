@@ -5,20 +5,25 @@ from Utils.Utils import colorPrinter,colorPrinterdouble, printCircle
 from Utils.influx.influxUtil import InfluxDBManager
 import json
 import os
+
+def findMicro(micros, microName):
+    for micro in micros:
+        if micro['name'] == microName:
+            return micro
+    return None
 #--------------------------------------------REST API------------------------------------------------
 path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def getConnectionInfo():
-    response = requests.get('http://localhost:8080/public/mqtt')
+    response = requests.get('http://localhost:8080/public/fullservices')
     data = response.json()
     return data
 
-def sendStatusUpdateRequest(status):
+def sendStatusUpdateRequest(status, microInfo):
     data = {}
     with open(f'{path}/MQTT/config.json') as json_file:
         data = json.load(json_file)
 
-    print('--------------',data['userId'],data['houseId'],data['airConditionerId'],status)
-    response = requests.put(f"http://localhost:8080/device/updatesensor?userId={data['userId']}&houseId={data['houseId']}&sensorId={data['airConditionerId']}",
+    response = requests.put(f"{microInfo['url']}{microInfo['port']}/device/updatesensor?userId={data['userId']}&houseId={data['houseId']}&sensorId={data['airConditionerId']}",
                              json={
                                 "sensor_id":data['airConditionerId'],
                                 "status":status,
@@ -26,16 +31,18 @@ def sendStatusUpdateRequest(status):
                             })
     return response.json()
 
-def sendDataToDB(data):
-    response = requests.post('http://localhost:8084/db/command', json=data)
+def sendDataToDB(data, microInfo):
+    response = requests.post(f'{microInfo["url"]}{microInfo["port"]}/db/measurement', json=data)
     return response.json()
 
 #--------------------------------------------MQTT------------------------------------------------
 class SensorsSubscriber:
-    def __init__(self,clientID, broker, port, topic):
+    def __init__(self,clientID, broker, port, topic, mqttInfo, restInfo):
         self.mqttClient = MyMQTT(clientID, broker, port, self)
         self.topic = topic
         self.dbConnector = InfluxDBManager()
+        self.mqttInfo = mqttInfo
+        self.restInfo = restInfo
 
     def notify(self, topic, payload): #use senML
         try:
@@ -45,8 +52,8 @@ class SensorsSubscriber:
                 try:
                     json_string = payload.decode('utf-8')
                     data = json.loads(json_string)
-                    sendDataToDB(data)
-                    sendStatusUpdateRequest(data['v']['status'])
+                    sendDataToDB(data, findMicro(self.restInfo, 'analytics'))
+                    sendStatusUpdateRequest(data['v']['status'], findMicro(self.restInfo, 'catalog'))
                     if data['v']['status'] == 'ON':
                         colorPrinter('-----------------AIR-CONDITIONER STATUS-----------------', 'white')
                         printCircle('green')
@@ -75,8 +82,10 @@ class SensorsSubscriber:
 #--------------------------------------------MAIN------------------------------------------------
 if __name__ == "__main__":
     connectionInfo = getConnectionInfo()
+    mqttInfo = connectionInfo['mqtt']
+    restInfo = connectionInfo['micros']
 
-    subscriber = SensorsSubscriber(connectionInfo['clientId']+'Subscriber_command', connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic']+"+")#ids are unique for publisher and subscriber
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_command', mqttInfo['broker'], mqttInfo['port'], mqttInfo['common_topic']+"+", mqttInfo, restInfo)
     subscriber.start()
 
     colorPrinter(f'AIRCONDITION Subscriber Started', 'pink')
