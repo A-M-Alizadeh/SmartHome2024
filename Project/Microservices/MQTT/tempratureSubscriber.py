@@ -6,22 +6,30 @@ from Utils.Utils import colorPrinter
 from Utils.influx.influxUtil import InfluxDBManager
 import json
 
+def findMicro(micros, microName):
+    for micro in micros:
+        if micro['name'] == microName:
+            return micro
+    return None
+
 #--------------------------------------------REST API------------------------------------------------
 def getConnectionInfo():
-    response = requests.get('http://localhost:8080/public/mqtt')
+    response = requests.get('http://localhost:8080/public/fullservices')
     data = response.json()
     return data
 
-def sendDataToDB(data):
-    response = requests.post('http://localhost:8084/db/measurement', json=data)
+def sendDataToDB(data, microInfo):
+    response = requests.post(f'{microInfo["url"]}{microInfo["port"]}/db/measurement', json=data)
     return response.json()
 
 #--------------------------------------------MQTT------------------------------------------------
 class SensorsSubscriber:
-    def __init__(self,clientID, broker, port, topic):
+    def __init__(self,clientID, broker, port, topic, mqttInfo, restInfo):
         self.mqttClient = MyMQTT(clientID, broker, port, self)
         self.topic = topic
         self.dbConnector = InfluxDBManager()
+        self.mqttInfo = mqttInfo
+        self.restInfo = restInfo
 
     def notify(self, topic, payload): #use senML
         try:
@@ -29,7 +37,7 @@ class SensorsSubscriber:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','red')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
-                sendDataToDB(data)
+                sendDataToDB(data, findMicro(self.restInfo, 'analytics'))
                 colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
 
         except Exception as e:
@@ -46,8 +54,10 @@ class SensorsSubscriber:
 #--------------------------------------------MAIN------------------------------------------------
 if __name__ == "__main__":
     connectionInfo = getConnectionInfo()
+    mqttInfo = connectionInfo['mqtt']
+    restInfo = connectionInfo['micros']
 
-    subscriber = SensorsSubscriber(connectionInfo['clientId']+'Subscriber_temperature', connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic']+"+")#ids are unique for publisher and subscriber
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_temperature', mqttInfo['broker'], mqttInfo['port'], mqttInfo['common_topic']+"+", mqttInfo, restInfo)
     subscriber.start()
 
     colorPrinter(f'TEMPERATURE Subscriber Started', 'pink')
