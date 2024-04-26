@@ -1,5 +1,5 @@
 import jwt
-from Auth.config import SECRET_KEY
+from Catalog.Auth.config import SECRET_KEY
 from Utils.Utils import colorPrinter
 
 def encode_token(password):

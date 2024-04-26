@@ -8,7 +8,7 @@ from Models.Sensor import Sensor
 from Models.House import House
 from Models.User import User
 from Models.SensorTypes import SensorTypes
-from Auth.utils import encode_token, decode_token, check_token
+from Catalog.Auth.utils import encode_token, decode_token, check_token
 
 #-------------------------------------------- Update Json File --------------------------------------------
 

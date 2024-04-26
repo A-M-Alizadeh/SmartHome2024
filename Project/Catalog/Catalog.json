@@ -4,10 +4,6 @@
     "lastUpdate":"Date",
     "activeSessions":[
         {
-            "user_id":"d94641d3-902f-4e0b-89ac-b2449516544",
-            "token":"sampleToken"
-        },
-        {
             "user_id":"eac499f4-7c72-4f55-85ae-4ce1e173b096",
             "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM"
         }

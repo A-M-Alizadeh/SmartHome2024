@@ -1,10 +1,8 @@
 import cherrypy
 import json
 from Utils.Utils import fetchMicroservicesConf, colorPrinter
-from Catalog.CatalogManager import login_user
 import cherrypy_cors
-from Utils.influx import influxUtil
-from Utils.influx.influxUtil import InfluxDBManager
+from Microservices.REST.DBConnector.influx.influxUtil import InfluxDBManager
 
 dbConnector = InfluxDBManager()
 class AnalyticsServer(object):

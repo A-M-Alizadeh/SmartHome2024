@@ -4,9 +4,10 @@ import random
 import requests
 from Microservices.MQTT.MQTT import MyMQTT
 from Utils.Utils import colorPrinter
-from Simulators.CombinedSim import CombinedSim
+from Utils.Simulators.CombinedSim import CombinedSim
 import json
 import os
+
 
 #--------------------------------------------REST API------------------------------------------------
 def getConnectionInfo():
@@ -17,9 +18,10 @@ def getConnectionInfo():
 def getSensorData():
     data = {}
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    with open(f'{path}/MQTT/config.json') as json_file:
+    print('-------->',path)
+    with open(f'{path}/config.json') as json_file:
         data = json.load(json_file)
-    url = f"http://localhost:8080/device/findsensor?userId={data['userId']}&houseId={data['houseId']}&sensorId={data['tempSensorId']}"
+    url = f"http://localhost:8080/device/findsensor?userId={data['userId']}&houseId={data['houseId']}&sensorId={data['humidSensorId']}"
     headers = {'Content-Type': 'application/json', 'Authorization': f'Bearer {data["token"]}'}
     response = requests.get(url, headers={'Content-Type': 'application/json', 'Authorization': f'{data["token"]}'})
     data = response.json()
@@ -32,9 +34,9 @@ class SensorPublisher:
         self.mqttClient = MyMQTT(clientID, broker, port, self)
         self.statusToBool = {"ON": True, "OFF": False}
         self.topic = topic
-        self.__message = {"bn":clientID, "t": None,  "u":"Cel", "n":"temperature", "v":None}
+        self.__message = {"bn":clientID, "t": None,  "u":"Percentage", "n":"humidity", "v":None}
         self.sensorData = getSensorData()
-        self.sensorDetails = getConnectionInfo()
+        self.connectionDetails = getConnectionInfo()
         self.sensGen = CombinedSim()
 
     def start(self):
@@ -45,22 +47,22 @@ class SensorPublisher:
 
     def publish(self):
         message = self.__message
-        message = self.sensGen.getTemperature(self.sensorData['sensor_id'], 'temperature', 'c') 
-        self.topic = self.sensorDetails['common_topic']+self.sensorData['type'].lower()
+        message = self.sensGen.getHumidity(self.sensorData['sensor_id'], 'humidity', '%') 
+        self.topic = self.connectionDetails['common_topic']+self.sensorData['type'].lower()
         self.mqttClient.myPublish(self.topic, message)
-        colorPrinter(f'Published {message} to {self.topic}', 'red')
+        colorPrinter(f'Published {message} to {self.topic}', 'blue')
 
 #--------------------------------------------MAIN------------------------------------------------
 if __name__ == "__main__":
     connectionInfo = getConnectionInfo()
-    # sensors = getSensorsList()
+    # sensorData = getSensorData()
 
-    publisher = SensorPublisher(connectionInfo['clientId']+"Publisher_temp", connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    publisher = SensorPublisher(connectionInfo['clientId']+"Publisher_humid", connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
     publisher.start()
 
-    colorPrinter(f'TEMPERATURE Publisher Started', 'red')
-    colorPrinter(f'{publisher.topic}', 'red')
-    colorPrinter(f'{publisher.mqttClient.clientID}', 'red')
+    colorPrinter(f'HUMIDITY Publisher Started', 'blue')
+    colorPrinter(f'{publisher.topic}', 'blue')
+    colorPrinter(f'{publisher.mqttClient.clientID}', 'blue')
     while True:
         publisher.publish()
         time.sleep(10)

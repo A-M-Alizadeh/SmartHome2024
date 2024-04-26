@@ -1,4 +1,4 @@
-from Simulators import HumiditySim, TemperatureSim
+from Utils.Simulators import HumiditySim, TemperatureSim
 from datetime import datetime
 import random
 
