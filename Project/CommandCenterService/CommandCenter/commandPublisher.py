@@ -2,12 +2,11 @@ import requests
 import time
 import random
 import requests
-from Microservices.MQTT.MQTT import MyMQTT
+from MQTT import MyMQTT
 from Utils.Utils import colorPrinter
-from Utils.Simulators.CombinedSim import CombinedSim
+from Simulators.CombinedSim import CombinedSim
 import json
 import os
-
 
 #--------------------------------------------REST API------------------------------------------------
 def getConnectionInfo():

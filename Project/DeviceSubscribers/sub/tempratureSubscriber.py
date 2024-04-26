@@ -1,7 +1,7 @@
 
 import requests
 import time
-from Microservices.MQTT.MQTT import MyMQTT
+from MQTT import MyMQTT
 from Utils.Utils import colorPrinter
 import json
 

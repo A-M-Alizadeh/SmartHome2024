@@ -57,3 +57,23 @@ class MyMQTT:
 
         self._paho_mqtt.loop_stop()
         self._paho_mqtt.disconnect()
+
+
+# --------------------------------------------MAIN------------------------------------------------
+
+# def Notifier():
+#     def notify(topic, msg):
+#         print(f"Received message '{msg}' on topic '{topic}'")
+#     return notify
+
+# if __name__ == "__main__":
+#     clientID = "myID"
+#     broker = "test.mosquitto.org"
+#     port = 1883
+#     notifier = Notifier()
+#     mqtt = MyMQTT(clientID, broker, port, notifier)
+#     mqtt.start()
+#     mqtt.mySubscribe("myTopic")
+#     mqtt.myPublish("myTopic", "myMessage")
+#     mqtt.stop()
+#     print("bye")

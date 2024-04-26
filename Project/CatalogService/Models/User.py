@@ -1,5 +1,5 @@
-from CatalogService.Models.House import House
-from CatalogService.Utils.Utils import IdGenerator
+from Models.House import House
+from Utils.Utils import IdGenerator
 import json
 class User:
     def __init__(self, username, password, email, first_name='', last_name='', phone_number=''):

@@ -2,9 +2,9 @@ import requests
 import time
 import random
 import requests
-from Microservices.MQTT.MQTT import MyMQTT
+from MQTT import MyMQTT
 from Utils.Utils import colorPrinter
-from Utils.Simulators.CombinedSim import CombinedSim
+from Simulators.CombinedSim import CombinedSim
 import json
 import os
 
@@ -19,7 +19,7 @@ def getSensorData():
     data = {}
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     print('-------->',path)
-    with open(f'{path}/config.json') as json_file:
+    with open(f'{path}/Utils/config.json') as json_file:
         data = json.load(json_file)
     url = f"http://localhost:8080/device/findsensor?userId={data['userId']}&houseId={data['houseId']}&sensorId={data['humidSensorId']}"
     headers = {'Content-Type': 'application/json', 'Authorization': f'Bearer {data["token"]}'}

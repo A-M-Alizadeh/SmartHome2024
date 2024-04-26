@@ -2,7 +2,7 @@ import cherrypy
 import json
 from Utils.Utils import fetchMicroservicesConf, colorPrinter
 import cherrypy_cors
-from Microservices.REST.DBConnector.influx.influxUtil import InfluxDBManager
+from DBConnector.influx.influxUtil import InfluxDBManager
 
 dbConnector = InfluxDBManager()
 class AnalyticsServer(object):

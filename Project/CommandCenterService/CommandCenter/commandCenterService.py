@@ -2,7 +2,7 @@ import cherrypy
 import json
 from Utils.Utils import fetchMicroservicesConf, colorPrinter
 import cherrypy_cors
-from Microservices.REST.CommandCenter.commandPublisher import commandPublisher
+from CommandCenter.commandPublisher import commandPublisher
 commandPublisher.start()
 
 class Server(object):

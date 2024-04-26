@@ -2,13 +2,13 @@ import uuid
 import json
 import os
 import requests
-from CatalogService.Utils.Utils import CatalogReader, colorPrinter, addUsertoCatalog, addUserHouseToCatalog, addUserSensorToCatalog,\
+from Utils.Utils import CatalogReader, colorPrinter, addUsertoCatalog, addUserHouseToCatalog, addUserSensorToCatalog,\
     updateUser, updateHouse, updateSensor, deleteHouse, deleteSensor, deleteUser, newActiveSession, deleteActiveSession
-from CatalogService.Models.Sensor import Sensor
-from CatalogService.Models.House import House
-from CatalogService.Models.User import User
-from CatalogService.Models.SensorTypes import SensorTypes
-from CatalogService.Auth.utils import encode_token, decode_token, check_token
+from Models.Sensor import Sensor
+from Models.House import House
+from Models.User import User
+from Models.SensorTypes import SensorTypes
+from Auth.utils import encode_token, decode_token, check_token
 
 #-------------------------------------------- Update Json File --------------------------------------------
 

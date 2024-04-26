@@ -1,5 +1,5 @@
-from CatalogService.Models.SensorTypes import SensorTypes
-from CatalogService.Utils.Utils import IdGenerator
+from Models.SensorTypes import SensorTypes
+from Utils.Utils import IdGenerator
 import json
 
 class Sensor:
