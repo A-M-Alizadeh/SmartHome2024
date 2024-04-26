@@ -1,7 +1,7 @@
 import jwt
 import cherrypy
-from Utils.Utils import colorPrinter, isValideToken
-from Catalog.Auth.config import SECRET_KEY
+from CatalogService.Utils.Utils import colorPrinter, isValideToken
+from CatalogService.Auth.config import SECRET_KEY
 
 
 @cherrypy.tools.register('before_handler')

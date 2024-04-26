@@ -2,12 +2,12 @@ import cherrypy
 import os
 import json
 from pathlib import Path
-from Utils.Utils import ApiConfReader,colorPrinter, getFullServices
-from Catalog.CatalogManager import get_user_by_id, get_all_users, get_house_by_id, get_user_houses, get_all_sensors,\
+from CatalogService.Utils.Utils import ApiConfReader,colorPrinter, getFullServices
+from CatalogService.Catalog.CatalogManager import get_user_by_id, get_all_users, get_house_by_id, get_user_houses, get_all_sensors,\
     get_sensor_by_id, find_sensor_only_by_id, find_house_only_by_id, new_sensor, new_house, new_user, full_register,\
     update_user, update_sensor, update_house, delete_user, delete_sensor, delete_house, full_Sensors, getMqttInfo,\
     login_user, register_user, logout_user, updateSensorStatus
-from Catalog.Auth.tools import check_jwt
+from CatalogService.Auth.tools import check_jwt
 import cherrypy_cors
 # http://localhost:8080?apiinfo=user this fills the param like this: {'apiinfo': 'user'}
 # http://localhost:8080/apiinfo/user this fills the uri like this: ('apiinfo', 'user')

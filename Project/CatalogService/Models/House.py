@@ -1,5 +1,5 @@
-from Models.Sensor import Sensor
-from Utils.Utils import IdGenerator
+from CatalogService.Models.Sensor import Sensor
+from CatalogService.Utils.Utils import IdGenerator
 import json
 class House:
     def __init__(self, address, title):

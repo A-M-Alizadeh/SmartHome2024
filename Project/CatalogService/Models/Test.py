@@ -1,7 +1,7 @@
-from User import User
-from House import House
-from Sensor import Sensor
-from SensorTypes import SensorTypes
+from CatalogService.Models.User import User
+from CatalogService.Models.House import House
+from CatalogService.Models.Sensor import Sensor
+from CatalogService.Models.SensorTypes import SensorTypes
 
 usr1 = User("Johny01","123abc", "JohnDoe@gmail.com", "John", "Doe", "123456789")
 usr2 = User("Jane","123abc", "Doe", "a@a.com")
