@@ -3,7 +3,6 @@ import requests
 import time
 from Microservices.MQTT.MQTT import MyMQTT
 from Utils.Utils import colorPrinter
-from Utils.influx.influxUtil import InfluxDBManager
 import json
 
 def findMicro(micros, microName):
@@ -27,7 +26,6 @@ class SensorsSubscriber:
     def __init__(self,clientID, broker, port, topic, mqttInfo, restInfo):
         self.mqttClient = MyMQTT(clientID, broker, port, self)
         self.topic = topic
-        self.dbConnector = InfluxDBManager()
         self.mqttInfo = mqttInfo
         self.restInfo = restInfo
 

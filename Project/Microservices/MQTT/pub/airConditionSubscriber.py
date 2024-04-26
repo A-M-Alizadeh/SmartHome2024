@@ -2,7 +2,6 @@ import time
 import requests
 from Microservices.MQTT.MQTT import MyMQTT
 from Utils.Utils import colorPrinter,colorPrinterdouble, printCircle
-from Utils.influx.influxUtil import InfluxDBManager
 import json
 import os
 
@@ -20,7 +19,7 @@ def getConnectionInfo():
 
 def sendStatusUpdateRequest(status, microInfo):
     data = {}
-    with open(f'{path}/MQTT/config.json') as json_file:
+    with open(f'{path}/config.json') as json_file:
         data = json.load(json_file)
 
     response = requests.put(f"{microInfo['url']}{microInfo['port']}/device/updatesensor?userId={data['userId']}&houseId={data['houseId']}&sensorId={data['airConditionerId']}",
@@ -40,7 +39,6 @@ class SensorsSubscriber:
     def __init__(self,clientID, broker, port, topic, mqttInfo, restInfo):
         self.mqttClient = MyMQTT(clientID, broker, port, self)
         self.topic = topic
-        self.dbConnector = InfluxDBManager()
         self.mqttInfo = mqttInfo
         self.restInfo = restInfo
 

@@ -1,9 +1,8 @@
 import cherrypy
 import json
 from Utils.Utils import fetchMicroservicesConf, colorPrinter
-from Catalog.CatalogManager import login_user
 import cherrypy_cors
-from Microservices.MQTT.commandPublisher import commandPublisher
+from Microservices.REST.CommandCenter.commandPublisher import commandPublisher
 commandPublisher.start()
 
 class Server(object):

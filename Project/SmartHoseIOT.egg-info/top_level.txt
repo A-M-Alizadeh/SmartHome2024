@@ -1,9 +1,4 @@
-Auth
 Catalog
-DAO
-DB
-ML
 Microservices
 Models
-Simulators
 Utils
