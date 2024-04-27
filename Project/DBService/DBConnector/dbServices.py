@@ -59,6 +59,7 @@ class DBConnectorServer(object):
             dbConnector.writeData(point)
             return json.dumps({"message": "work on progress"})
         if "command" in uri:
+            colorPrinter("Command data", "pink")
             reqBody = cherrypy.request.body.read()
             data = json.loads(reqBody)
             print('=====>',data)

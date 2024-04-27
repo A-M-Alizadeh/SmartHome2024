@@ -1,7 +1,7 @@
 #!/bin/sh
 
-humidSubPath=$(pwd)"/sub/humiditySubscriber.py"
-tempSubPath=$(pwd)"/sub/tempratureSubscriber.py"
+humidSubPath=$(pwd)"/DeviceSubscribers/sub/humiditySubscriber.py"
+tempSubPath=$(pwd)"/DeviceSubscribers/sub/tempratureSubscriber.py"
 
 
 # Run the Pub and Sub services for Humidity

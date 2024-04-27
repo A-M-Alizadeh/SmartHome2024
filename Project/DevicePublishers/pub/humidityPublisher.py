@@ -8,10 +8,14 @@ from Simulators.CombinedSim import CombinedSim
 import json
 import os
 
-
+config = {}
+path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+with open(f'{path}/Utils/config.json') as json_file:
+        config = json.load(json_file)
+        
 #--------------------------------------------REST API------------------------------------------------
 def getConnectionInfo():
-    response = requests.get('http://localhost:8080/public/mqtt')
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
     data = response.json()
     return data
 
@@ -21,7 +25,7 @@ def getSensorData():
     print('-------->',path)
     with open(f'{path}/Utils/config.json') as json_file:
         data = json.load(json_file)
-    url = f"http://localhost:8080/device/findsensor?userId={data['userId']}&houseId={data['houseId']}&sensorId={data['humidSensorId']}"
+    url = f"{config['baseUrl']}{config['basePort']}/device/findsensor?userId={data['userId']}&houseId={data['houseId']}&sensorId={data['humidSensorId']}"
     headers = {'Content-Type': 'application/json', 'Authorization': f'Bearer {data["token"]}'}
     response = requests.get(url, headers={'Content-Type': 'application/json', 'Authorization': f'{data["token"]}'})
     data = response.json()

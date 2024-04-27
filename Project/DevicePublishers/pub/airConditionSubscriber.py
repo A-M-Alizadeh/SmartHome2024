@@ -5,6 +5,12 @@ from Utils.Utils import colorPrinter,colorPrinterdouble, printCircle
 import json
 import os
 
+
+config = {}
+path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+with open(f'{path}/Utils/config.json') as json_file:
+        config = json.load(json_file)
+
 def findMicro(micros, microName):
     for micro in micros:
         if micro['name'] == microName:
@@ -13,7 +19,7 @@ def findMicro(micros, microName):
 #--------------------------------------------REST API------------------------------------------------
 path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def getConnectionInfo():
-    response = requests.get('http://localhost:8080/public/fullservices')
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
     data = response.json()
     return data
 
@@ -31,7 +37,7 @@ def sendStatusUpdateRequest(status, microInfo):
     return response.json()
 
 def sendDataToDB(data, microInfo):
-    response = requests.post(f'{microInfo["url"]}{microInfo["port"]}/db/measurement', json=data)
+    response = requests.post(f'{microInfo["url"]}{microInfo["port"]}/db/command', json=data)
     return response.json()
 
 #--------------------------------------------MQTT------------------------------------------------

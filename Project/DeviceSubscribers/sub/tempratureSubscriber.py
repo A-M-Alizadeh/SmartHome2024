@@ -4,6 +4,13 @@ import time
 from MQTT import MyMQTT
 from Utils.Utils import colorPrinter
 import json
+import os
+
+config = {}
+path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+with open(f'{path}/Utils/config.json') as json_file:
+        config = json.load(json_file)
+
 
 def findMicro(micros, microName):
     for micro in micros:
@@ -13,7 +20,7 @@ def findMicro(micros, microName):
 
 #--------------------------------------------REST API------------------------------------------------
 def getConnectionInfo():
-    response = requests.get('http://localhost:8080/public/fullservices')
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
     data = response.json()
     return data
 

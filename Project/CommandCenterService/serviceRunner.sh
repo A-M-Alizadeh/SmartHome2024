@@ -1,7 +1,7 @@
 #!/bin/sh
 
-commandCenterPath=$(pwd)"/CommandCenter/commandCenterService.py"
-autoCommandPath=$(pwd)"/CommandCenter/analyticsSchedule.py"
+commandCenterPath=$(pwd)"/CommandCenterService/CommandCenter/commandCenterService.py"
+autoCommandPath=$(pwd)"/CommandCenterService/CommandCenter/analyticsSchedule.py"
 
 # Run the Pub and Sub services for Humidity
 osascript -e 'tell app "Terminal"
