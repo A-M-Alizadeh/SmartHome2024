@@ -27,6 +27,8 @@ class AnalyticsServer(object):
             print(params)
             data = json.loads(cherrypy.request.body.read())
             return json.dumps(dbConnector.readCommands(data["sensorId"], data["period"])) #this one does not work properly
+        # if "customPeriod" in uri:
+        #write a function to get data from influxdb with custom period
 
     def PUT(self, *uri, **params):
         return "Analytics PUT  Server !"
