@@ -9,32 +9,71 @@ services:
       - "8080:8080"
     volumes:
       - ./CatalogService:/app
-    # networks:
-    #   - services-network
+    networks:
+      - servicesNetwork
+
   command_service:
     build: ./CommandCenterService
     container_name: command-container
     expose:
       - "8083"
-      - "1883"
     ports:
       - "8083:8083"
-      - "1883:1883"
+      # - "1883:1883"
     volumes:
       - ./CommandCenterService:/app
-  #   networks:
-  #     - services-network
-  # networks:
-  #   services-network
-  # devicePublishers:
-  #   build: ./DevicePublishers
-  #   container_name: device-publishers-container
+    networks:
+      - servicesNetwork
+
+  db_service:
+    build: ./DBService
+    container_name: db-container
+    expose:
+      - "8084"
+    ports:
+      - "8084:8084"
+      # - "8087:8086"
+    volumes:
+      - ./DBService:/app
+    networks:
+      - servicesNetwork
+
+  pub_service:
+    build: ./DevicePublishers
+    container_name: pub-container
+    expose:
+      - "1883"
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./DevicePublishers:/app
+    networks:
+      - servicesNetwork
+
+  sub_service:
+    build: ./DeviceSubscribers
+    container_name: sub-container
+    expose:
+      - "1883"
+    ports:
+      - "1884:1883"
+    volumes:
+      - ./DeviceSubscribers:/app
+    networks:
+      - servicesNetwork
+
+  # new_service:
+  #   build: ./simple_cherrypy
+  #   container_name: simple-container
+  #   expose:
+  #     - "8081"
   #   ports:
-  #     - "8080:8080"
   #     - "8081:8081"
-  #     - "8082:8082"
-  #     - "8083:8083"
-  #     - "8084:8084"
-  #     - "1883:1883"
   #   volumes:
-  #     - ./DevicePublishers:/app
+  #     - ./simple_cherrypy:/app
+    # networks:
+    #   - servicesNetwork
+
+networks:
+  servicesNetwork:
+    driver: bridge

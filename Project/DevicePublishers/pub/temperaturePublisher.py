@@ -59,7 +59,7 @@ if __name__ == "__main__":
     connectionInfo = getConnectionInfo()
     # sensors = getSensorsList()
 
-    publisher = SensorPublisher(connectionInfo['clientId']+"Publisher_temp", connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    publisher = SensorPublisher(connectionInfo['clientId']+"Publisher_temp", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
     publisher.start()
 
     colorPrinter(f'TEMPERATURE Publisher Started', 'red')

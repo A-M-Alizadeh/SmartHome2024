@@ -20,7 +20,7 @@ class InfluxDBManager:
     def _initialize_client(self):
         token = 'nVzRyaR42v8EzZfSiP_hiIDWZYTeJ8jwRY8l3-ubHvg0s7mhUSN8FDM8-B6x12oq3Ms8uf6xLsFWpUYOiC1sRw=='
         org = "IOTPolito"
-        url = "http://localhost:8086"
+        url = "host.docker.internal:8086" #host.docker.internal
         self.urlAddress = url
         self.bucketName = "READINGS"
         self.orgName = org
@@ -35,7 +35,7 @@ class InfluxDBManager:
             self.write_api.write(bucket=self.bucketName, org= self.orgName, record=point)
             self.write_api.close()
         except Exception as e:
-            print(f'Error writing data {e}')
+            print(f'Error writing data {str(e)}')
 
     def readSensorData(self, sensorId, period='30m'):
         counter = 0

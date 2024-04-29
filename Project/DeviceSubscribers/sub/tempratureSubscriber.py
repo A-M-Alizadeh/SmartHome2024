@@ -62,7 +62,7 @@ if __name__ == "__main__":
     mqttInfo = connectionInfo['mqtt']
     restInfo = connectionInfo['micros']
 
-    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_temperature', mqttInfo['broker'], mqttInfo['port'], mqttInfo['common_topic']+"+", mqttInfo, restInfo)
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_temperature', mqttInfo['broker'], mqttInfo['subPort'], mqttInfo['common_topic']+"+", mqttInfo, restInfo)
     subscriber.start()
 
     colorPrinter(f'TEMPERATURE Subscriber Started', 'pink')

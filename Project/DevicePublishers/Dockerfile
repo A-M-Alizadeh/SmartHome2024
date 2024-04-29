@@ -17,7 +17,7 @@ COPY . .
 RUN pip install -e .
 
 # Expose the port the app runs on
-EXPOSE 8083 1883
+EXPOSE 1883
 
 CMD ["./dockerRunner.sh"]
 # CMD ["bash"]

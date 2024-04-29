@@ -61,7 +61,7 @@ if __name__ == "__main__":
     connectionInfo = getConnectionInfo()
     # sensorData = getSensorData()
 
-    publisher = SensorPublisher(connectionInfo['clientId']+"Publisher_humid", connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    publisher = SensorPublisher(connectionInfo['clientId']+"Publisher_humid", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
     publisher.start()
 
     colorPrinter(f'HUMIDITY Publisher Started', 'blue')

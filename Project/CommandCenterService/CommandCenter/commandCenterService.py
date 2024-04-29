@@ -1,8 +1,9 @@
 import cherrypy
 import json
-from Utils.Utils import fetchMicroservicesConf, colorPrinter
+from Utils.Utils import colorPrinter
 import cherrypy_cors
 from CommandCenter.commandPublisher import commandPublisher
+import requests
 commandPublisher.start()
 
 class Server(object):
@@ -37,7 +38,8 @@ class Server(object):
 
 # -------------------------------------------- Main --------------------------------------------
 if __name__ == '__main__':
-    serverConf = fetchMicroservicesConf("command")
+    serverConf = requests.get(f"http://catalog_service:8080/public?apiinfo=command")
+    serverConf = serverConf.json()
     headers = [('Access-Control-Allow-Origin', '*'), ('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')]
     conf = {
         '/': {

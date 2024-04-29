@@ -56,7 +56,7 @@ class CommandPublisher:
 
 #--------------------------------------------MAIN------------------------------------------------
 connectionInfo = getConnectionInfo()
-commandPublisher = CommandPublisher(connectionInfo['clientId']+"Publisher_command", connectionInfo['broker'], connectionInfo['port'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+commandPublisher = CommandPublisher(connectionInfo['clientId']+"Publisher_command", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
 
 # if __name__ == "__main__":
 #     connectionInfo = getConnectionInfo()

@@ -1,0 +1,10 @@
+cherrypy==18.9.0
+cherrypy-cors==1.7.0
+requests==2.31.0
+paho_mqtt==2.0.0
+numpy==1.26.3
+pandas==2.1.4
+pyjwt==2.8.0
+schedule==1.2.1
+ influxdb-client[ciso]==1.41.0
+
