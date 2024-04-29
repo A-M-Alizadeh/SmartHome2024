@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  catalog_service:
+    build: ./CatalogService
+    container_name: catalog-container
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./CatalogService:/app
+    # networks:
+    #   - services-network
+  command_service:
+    build: ./CommandCenterService
+    container_name: command-container
+    expose:
+      - "8083"
+      - "1883"
+    ports:
+      - "8083:8083"
+      - "1883:1883"
+    volumes:
+      - ./CommandCenterService:/app
+  #   networks:
+  #     - services-network
+  # networks:
+  #   services-network
+  # devicePublishers:
+  #   build: ./DevicePublishers
+  #   container_name: device-publishers-container
+  #   ports:
+  #     - "8080:8080"
+  #     - "8081:8081"
+  #     - "8082:8082"
+  #     - "8083:8083"
+  #     - "8084:8084"
+  #     - "1883:1883"
+  #   volumes:
+  #     - ./DevicePublishers:/app

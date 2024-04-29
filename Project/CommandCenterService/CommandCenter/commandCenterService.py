@@ -50,6 +50,6 @@ if __name__ == '__main__':
     cherrypy.config.update(conf)
     cherrypy.tree.mount(Server(), '/command', conf)
     cherrypy_cors.install()
-    cherrypy.config.update({'web.socket_ip': serverConf["url"], 'server.socket_port': serverConf["port"], 'cors.expose.on': True})
+    cherrypy.config.update({'server.socket_host': '0.0.0.0','web.socket_ip': serverConf["url"], 'server.socket_port': serverConf["port"], 'cors.expose.on': True})
     cherrypy.engine.start()
     cherrypy.engine.block()

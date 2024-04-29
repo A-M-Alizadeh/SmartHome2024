@@ -232,6 +232,6 @@ if __name__ == '__main__':
     cherrypy.tree.mount(DeviceServer(), '/device', conf)
     cherrypy.tree.mount(PublicServer(), '/public', conf)
     cherrypy.tree.mount(AuthServer(), '/auth', conf)
-    cherrypy.config.update({'web.socket_ip': apiConf["url"], 'server.socket_port': apiConf["port"]})
+    cherrypy.config.update({'server.socket_host': '0.0.0.0','web.socket_ip': apiConf["url"], 'server.socket_port': apiConf["port"]})
     cherrypy.engine.start()
     cherrypy.engine.block()
