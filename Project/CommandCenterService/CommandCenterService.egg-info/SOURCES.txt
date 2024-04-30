@@ -1,4 +1,5 @@
 setup.py
+CommandCenter/MQTT.py
 CommandCenter/__init__.py
 CommandCenter/analyticsSchedule.py
 CommandCenter/commandCenterService.py
@@ -12,6 +13,5 @@ Simulators/HumiditySim.py
 Simulators/TemperatureSim.py
 Simulators/Test.py
 Simulators/__init__.py
-Utils/MQTT.py
 Utils/Utils.py
 Utils/__init__.py

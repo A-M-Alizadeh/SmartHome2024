@@ -18,7 +18,7 @@ class InfluxDBManager:
         return self._instance
 
     def _initialize_client(self):
-        token = 'nVzRyaR42v8EzZfSiP_hiIDWZYTeJ8jwRY8l3-ubHvg0s7mhUSN8FDM8-B6x12oq3Ms8uf6xLsFWpUYOiC1sRw=='
+        token = 'UOq67WdIR4s1rJaIp7jgjvvgCzSty86_dG6DfdyRJMYVYATeMH8KvPA87P4iFkuFQwIP0MP8qNdMO13QfdZHrA=='
         org = "IOTPolito"
         url = "http://localhost:8086"
         self.urlAddress = url
