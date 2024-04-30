@@ -51,3 +51,10 @@ if __name__ == "__main__":
     while True:
         schedule.run_pending()
         time.sleep(1)  # Sleep for 1 second to avoid high CPU usage
+
+
+
+#define a state var that will be used to store the state of the scheduler
+# state = 0 # 0 means scheduler is off, 1 means scheduler is on
+# when state is 0, the air conditioner is off and no automatic control is done but manual control can be done
+# when state is 1, the air conditioner is on and automatic control is done -> in this case we do some analytics over the data and suggest an action to be taken

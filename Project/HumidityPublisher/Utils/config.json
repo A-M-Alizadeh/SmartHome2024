@@ -8,21 +8,5 @@
   "baseUrl": "http://catalog_service:",
   "basePort": 8080,
   "commandUrl": "http://command_service:",
-  "commandPort": 8083,
-  "dayComfort":{
-    "temp": 22,
-    "humid": 35
-  },
-  "nightComfort":{
-    "temp": 18,
-    "humid": 40
-  },
-  "dayOffHours": { 
-    "start": 14,
-    "end": 17
-  },
-  "nightOffHours": {
-    "start": 22,
-    "end": 5
-  }
+  "commandPort": 8081
 }

@@ -19,7 +19,6 @@ services:
       - "8083"
     ports:
       - "8083:8083"
-      # - "1883:1883"
     volumes:
       - ./CommandCenterService:/app
     networks:
@@ -32,21 +31,56 @@ services:
       - "8084"
     ports:
       - "8084:8084"
-      # - "8087:8086"
     volumes:
       - ./DBService:/app
     networks:
       - servicesNetwork
 
-  pub_service:
-    build: ./DevicePublishers
-    container_name: pub-container
+  auto_command_service:
+    build: ./AutomaticCommand
+    container_name: auto-command-container
     expose:
       - "1883"
     ports:
       - "1883:1883"
     volumes:
-      - ./DevicePublishers:/app
+      - ./AutomaticCommand:/app
+    networks:
+      - servicesNetwork
+
+  air_condition_service:
+    build: ./AirConditionerSubscriber
+    container_name: air-condition-container
+    expose:
+      - "1883"
+    ports:
+      - "1884:1883"
+    volumes:
+      - ./AirConditionerSubscriber:/app
+    networks:
+      - servicesNetwork
+
+  humidity_publisher_service:
+    build: ./HumidityPublisher
+    container_name: humidity-pub-container
+    expose:
+      - "1883"
+    ports:
+      - "1885:1883"
+    volumes:
+      - ./HumidityPublisher:/app
+    networks:
+      - servicesNetwork
+
+  temperature_publisher_service:
+    build: ./TemperaturePublisher
+    container_name: temp-pub-container
+    expose:
+      - "1883"
+    ports:
+      - "1886:1883"
+    volumes:
+      - ./TemperaturePublisher:/app
     networks:
       - servicesNetwork
 
@@ -56,23 +90,11 @@ services:
     expose:
       - "1883"
     ports:
-      - "1884:1883"
+      - "1887:1883"
     volumes:
       - ./DeviceSubscribers:/app
     networks:
       - servicesNetwork
-
-  # new_service:
-  #   build: ./simple_cherrypy
-  #   container_name: simple-container
-  #   expose:
-  #     - "8081"
-  #   ports:
-  #     - "8081:8081"
-  #   volumes:
-  #     - ./simple_cherrypy:/app
-    # networks:
-    #   - servicesNetwork
 
 networks:
   servicesNetwork:

@@ -1,10 +1,10 @@
-
-import requests
 import time
+import requests
 from MQTT import MyMQTT
 from Utils.Utils import colorPrinter
 import json
 import os
+
 
 config = {}
 path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,9 +25,9 @@ def getConnectionInfo():
     return data
 
 def sendDataToDB(data, microInfo):
+    colorPrinter(f'Sending data to {str(microInfo)}', 'yellow')
     response = requests.post(f'{microInfo["url"]}{microInfo["port"]}/db/measurement', json=data)
     return response.json()
-
 #--------------------------------------------MQTT------------------------------------------------
 class SensorsSubscriber:
     def __init__(self,clientID, broker, port, topic, mqttInfo, restInfo):
@@ -38,13 +38,20 @@ class SensorsSubscriber:
 
     def notify(self, topic, payload): #use senML
         try:
+            if "humidity" in topic:
+                colorPrinter( f'sensor ${topic}:  ${payload}recieved','blue')
+                json_string = payload.decode('utf-8')
+                data = json.loads(json_string)
+                sendDataToDB(data,findMicro(self.restInfo, 'analytics'))
+                colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
+
             if "temperature" in topic:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','red')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
                 sendDataToDB(data, findMicro(self.restInfo, 'analytics'))
                 colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
-
+                
         except Exception as e:
             colorPrinter(f'Error saving data {e}', 'orange')
 
@@ -61,11 +68,11 @@ if __name__ == "__main__":
     connectionInfo = getConnectionInfo()
     mqttInfo = connectionInfo['mqtt']
     restInfo = connectionInfo['micros']
-
-    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_temperature', mqttInfo['broker'], mqttInfo['subPort'], mqttInfo['common_topic']+"+", mqttInfo, restInfo)
+    
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_humidity', mqttInfo['broker'], mqttInfo['subPort'], mqttInfo['common_topic']+"+", mqttInfo, restInfo)
     subscriber.start()
 
-    colorPrinter(f'TEMPERATURE Subscriber Started', 'pink')
+    colorPrinter(f'HUMIDITY Subscriber Started', 'pink')
     colorPrinter(f'{subscriber.topic}', 'pink')
     colorPrinter(f'{subscriber.mqttClient.clientID}', 'pink')
     while True:
