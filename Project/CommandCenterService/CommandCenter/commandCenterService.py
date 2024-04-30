@@ -4,7 +4,13 @@ from Utils.Utils import colorPrinter
 import cherrypy_cors
 from CommandCenter.commandPublisher import commandPublisher
 import requests
+import os
 commandPublisher.start()
+
+config = {}
+path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+with open(f'{path}/CommandCenter/config.json') as json_file:
+        config = json.load(json_file)
 
 class Server(object):
     exposed = True
@@ -38,7 +44,7 @@ class Server(object):
 
 # -------------------------------------------- Main --------------------------------------------
 if __name__ == '__main__':
-    serverConf = requests.get(f"http://catalog_service:8080/public?apiinfo=command")
+    serverConf = requests.get(f"{config['baseUrl']}{config['basePort']}/public?apiinfo=command")
     serverConf = serverConf.json()
     headers = [('Access-Control-Allow-Origin', '*'), ('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')]
     conf = {

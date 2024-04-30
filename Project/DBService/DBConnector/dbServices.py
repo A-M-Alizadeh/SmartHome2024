@@ -4,6 +4,13 @@ from Utils.Utils import colorPrinter
 import cherrypy_cors
 from DBConnector.influx.influxUtil import InfluxDBManager
 import requests
+import os
+
+config = {}
+path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+with open(f'{path}/DBConnector/config.json') as json_file:
+        config = json.load(json_file)
+
 
 dbConnector = InfluxDBManager()
 class AnalyticsServer(object):
@@ -91,7 +98,7 @@ class DBConnectorServer(object):
 
 # -------------------------------------------- Main --------------------------------------------
 if __name__ == '__main__':
-    serverConf = requests.get(f"http://catalog_service:8080/public?apiinfo=analytics")
+    serverConf = requests.get(f"{config['baseUrl']}{config['basePort']}/public?apiinfo=analytics")
     serverConf = serverConf.json()
     headers = [('Access-Control-Allow-Origin', '*'), ('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')]
     conf = {

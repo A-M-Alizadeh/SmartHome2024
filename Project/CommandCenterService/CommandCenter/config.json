@@ -7,6 +7,6 @@
   "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM",
   "baseUrl": "http://catalog_service:",
   "basePort": 8080,
-  "commandUrl": "http://localhost:",
+  "commandUrl": "http://command_service:",
   "commandPort": 8083
 }
