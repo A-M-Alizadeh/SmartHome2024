@@ -1,3 +1,0 @@
-#!/bin/bash
-#make the file executable by running chmod +x dockerRunner.sh
-exec python3 /app/DBConnector/dbServices.py

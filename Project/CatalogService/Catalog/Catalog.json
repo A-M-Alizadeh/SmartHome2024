@@ -248,7 +248,7 @@
                         },
                         {
                             "sensor_id":"e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
-                            "status":"OFF",
+                            "status":"ON",
                             "type":"AIR_CONDITIONER"
                         }
                     ]
@@ -362,7 +362,7 @@
         "micros":[
             {
                 "name":"catalog",
-                "url":"http://catalog_service:",
+                "url":"http://localhost:",
                 "port":8080
             },
             {
@@ -372,12 +372,12 @@
             },
             {
                 "name":"command",
-                "url":"http://command_service:",
+                "url":"http://localhost:",
                 "port":8083
             },
             {
                 "name":"analytics",
-                "url":"http://db_service:",
+                "url":"http://localhost:",
                 "port":8084
             }
         ],
