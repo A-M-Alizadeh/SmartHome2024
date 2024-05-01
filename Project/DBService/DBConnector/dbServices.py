@@ -12,15 +12,15 @@ with open(f'{path}/DBConnector/config.json') as json_file:
         config = json.load(json_file)
 
 
-dbConnector = InfluxDBManager()
 class AnalyticsServer(object):
     exposed = True
 
     def GET(self, *uri, **params):
-        if "deleter" in uri:
-            colorPrinter("Deleting data", "red")
-            dbConnector.myDelete()
-            return "Analytics GET  Server !"
+        return "Analytics GET  Server !"
+        # if "deleter" in uri:
+        #     colorPrinter("Deleting data", "red")
+        #     dbConnector.myDelete()
+        #     return "Analytics GET  Server !"
     
     def POST(self, *uri, **params):
         if "analytics" in uri:
@@ -98,6 +98,7 @@ class DBConnectorServer(object):
 
 # -------------------------------------------- Main --------------------------------------------
 if __name__ == '__main__':
+    dbConnector = InfluxDBManager()
     serverConf = requests.get(f"{config['baseUrl']}{config['basePort']}/public?apiinfo=analytics")
     serverConf = serverConf.json()
     headers = [('Access-Control-Allow-Origin', '*'), ('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')]

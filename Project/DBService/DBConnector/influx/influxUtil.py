@@ -139,8 +139,6 @@ class InfluxDBManager:
         return result
 
 
-
-    
     def readAllSensorsData(self,sensorIds, period='30m'):
         result = []
         for sensorId in sensorIds:
@@ -162,7 +160,6 @@ class InfluxDBManager:
                         counter += 1
                     records.append({"value": record['_value'], "time": record['_time'].isoformat()})
                 result.append({"records": records, "type": type, "unit": unit, "sensorId": sensorId, "period": period, "min": self.periodMin(period, sensorId), "max": self.periodMax(period, sensorId), "mean": self.periodMean(period, sensorId), "lastValue": self.lastValue(sensorId, period)})
-
         return result
 
     def readCommands(self, sensorId, period='30m'):
