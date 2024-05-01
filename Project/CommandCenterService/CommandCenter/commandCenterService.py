@@ -2,15 +2,19 @@ import cherrypy
 import json
 from Utils.Utils import colorPrinter
 import cherrypy_cors
-from CommandCenter.commandPublisher import commandPublisher
+from CommandCenter.commandPublisher import CommandPublisher
 import requests
 import os
-commandPublisher.start()
 
 config = {}
 path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 with open(f'{path}/CommandCenter/config.json') as json_file:
         config = json.load(json_file)
+#--------------------------------------------REST API------------------------------------------------
+def getConnectionInfo():
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
+    data = response.json()
+    return data
 
 class Server(object):
     exposed = True
@@ -44,6 +48,10 @@ class Server(object):
 
 # -------------------------------------------- Main --------------------------------------------
 if __name__ == '__main__':
+    connectionInfo = getConnectionInfo()
+    commandPublisher = CommandPublisher(connectionInfo['clientId']+"Publisher_command", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    commandPublisher.start()
+    
     serverConf = requests.get(f"{config['baseUrl']}{config['basePort']}/public?apiinfo=command")
     serverConf = serverConf.json()
     headers = [('Access-Control-Allow-Origin', '*'), ('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')]
