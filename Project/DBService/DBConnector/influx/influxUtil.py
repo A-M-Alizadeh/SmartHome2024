@@ -2,8 +2,8 @@ import influxdb_client
 from influxdb_client import Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
 from Utils.Utils import colorPrinter
-import random
-import time
+import json
+import os
 
 class InfluxDBManager:
     _instance = None
@@ -18,11 +18,16 @@ class InfluxDBManager:
         return self._instance
 
     def _initialize_client(self):
-        token = 'nVzRyaR42v8EzZfSiP_hiIDWZYTeJ8jwRY8l3-ubHvg0s7mhUSN8FDM8-B6x12oq3Ms8uf6xLsFWpUYOiC1sRw=='
+        conf = {}
+        path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        with open(f'{path}/influx/config.json', 'r') as file:
+            conf = json.load(file)
+        print('++++++++',conf)
+        token = conf['token']
         org = "IOTPolito"
-        url = "host.docker.internal:8086" #host.docker.internal
+        url = f"{conf['url']}{conf['port']}" #host.docker.internal
         self.urlAddress = url
-        self.bucketName = "READINGS"
+        self.bucketName = conf['bucketName']
         self.orgName = org
         self.client = influxdb_client.InfluxDBClient(url=url, token=token, org=org)
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)

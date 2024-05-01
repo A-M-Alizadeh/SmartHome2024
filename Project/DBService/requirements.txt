@@ -6,5 +6,5 @@ numpy==1.26.3
 pandas==2.1.4
 pyjwt==2.8.0
 schedule==1.2.1
- influxdb-client[ciso]==1.41.0
+influxdb-client[ciso]==1.41.0
 
