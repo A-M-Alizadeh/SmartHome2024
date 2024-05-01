@@ -52,7 +52,7 @@ class SensorPublisher:
     def publish(self):
         message = self.__message
         message = self.sensGen.getHumidity(self.sensorData['sensor_id'], 'humidity', '%') 
-        self.topic = self.connectionDetails['common_topic']+self.sensorData['type'].lower()
+        self.topic = self.connectionDetails['common_topic']+config['userId']+'/'+config['houseId']+'/'+self.sensorData['sensor_id']+'/'+self.sensorData['type'].lower() #smart_house/userId/houseId/sensorId/sensorType
         self.mqttClient.myPublish(self.topic, message)
         colorPrinter(f'Published {message} to {self.topic}', 'blue')
 

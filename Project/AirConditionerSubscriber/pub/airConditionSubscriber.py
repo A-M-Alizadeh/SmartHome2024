@@ -50,7 +50,7 @@ class SensorsSubscriber:
 
     def notify(self, topic, payload): #use senML
         try:
-            if "air_condition" in topic:
+            if "air_conditioner" in topic:
                 # colorPrinter( f'sensor ${topic}:  ${payload}recieved','green')
                 
                 try:
@@ -89,7 +89,13 @@ if __name__ == "__main__":
     mqttInfo = connectionInfo['mqtt']
     restInfo = connectionInfo['micros']
 
-    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_command', mqttInfo['broker'], mqttInfo['subPort'], mqttInfo['common_topic']+"+", mqttInfo, restInfo)
+    # customTopic = mqttInfo['common_topic']+"#" #listen to everything
+    #listen only to specific user and air_condition
+    # customTopic = mqttInfo['common_topic']+config['userId']+config['houseId']+'/'+config['airConditionerId']+"/air_condition"
+    customTopic = mqttInfo['common_topic']+config['userId']+'/+/+'+"/air_conditioner"
+    print(customTopic, '&&&&&&&&&&&&&&&&&&&')
+
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_command', mqttInfo['broker'], mqttInfo['subPort'], customTopic, mqttInfo, restInfo)
     subscriber.start()
 
     colorPrinter(f'AIRCONDITION Subscriber Started', 'pink')

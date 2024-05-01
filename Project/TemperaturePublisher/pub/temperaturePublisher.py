@@ -50,7 +50,7 @@ class SensorPublisher:
     def publish(self):
         message = self.__message
         message = self.sensGen.getTemperature(self.sensorData['sensor_id'], 'temperature', 'c') 
-        self.topic = self.sensorDetails['common_topic']+self.sensorData['type'].lower()
+        self.topic = self.sensorDetails['common_topic']+config['userId']+'/'+config['houseId']+'/'+self.sensorData['sensor_id']+'/'+self.sensorData['type'].lower()
         self.mqttClient.myPublish(self.topic, message)
         colorPrinter(f'Published {message} to {self.topic}', 'red')
 

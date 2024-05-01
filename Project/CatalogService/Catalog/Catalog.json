@@ -383,7 +383,7 @@
         ],
         "mqtt":{
             "broker":"test.mosquitto.org",
-            "common_topic":"iot/2024/smartHouse/",
+            "common_topic":"smart_house/",
             "port":1883,
             "pubPort":1883,
             "subPort":1883,
@@ -392,14 +392,14 @@
                 {
                     "name":"tempmqtt",
                     "task":"publisher",
-                    "topic":"sensor/temperature/",
+                    "topic":"temperature/",
                     "status":"on",
                     "unit":"c"
                 },
                 {
                     "name":"tempmqtt",
                     "task":"subscriber",
-                    "topic":"sensor/temperature/",
+                    "topic":"temperature/",
                     "status":"on",
                     "unit":"c"
                 }
@@ -408,7 +408,7 @@
                 {
                     "name":"humidmqtt",
                     "task":"publisher",
-                    "topic":"sensor/humidity",
+                    "topic":"humidity",
                     "status":"on",
                     "unit":"%"
                 },

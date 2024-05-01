@@ -68,8 +68,32 @@ if __name__ == "__main__":
     connectionInfo = getConnectionInfo()
     mqttInfo = connectionInfo['mqtt']
     restInfo = connectionInfo['micros']
+
+    #listen to everything
+    customTopic = mqttInfo['common_topic']+"#"
     
-    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_humidity', mqttInfo['broker'], mqttInfo['subPort'], mqttInfo['common_topic']+"+", mqttInfo, restInfo)
+    #listen only to specific user
+    # customTopic = mqttInfo['common_topic']+config['userId']+"/#"
+    
+    #listen only to specific house
+    # customTopic = mqttInfo['common_topic']+config['userId']+"/"+config['houseId']+"/#"
+
+    #listen only to specific sensor
+    # customTopic = mqttInfo['common_topic']+config['userId']+"/"+config['houseId']+"/"+config['sensorId']+"/#"
+
+    #listen only to specific sensor with specific type
+    # customTopic = mqttInfo['common_topic']+config['userId']+"/"+config['houseId']+"/"+config['sensorId']+"/"+temperature
+
+    #listen to all sensors with the same type
+    # customTopic = mqttInfo['common_topic']+"+/+/+/"+"/temperature"
+
+    #listen to all sensors with the same type and user
+    # customTopic = mqttInfo['common_topic']+config['userId']+"/+/+/"+"/temperature"
+
+
+
+    
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_humidity', mqttInfo['broker'], mqttInfo['subPort'], customTopic, mqttInfo, restInfo)
     subscriber.start()
 
     colorPrinter(f'HUMIDITY Subscriber Started', 'pink')
