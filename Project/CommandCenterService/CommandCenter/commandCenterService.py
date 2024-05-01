@@ -1,9 +1,20 @@
 import cherrypy
 import json
-from Utils.Utils import fetchMicroservicesConf, colorPrinter
+from Utils.Utils import colorPrinter
 import cherrypy_cors
-from CommandCenter.commandPublisher import commandPublisher
-commandPublisher.start()
+from CommandCenter.commandPublisher import CommandPublisher
+import requests
+import os
+
+config = {}
+path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+with open(f'{path}/CommandCenter/config.json') as json_file:
+        config = json.load(json_file)
+#--------------------------------------------REST API------------------------------------------------
+def getConnectionInfo():
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
+    data = response.json()
+    return data
 
 class Server(object):
     exposed = True
@@ -37,7 +48,12 @@ class Server(object):
 
 # -------------------------------------------- Main --------------------------------------------
 if __name__ == '__main__':
-    serverConf = fetchMicroservicesConf("command")
+    connectionInfo = getConnectionInfo()
+    commandPublisher = CommandPublisher(connectionInfo['clientId']+"Publisher_command", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    commandPublisher.start()
+    
+    serverConf = requests.get(f"{config['baseUrl']}{config['basePort']}/public?apiinfo=command")
+    serverConf = serverConf.json()
     headers = [('Access-Control-Allow-Origin', '*'), ('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')]
     conf = {
         '/': {
@@ -50,6 +66,6 @@ if __name__ == '__main__':
     cherrypy.config.update(conf)
     cherrypy.tree.mount(Server(), '/command', conf)
     cherrypy_cors.install()
-    cherrypy.config.update({'web.socket_ip': serverConf["url"], 'server.socket_port': serverConf["port"], 'cors.expose.on': True})
+    cherrypy.config.update({'server.socket_host': '0.0.0.0','web.socket_ip': serverConf["url"], 'server.socket_port': serverConf["port"], 'cors.expose.on': True})
     cherrypy.engine.start()
     cherrypy.engine.block()

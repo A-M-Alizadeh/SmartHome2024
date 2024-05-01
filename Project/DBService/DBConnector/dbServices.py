@@ -1,18 +1,26 @@
 import cherrypy
 import json
-from Utils.Utils import fetchMicroservicesConf, colorPrinter
+from Utils.Utils import colorPrinter
 import cherrypy_cors
 from DBConnector.influx.influxUtil import InfluxDBManager
+import requests
+import os
 
-dbConnector = InfluxDBManager()
+config = {}
+path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+with open(f'{path}/DBConnector/config.json') as json_file:
+        config = json.load(json_file)
+
+
 class AnalyticsServer(object):
     exposed = True
 
     def GET(self, *uri, **params):
-        if "deleter" in uri:
-            colorPrinter("Deleting data", "red")
-            dbConnector.myDelete()
-            return "Analytics GET  Server !"
+        return "Analytics GET  Server !"
+        # if "deleter" in uri:
+        #     colorPrinter("Deleting data", "red")
+        #     dbConnector.myDelete()
+        #     return "Analytics GET  Server !"
     
     def POST(self, *uri, **params):
         if "analytics" in uri:
@@ -90,7 +98,9 @@ class DBConnectorServer(object):
 
 # -------------------------------------------- Main --------------------------------------------
 if __name__ == '__main__':
-    serverConf = fetchMicroservicesConf("analytics")
+    dbConnector = InfluxDBManager()
+    serverConf = requests.get(f"{config['baseUrl']}{config['basePort']}/public?apiinfo=analytics")
+    serverConf = serverConf.json()
     headers = [('Access-Control-Allow-Origin', '*'), ('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')]
     conf = {
         '/': {
@@ -104,6 +114,6 @@ if __name__ == '__main__':
     cherrypy.tree.mount(AnalyticsServer(), '/analytic', conf)
     cherrypy.tree.mount(DBConnectorServer(), '/db', conf)
     cherrypy_cors.install()
-    cherrypy.config.update({'web.socket_ip': serverConf["url"], 'server.socket_port': serverConf["port"]})
+    cherrypy.config.update({'server.socket_host': '0.0.0.0','web.socket_ip': serverConf["url"], 'server.socket_port': serverConf["port"]})
     cherrypy.engine.start()
     cherrypy.engine.block()

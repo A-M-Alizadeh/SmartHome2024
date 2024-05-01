@@ -1,0 +1,4 @@
+{
+  "baseUrl": "http://catalog_service:",
+  "basePort": 8080
+}

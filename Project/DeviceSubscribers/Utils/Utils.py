@@ -66,16 +66,3 @@ def printCircle(color):
             else:
                 print(" ", end = ' ')
         print()
-
-#-------------------------------------------- Requests --------------------------------------------
-
-def fetchMicroservicesConf(name): # Fetch the microservice configuration from the Catalog.json file using CatalogService - this is used in the microservices
-    result = requests.get("http://localhost:8080/public?apiinfo=" + name)
-    return {
-        "url": result.json()["url"],
-        "port": result.json()["port"]
-        }
-
-def requestUserById(id): # Get a user by id from the UserService - only accepts Integers - in futue it will be a UUID
-    result = requests.get(f"http://localhost:8080?userId={id}")
-    return result.json()

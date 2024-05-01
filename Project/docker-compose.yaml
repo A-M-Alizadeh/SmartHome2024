@@ -1,0 +1,119 @@
+version: "3.8"
+services:
+  catalog_service:
+    build: ./CatalogService
+    container_name: catalog-container
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./CatalogService:/app
+    networks:
+      - servicesNetwork
+
+  command_service:
+    build: ./CommandCenterService
+    container_name: command-container
+    expose:
+      - "8083"
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./CommandCenterService:/app
+    networks:
+      - servicesNetwork
+
+  db_service:
+    build: ./DBService
+    container_name: db-container
+    expose:
+      - "8084"
+    ports:
+      - "8084:8084"
+    volumes:
+      - ./DBService:/app
+    networks:
+      - servicesNetwork
+
+  influx_service:
+    image: influxdb:2.7.6
+    container_name: influx-container
+    expose:
+      - "8086"
+    ports:
+      - ${DOCKER_INFLUXDB_INIT_PORT}:8086
+    volumes:
+      - influxdb-storage:/var/lib/influxdb2:rw
+    env_file:
+      - .env
+    entrypoint: ["./entrypoint.sh"]
+    restart: on-failure:10
+    networks:
+      - servicesNetwork
+
+  auto_command_service:
+    build: ./AutomaticCommand
+    container_name: auto-command-container
+    expose:
+      - "1883"
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./AutomaticCommand:/app
+    networks:
+      - servicesNetwork
+
+  air_condition_service:
+    build: ./AirConditionerSubscriber
+    container_name: air-condition-container
+    expose:
+      - "1883"
+    ports:
+      - "1884:1883"
+    volumes:
+      - ./AirConditionerSubscriber:/app
+    networks:
+      - servicesNetwork
+
+  humidity_publisher_service:
+    build: ./HumidityPublisher
+    container_name: humidity-pub-container
+    expose:
+      - "1883"
+    ports:
+      - "1885:1883"
+    volumes:
+      - ./HumidityPublisher:/app
+    networks:
+      - servicesNetwork
+
+  temperature_publisher_service:
+    build: ./TemperaturePublisher
+    container_name: temp-pub-container
+    expose:
+      - "1883"
+    ports:
+      - "1886:1883"
+    volumes:
+      - ./TemperaturePublisher:/app
+    networks:
+      - servicesNetwork
+
+  sub_service:
+    build: ./DeviceSubscribers
+    container_name: sub-container
+    expose:
+      - "1883"
+    ports:
+      - "1887:1883"
+    volumes:
+      - ./DeviceSubscribers:/app
+    networks:
+      - servicesNetwork
+
+networks:
+  servicesNetwork:
+    driver: bridge
+volumes:
+  influxdb-storage:

@@ -2,8 +2,8 @@ import influxdb_client
 from influxdb_client import Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
 from Utils.Utils import colorPrinter
-import random
-import time
+import json
+import os
 
 class InfluxDBManager:
     _instance = None
@@ -18,11 +18,16 @@ class InfluxDBManager:
         return self._instance
 
     def _initialize_client(self):
-        token = 'nVzRyaR42v8EzZfSiP_hiIDWZYTeJ8jwRY8l3-ubHvg0s7mhUSN8FDM8-B6x12oq3Ms8uf6xLsFWpUYOiC1sRw=='
+        conf = {}
+        path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        with open(f'{path}/influx/config.json', 'r') as file:
+            conf = json.load(file)
+        print('++++++++',conf)
+        token = conf['token']
         org = "IOTPolito"
-        url = "http://localhost:8086"
+        url = f"{conf['url']}{conf['port']}" #host.docker.internal
         self.urlAddress = url
-        self.bucketName = "READINGS"
+        self.bucketName = conf['bucketName']
         self.orgName = org
         self.client = influxdb_client.InfluxDBClient(url=url, token=token, org=org)
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
@@ -35,7 +40,7 @@ class InfluxDBManager:
             self.write_api.write(bucket=self.bucketName, org= self.orgName, record=point)
             self.write_api.close()
         except Exception as e:
-            print(f'Error writing data {e}')
+            print(f'Error writing data {str(e)}')
 
     def readSensorData(self, sensorId, period='30m'):
         counter = 0
@@ -134,8 +139,6 @@ class InfluxDBManager:
         return result
 
 
-
-    
     def readAllSensorsData(self,sensorIds, period='30m'):
         result = []
         for sensorId in sensorIds:
@@ -157,7 +160,6 @@ class InfluxDBManager:
                         counter += 1
                     records.append({"value": record['_value'], "time": record['_time'].isoformat()})
                 result.append({"records": records, "type": type, "unit": unit, "sensorId": sensorId, "period": period, "min": self.periodMin(period, sensorId), "max": self.periodMax(period, sensorId), "mean": self.periodMean(period, sensorId), "lastValue": self.lastValue(sensorId, period)})
-
         return result
 
     def readCommands(self, sensorId, period='30m'):

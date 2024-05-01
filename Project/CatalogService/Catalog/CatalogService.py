@@ -9,9 +9,6 @@ from Catalog.CatalogManager import get_user_by_id, get_all_users, get_house_by_i
     login_user, register_user, logout_user, updateSensorStatus
 from Auth.tools import check_jwt
 import cherrypy_cors
-# http://localhost:8080?apiinfo=user this fills the param like this: {'apiinfo': 'user'}
-# http://localhost:8080/apiinfo/user this fills the uri like this: ('apiinfo', 'user')
-
 class PublicServer(object):
     exposed =True
     def GET(self, *uri, **params):
@@ -232,6 +229,6 @@ if __name__ == '__main__':
     cherrypy.tree.mount(DeviceServer(), '/device', conf)
     cherrypy.tree.mount(PublicServer(), '/public', conf)
     cherrypy.tree.mount(AuthServer(), '/auth', conf)
-    cherrypy.config.update({'web.socket_ip': apiConf["url"], 'server.socket_port': apiConf["port"]})
+    cherrypy.config.update({'server.socket_host': '0.0.0.0','web.socket_ip': apiConf["url"], 'server.socket_port': apiConf["port"]})
     cherrypy.engine.start()
     cherrypy.engine.block()

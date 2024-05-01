@@ -126,3 +126,16 @@ project/
 Tree Generated Using `tree-extended` needs to be installed via `npm install tree`
 
 https://stackoverflow.com/questions/45368535/influxdb-single-or-multiple-measurement
+
+
+Read this to dockerize: https://github.com/Lawouach/cherrypy-docker-hello-world/tree/master
+don't forget cherrypy.config.update({'server.socket_host': '0.0.0.0', ...})
+
+#docker build -t imagename:tag .
+#docker run -p 8083:8083 imagename:tag
+#docker run -p 8083:8083 -v /Users/rohit/Downloads/Project/CommandCenterService:/app imagename:tag
+#docker start containerid or containername
+#docker stop containerid or containername
+
+
+docker exec -it 1978726fb19b bash
