@@ -52,3 +52,5 @@ if __name__ == "__main__":
 # state = 0 # 0 means scheduler is off, 1 means scheduler is on
 # when state is 0, the air conditioner is off and no automatic control is done but manual control can be done
 # when state is 1, the air conditioner is on and automatic control is done -> in this case we do some analytics over the data and suggest an action to be taken
+
+
