@@ -9,20 +9,30 @@
   "basePort": 8080,
   "commandUrl": "http://localhost:",
   "commandPort": 8083,
-  "dayComfort":{
-    "temp": 22,
-    "humid": 35
+  "ideal_values": {
+       "1": {"humidity": 50, "temperature": 19},
+       "2": {"humidity": 50, "temperature": 21},
+
+       "3": {"humidity": 40, "temperature": 22},
+       "4": {"humidity": 45, "temperature": 22.5},
+       "5": {"humidity": 50, "temperature": 23},
+
+       "6": {"humidity": 55, "temperature": 26},
+       "7": {"humidity": 60, "temperature": 26},
+       "8": {"humidity": 60, "temperature": 26},
+
+       "9": {"humidity": 30, "temperature": 22},
+       "10": {"humidity": 35, "temperature": 22},
+       "11": {"humidity": 40, "temperature": 22},
+
+       "12": {"humidity": 45, "temperature": 20}
   },
-  "nightComfort":{
-    "temp": 18,
-    "humid": 40
+  "offHours": {
+    "1": {"start": 22, "end": 7},
+    "2": {"start": 12, "end": 14}
   },
-  "dayOffHours": { 
-    "start": 14,
-    "end": 17
-  },
-  "nightOffHours": {
-    "start": 22,
-    "end": 5
-  }
+  "modelUpdateInterval": 30,
+  "modelHistoricalDataDuration": "2h",
+  "modelCommandInterval": 5
+
 }

@@ -66,3 +66,10 @@ def printCircle(color):
             else:
                 print(" ", end = ' ')
         print()
+
+
+def findMicro(micros, microName):
+    for micro in micros:
+        if micro['name'] == microName:
+            return micro
+    return None
