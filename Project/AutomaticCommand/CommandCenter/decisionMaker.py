@@ -5,6 +5,9 @@ import json
 import os
 import requests
 from datetime import datetime, timedelta
+import schedule
+import time
+# statsmodels 0.14.1
 
 
 config = {}
@@ -27,6 +30,7 @@ class DecisionMaker:
             }
         self.predction = None
         self.userDecisionsAvg = None
+        self.suggestedValues = None
         
     def findMicro(self, microName):
         for micro in self.microsInfo['micros']:
@@ -40,23 +44,33 @@ class DecisionMaker:
         self.microsInfo = result.json()
 
     def getHistoricalData(self):
-        reqBody = {
-            "sensorIds": [self.sensorsInfo["temperature"], self.sensorsInfo["humidity"]],
-            "period": config["modelHistoricalDataDuration"]
-        }
-        result = requests.post(f'{self.findMicro("analytics")["url"]}{self.findMicro("analytics")["port"]}/analytic/fullAnalytics', json=reqBody)
-        self.historicalData = result.json()
+        try:
+            reqBody = {
+                "sensorIds": [self.sensorsInfo["temperature"], self.sensorsInfo["humidity"]],
+                "period": config["modelHistoricalDataDuration"]
+            }
+            result = requests.post(f'{self.findMicro("analytics")["url"]}{self.findMicro("analytics")["port"]}/analytic/fullAnalytics', json=reqBody)
+            self.historicalData = result.json()
+        except Exception as e:
+            self.historicalData = None
+            print("Error: ", e)
+
 
     def getUserCommands(self):
-        reqBody = {
-            "sensorId": self.sensorsInfo["airConditioner"],
-            "period": config["modelHistoricalDataDuration"]
-        }
-        result = requests.post(f'{self.findMicro("analytics")["url"]}{self.findMicro("analytics")["port"]}/analytic/commandAnalytics', json=reqBody)
-        #filter the manual commands
-        filtered_data = [entry for entry in result.json()["records"] if entry['actionType'] == 'manual']
-        # print("User Decisions: ", filtered_data)
-        self.userDecisions = filtered_data
+        try:
+            reqBody = {
+                "sensorId": self.sensorsInfo["airConditioner"],
+                "period": config["modelHistoricalDataDuration"]
+            }
+            result = requests.post(f'{self.findMicro("analytics")["url"]}{self.findMicro("analytics")["port"]}/analytic/commandAnalytics', json=reqBody)
+            #filter the manual commands
+            filtered_data = [entry for entry in result.json()["records"] if entry['actionType'] == 'manual']
+            # print("User Decisions: ", filtered_data)
+            self.userDecisions = filtered_data
+        except Exception as e:
+            self.userDecisions = None
+            print("Error: ", e)
+
 
         # Current time
         current_time = datetime.utcnow()
@@ -78,27 +92,56 @@ class DecisionMaker:
         # print("Matching Items:")
         # print(matching_items)
 
+        # print("Matching Items:", matching_items[0:5])
         if len(matching_items) > 0:
             # getting the avg of the user decisions
             # Initialize variables to store the sum of temperature and humidity
-            total_temp = 0
-            total_humid = 0
+            # total_temp = 0
+            # total_humid = 0
 
-            # Iterate through the data and sum up temperature and humidity
-            for item in matching_items:
-                total_temp += item['temperature']
-                total_humid += item['humidity']
+            # # Iterate through the data and sum up temperature and humidity
+            # for item in matching_items:
+            #     total_temp += item['temperature']
+            #     total_humid += item['humidity']
 
-            # Calculate the average temperature and humidity
-            avg_temp = total_temp / len(matching_items)
-            avg_humid = total_humid / len(matching_items)
+            # # Calculate the average temperature and humidity
+            # avg_temp = total_temp / len(matching_items)
+            # avg_humid = total_humid / len(matching_items)
 
-            # print("Average Temperature:", avg_temp)
-            # print("Average Humidity:", avg_humid)
+            # # print("Average Temperature:", avg_temp)
+            # # print("Average Humidity:", avg_humid)
+            # Calculate weighted averages
+
+            # Extract temperature and humidity values from the records
+            temperatures = [record['temperature'] for record in matching_items]
+            humidities = [record['humidity'] for record in matching_items]
+
+            weights = [0.1, 0.3, 0.5]
+            num_parts = len(temperatures) // len(weights)
+
+            # Split temps into equal parts
+            temp_parts = np.array_split(temperatures, num_parts)
+            humid_parts = np.array_split(humidities, num_parts)
+            # Calculate weighted average for each part
+            weighted_avg_temps = []
+            for i, part in enumerate(temp_parts):
+                weighted_avg_temps.append(sum(part) / len(part))
+
+            weighted_avg_humids = []
+            for i, part in enumerate(humid_parts):
+                weighted_avg_humids.append(sum(part) / len(part))
+            
+            # Calculate overall weighted average
+            overall_weighted_avg_temp = sum(weight * avg_temp for weight, avg_temp in zip(weights, weighted_avg_temps))
+            overall_weighted_avg_humid = sum(weight * avg_humid for weight, avg_humid in zip(weights, weighted_avg_humids))
+
+            # Calculate weighted averages
+            # weighted_avg_temperature = sum(weight * temp for weight, temp in zip(weights, temperatures))
+            # weighted_avg_humidity = sum(weight * humid for weight, humid in zip(weights, humidities))
 
             self.userDecisionsAvg = {
-                "temperature": avg_temp,
-                "humidity": avg_humid
+                "temperature": overall_weighted_avg_temp,
+                "humidity": overall_weighted_avg_humid
             }
         else:
             # print("No matching items found.")
@@ -175,13 +218,22 @@ class DecisionMaker:
         for key, value in config["offHours"].items():
             start_hour = value["start"]
             end_hour = value["end"]
-            if start_hour <= current_hour <= end_hour:
-                is_off_hours = True
-                break
+            
+            # Handling the case where the period spans across two days
+            if start_hour > end_hour:
+                if current_hour >= start_hour or current_hour < end_hour:
+                    is_off_hours = True
+                    break
+            # Handling the case where the period is within the same day
+            else:
+                if start_hour <= current_hour <= end_hour:
+                    is_off_hours = True
+                    break
         
         if is_off_hours:
             print("Off hours detected. Turning off the air conditioner.")
             suggested_value = {'temperature': 0, 'humidity': 0, 'status': 'OFF'}
+            self.suggestedValues = suggested_value
             return suggested_value
 
 
@@ -192,8 +244,8 @@ class DecisionMaker:
             print("Comfort Zone: ", comfortZone)
             # Define weights (adjust as needed based on importance)
             weight_user_decision = 0.5
-            weight_prediction = 0.1
-            weight_comfort_zone = 0.4
+            weight_prediction = 0.2
+            weight_comfort_zone = 0.3
             # Calculate weighted averages for temperature and humidity
             weighted_temp = (weight_user_decision * self.userDecisionsAvg['temperature'] +
                             weight_prediction * self.predction['temperature'] +
@@ -203,8 +255,9 @@ class DecisionMaker:
                                 weight_prediction * self.predction['humidity'] +
                                 weight_comfort_zone * comfortZone['humidity'])
             # Suggested value close to the user's decision
-            suggested_value = {'temperature': weighted_temp, 'humidity': weighted_humidity, 'status': 'ON'}
+            suggested_value = {'temperature': round(weighted_temp, 2), 'humidity': round(weighted_humidity, 2), 'status': 'ON'}
             print("Suggested Value:", suggested_value)
+            self.suggestedValues = suggested_value
             return suggested_value
         else:
             # use weighted average of the prediction and the comfort zone
@@ -221,18 +274,33 @@ class DecisionMaker:
             weighted_humidity = (weight_prediction * self.predction['humidity'] +
                                 weight_comfort_zone * comfortZone['humidity'])
             # Suggested value close to the user's decision
-            suggested_value = {'temperature': weighted_temp, 'humidity': weighted_humidity, 'status': 'ON'}
+            suggested_value = {'temperature': round(weighted_temp, 2), 'humidity': round(weighted_humidity, 2), 'status': 'ON'}
             print("Suggested Value:", suggested_value)
+            self.suggestedValues = suggested_value
             return suggested_value
 
-
-    def sendDecision(self):
-        #send the decision to the air conditioner
-        pass
-
     def sendCommand(self):
-        #send command to the air conditioner
-        pass
+        try:
+            url = f'{config["commandUrl"]}{config["commandPort"]}/command/airConiditioner'
+            payload = {
+                "sensorId": config["airConditionerId"],
+                "temperature": self.suggestedValues['temperature'],
+                "humidity": self.suggestedValues['humidity'],
+                "status": self.suggestedValues['status'],
+                "actionType": "auto"
+            }
+
+            print('Sending request to:', url, payload)
+            # Send the request
+            response = requests.post(url, json=payload)
+            print('Response:', response)
+            # Check if the request was successful (status code 200)
+            if response.status_code == 200:
+                print('Request sent successfully!')
+            else:
+                print('Failed to send request. Status code:', response.status_code)
+        except Exception as e:
+            print('An error occurred with the Auto Command: ', str(e))
 
     def run(self):
         self.getServicesInfo()
@@ -240,9 +308,19 @@ class DecisionMaker:
         self.getUserCommands()
         self.predictWithNextValues()
         self.makeDecision()
-        pass
+        self.sendCommand()
 
 
 if __name__ == "__main__":
     decisionMaker = DecisionMaker()
-    decisionMaker.run()
+    schedule.every(10).seconds.do(decisionMaker.run)
+    # Run the scheduler loop indefinitely
+    while True:
+        schedule.run_pending()
+        time.sleep(10)  # Sleep for 1 second to avoid high CPU usage
+    
+
+
+# check if air status is OFF then do nothing until status is switches to ON
+#check it inside the air subscriber
+#make some meaningfull intervals of sending sensor info and making decision and other intervals
