@@ -33,6 +33,6 @@
   },
   "modelUpdateInterval": 30,
   "modelHistoricalDataDuration": "2h",
-  "modelCommandInterval": 5
+  "modelCommandInterval": 20
 
 }

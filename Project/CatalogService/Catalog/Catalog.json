@@ -248,7 +248,7 @@
                         },
                         {
                             "sensor_id":"e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
-                            "status":"on",
+                            "status":"ON",
                             "type":"AIR_CONDITIONER"
                         }
                     ]

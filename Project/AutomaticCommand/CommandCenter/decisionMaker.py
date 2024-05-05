@@ -31,6 +31,7 @@ class DecisionMaker:
         self.predction = None
         self.userDecisionsAvg = None
         self.suggestedValues = None
+        self.connectionError = False
         
     def findMicro(self, microName):
         for micro in self.microsInfo['micros']:
@@ -39,9 +40,15 @@ class DecisionMaker:
         return None
         
     def getServicesInfo(self):
-        
-        result = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
-        self.microsInfo = result.json()
+        try:
+            result = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
+            self.microsInfo = result.json()
+            self.connectionError = False
+        except Exception as e:
+            self.microsInfo = None
+            self.connectionError = True
+            print("Error: ", str(e))
+
 
     def getHistoricalData(self):
         try:
@@ -51,8 +58,10 @@ class DecisionMaker:
             }
             result = requests.post(f'{self.findMicro("analytics")["url"]}{self.findMicro("analytics")["port"]}/analytic/fullAnalytics', json=reqBody)
             self.historicalData = result.json()
+            self.connectionError = False
         except Exception as e:
             self.historicalData = None
+            self.connectionError = True
             print("Error: ", e)
 
 
@@ -67,9 +76,14 @@ class DecisionMaker:
             filtered_data = [entry for entry in result.json()["records"] if entry['actionType'] == 'manual']
             # print("User Decisions: ", filtered_data)
             self.userDecisions = filtered_data
+            self.connectionError = False
         except Exception as e:
             self.userDecisions = None
+            self.connectionError = True
             print("Error: ", e)
+
+        if self.connectionError:
+            return
 
 
         # Current time
@@ -148,6 +162,7 @@ class DecisionMaker:
             self.userDecisionsAvg = None
 
     def predictWithNextValues(self):
+
         temperature_records = [record for record in self.historicalData if record['type'] == 'temperature']
         humidity_records = [record for record in self.historicalData if record['type'] == 'humidity']
         # Extract temperature values and create DataFrame
@@ -306,6 +321,8 @@ class DecisionMaker:
         self.getServicesInfo()
         self.getHistoricalData()
         self.getUserCommands()
+        if self.connectionError:
+            return
         self.predictWithNextValues()
         self.makeDecision()
         self.sendCommand()
@@ -313,11 +330,11 @@ class DecisionMaker:
 
 if __name__ == "__main__":
     decisionMaker = DecisionMaker()
-    schedule.every(10).seconds.do(decisionMaker.run)
+    schedule.every(config["modelCommandInterval"]).seconds.do(decisionMaker.run)
     # Run the scheduler loop indefinitely
     while True:
         schedule.run_pending()
-        time.sleep(10)  # Sleep for 1 second to avoid high CPU usage
+        time.sleep(config["modelCommandInterval"])  # Sleep for 1 second to avoid high CPU usage
     
 
 
