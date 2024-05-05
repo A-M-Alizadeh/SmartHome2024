@@ -248,7 +248,7 @@
                         },
                         {
                             "sensor_id":"e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
-                            "status":"OFF",
+                            "status":"on",
                             "type":"AIR_CONDITIONER"
                         }
                     ]
@@ -280,6 +280,18 @@
                 {
                     "address":"Monte G33 dsdfsdf",
                     "house_id":"0e97063e-d744-4f0f-b44b-c313b47518ba",
+                    "sensors":[],
+                    "title":"Casa Blanca"
+                },
+                {
+                    "address":"Monte G33 dsdfsdf",
+                    "house_id":"03171041-8e95-4b17-8f9f-d5a0aa8acf23",
+                    "sensors":[],
+                    "title":"Casa Blanca"
+                },
+                {
+                    "address":"Monte G33 dsdfsdf",
+                    "house_id":"07796758-37c3-4342-af8a-44cb94311b04",
                     "sensors":[],
                     "title":"Casa Blanca"
                 }
