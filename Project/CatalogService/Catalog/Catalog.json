@@ -10,219 +10,6 @@
     ],
     "users":[
         {
-            "user_id":1,
-            "username":"Johnyyy",
-            "email":"john@gmail.com",
-            "password":"password",
-            "first_name":"John",
-            "last_name":"Doe",
-            "phone":"123-456-7890",
-            "houses":[
-                {
-                    "house_id":1,
-                    "address":"123 Main St",
-                    "title":"John's Home",
-                    "sensors":[
-                        {
-                            "sensor_id":1,
-                            "type":"TEMPERATURE",
-                            "status":"on"
-                        },
-                        {
-                            "sensor_id":2,
-                            "type":"HUMIDITY",
-                            "status":"on"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "user_id":2,
-            "username":"Ali",
-            "email":"ali@gmail.com",
-            "password":"123abc",
-            "first_name":"Ali",
-            "last_name":"Alizadeh",
-            "phone":"123-456-7890",
-            "houses":[
-                {
-                    "house_id":10,
-                    "address":"Corso Traiano",
-                    "title":"Ali's Home",
-                    "sensors":[
-                        {
-                            "sensor_id":10,
-                            "type":"TEMPERATURE",
-                            "status":"on"
-                        },
-                        {
-                            "sensor_id":20,
-                            "type":"HUMIDITY",
-                            "status":"on"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "email":"newuser@mail.com",
-            "first_name":"Alex",
-            "houses":[
-                {
-                    "address":"Monte Grappa 163",
-                    "house_id":"e524f858-ef45-4976-9011-7ed3fa6b2b6f",
-                    "sensors":[
-                        {
-                            "sensor_id":"ebf53852-5e99-41a9-9644-8e48a7fb2212",
-                            "status":"on",
-                            "type":"TEMPERATURE"
-                        },
-                        {
-                            "sensor_id":"c8875f59-651e-40c6-ba3b-66d189b24976",
-                            "status":"on",
-                            "type":"HUMIDITY"
-                        }
-                    ],
-                    "title":"Casa Blanca"
-                }
-            ],
-            "last_name":"Gray",
-            "password":"123abc",
-            "phone":"123-456-789",
-            "user_id":"d94641d3-902f-4e0b-89ac-b2f095aa6544",
-            "username":"GrayDev"
-        },
-        {
-            "email":"newuser@mail.com",
-            "first_name":"Alexander",
-            "houses":[
-                {
-                    "address":"Monte Grappa 163",
-                    "house_id":"41df12d4-83d6-4ab7-bdb4-2648c5cc9eea",
-                    "sensors":[
-                        {
-                            "sensor_id":"a5a263b4-bcf3-42c3-a5ac-9d248b3e047e",
-                            "status":"on",
-                            "type":"TEMPERATURE"
-                        },
-                        {
-                            "sensor_id":"7e96d19c-2312-4ca6-8271-bea88c56ff03",
-                            "status":"on",
-                            "type":"HUMIDITY"
-                        }
-                    ],
-                    "title":"Casa Blanca"
-                }
-            ],
-            "last_name":"Gray",
-            "password":"123abc",
-            "phone":"123-456-789",
-            "user_id":"7287abf5-3a0a-44eb-ac6c-210519dd2de5",
-            "username":"GrayDev"
-        },
-        {
-            "email":"newuser@mail.com",
-            "first_name":"Alex",
-            "houses":[
-                {
-                    "address":"Monte Grappa 163",
-                    "house_id":"9c954a11-b9b3-42e8-9573-58158f00c4d0",
-                    "sensors":[
-                        {
-                            "sensor_id":"3e22cfb9-79fe-4751-b370-c7d6c89ce87b",
-                            "status":"on",
-                            "type":"TEMPERATURE"
-                        },
-                        {
-                            "sensor_id":"5e5fa683-e753-4cf1-8e94-e3ced83cce82",
-                            "status":"on",
-                            "type":"HUMIDITY"
-                        }
-                    ],
-                    "title":"Casa Blanca"
-                }
-            ],
-            "last_name":"Gray",
-            "password":"123abc",
-            "phone":"123-456-789",
-            "user_id":"fec8a9d0-06b0-4ad8-bbac-b749baa62b39",
-            "username":"GrayDev"
-        },
-        {
-            "email":"newuser@mail.com",
-            "first_name":"Alex",
-            "houses":[
-                {
-                    "address":"Monte Grappa 163",
-                    "house_id":"53d789b6-1e56-4315-b1f7-a94f232f6b5c",
-                    "sensors":[
-                        {
-                            "sensor_id":"af2e4c99-65b6-495b-ac8a-1ef607bde89d",
-                            "status":"on",
-                            "type":"TEMPERATURE"
-                        },
-                        {
-                            "sensor_id":"eae44c95-1f86-49e6-9d09-211eff82c08a",
-                            "status":"on",
-                            "type":"HUMIDITY"
-                        }
-                    ],
-                    "title":"Casa Blanca"
-                }
-            ],
-            "last_name":"Gray",
-            "password":"123abc",
-            "phone":"123-456-789",
-            "user_id":"9f688079-08d0-4669-b171-9b627abdec23",
-            "username":"GrayDevrrrrrr"
-        },
-        {
-            "email":"newuser@mail.com",
-            "first_name":"Alex",
-            "houses":[
-                {
-                    "address":"Monte Grappa 163",
-                    "house_id":"1d0ced99-64ea-4bd7-9c7e-3595aee6c0c5",
-                    "sensors":[
-                        {
-                            "sensor_id":"7640af08-aa22-48a4-8f4b-a5a187e6366d",
-                            "status":"on",
-                            "type":"TEMPERATURE"
-                        },
-                        {
-                            "sensor_id":"44162ef2-0d57-4592-86f2-3e9c196acc81",
-                            "status":"on",
-                            "type":"HUMIDITY"
-                        }
-                    ],
-                    "title":"Casa Blanca"
-                },
-                {
-                    "address":"Monte G33 dsdfsdf",
-                    "house_id":"adeea66e-56e2-4fbb-96d8-1587e9bc92ec",
-                    "sensors":[
-                        {
-                            "sensor_id":"fef3d016-6296-4c4d-8766-7732345d98ae",
-                            "status":"on",
-                            "type":"TEMPERATURE"
-                        },
-                        {
-                            "sensor_id":"8f33e246-f85f-4ff8-8268-0696999cd8e0",
-                            "status":"on",
-                            "type":"HUMIDITY"
-                        }
-                    ],
-                    "title":"Casa Blanca"
-                }
-            ],
-            "last_name":"Gray",
-            "password":"123abc",
-            "phone":"123-456-789",
-            "user_id":"a3a434ea-524a-4bd0-a49f-1f6ade910b72",
-            "username":"GrayDevrrrrrr"
-        },
-        {
             "user_id":"eac499f4-7c72-4f55-85ae-4ce1e173b096",
             "username":"newAuthUsername",
             "password":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM",
@@ -248,52 +35,32 @@
                         },
                         {
                             "sensor_id":"e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
-                            "status":"ON",
+                            "status":"OFF",
                             "type":"AIR_CONDITIONER"
                         }
                     ]
                 },
                 {
-                    "address":"Monte G33 dsdfsdf",
-                    "house_id":"8fb7c276-ee8b-4935-8e16-413f72e4872a",
+                    "address":"Corso Traiano",
+                    "house_id":"1a26837d-0636-43a7-96cd-c6f88b62fb97",
                     "sensors":[
                         {
-                            "sensor_id":"e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
+                            "sensor_id":"82593b94-ef93-4103-8a68-d82cd31a36bc",
                             "status":"on",
                             "type":"AIR_CONDITIONER"
+                        },
+                        {
+                            "sensor_id":"ff4cdd3d-1a39-4505-ba03-345664439bea",
+                            "status":"on",
+                            "type":"HUMIDITY"
+                        },
+                        {
+                            "sensor_id":"0b0950b2-5dd2-4190-82c0-277e79880c88",
+                            "status":"on",
+                            "type":"TEMPERATURE"
                         }
                     ],
-                    "title":"Casa Blanca"
-                },
-                {
-                    "address":"Monte G33 dsdfsdf",
-                    "house_id":"524b2f7f-8c57-4356-ac16-eba3bd4ef8c3",
-                    "sensors":[],
-                    "title":"Casa Blanca"
-                },
-                {
-                    "address":"Monte G33 dsdfsdf",
-                    "house_id":"d61c7afc-a053-44e9-ab01-cbac05ccf678",
-                    "sensors":[],
-                    "title":"Casa Blanca"
-                },
-                {
-                    "address":"Monte G33 dsdfsdf",
-                    "house_id":"0e97063e-d744-4f0f-b44b-c313b47518ba",
-                    "sensors":[],
-                    "title":"Casa Blanca"
-                },
-                {
-                    "address":"Monte G33 dsdfsdf",
-                    "house_id":"03171041-8e95-4b17-8f9f-d5a0aa8acf23",
-                    "sensors":[],
-                    "title":"Casa Blanca"
-                },
-                {
-                    "address":"Monte G33 dsdfsdf",
-                    "house_id":"07796758-37c3-4342-af8a-44cb94311b04",
-                    "sensors":[],
-                    "title":"Casa Blanca"
+                    "title":"Second House"
                 }
             ]
         },
@@ -306,34 +73,6 @@
             "phone":"",
             "user_id":"cd5ec430-b5bf-41ac-95c7-680e3c2da492",
             "username":"PostmanUser"
-        },
-        {
-            "email":"postgray@mail.com",
-            "first_name":"Alex",
-            "houses":[
-                {
-                    "address":"Monte Grappa 163",
-                    "house_id":"1172e396-25ce-4fa0-ace9-34f2b13d11a1",
-                    "sensors":[
-                        {
-                            "sensor_id":"4fbe6411-a2fa-487e-af32-86333965de57",
-                            "status":"on",
-                            "type":"TEMPERATURE"
-                        },
-                        {
-                            "sensor_id":"668342af-415a-4f17-8fc3-16af43e8d372",
-                            "status":"on",
-                            "type":"HUMIDITY"
-                        }
-                    ],
-                    "title":"Casa Blanca"
-                }
-            ],
-            "last_name":"Gray",
-            "password":"123abc",
-            "phone":"123-456-789",
-            "user_id":"91eb7798-bb8e-4151-9a8c-97e894347d50",
-            "username":"postGray"
         },
         {
             "email":"newuser@gmail.com",
