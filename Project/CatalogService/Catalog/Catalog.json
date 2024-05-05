@@ -45,11 +45,6 @@
                     "house_id":"1a26837d-0636-43a7-96cd-c6f88b62fb97",
                     "sensors":[
                         {
-                            "sensor_id":"82593b94-ef93-4103-8a68-d82cd31a36bc",
-                            "status":"on",
-                            "type":"AIR_CONDITIONER"
-                        },
-                        {
                             "sensor_id":"ff4cdd3d-1a39-4505-ba03-345664439bea",
                             "status":"on",
                             "type":"HUMIDITY"
@@ -58,6 +53,11 @@
                             "sensor_id":"0b0950b2-5dd2-4190-82c0-277e79880c88",
                             "status":"on",
                             "type":"TEMPERATURE"
+                        },
+                        {
+                            "sensor_id":"82593b94-ef93-4103-8a68-d82cd31a36bc",
+                            "status":"on",
+                            "type":"AIR_CONDITIONER"
                         }
                     ],
                     "title":"Second House"
