@@ -35,7 +35,7 @@
                         },
                         {
                             "sensor_id":"e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
-                            "status":"OFF",
+                            "status":"ON",
                             "type":"AIR_CONDITIONER"
                         }
                     ]
@@ -106,6 +106,39 @@
             "phone":"123-456-789",
             "user_id":"a8a9fd16-0e01-4ef1-a2e3-30e2fae129e6",
             "username":"newUser1"
+        },
+        {
+            "email":"newuser33@gmail.com",
+            "first_name":"webname",
+            "houses":[
+                {
+                    "address":"Corso Vittorio Emanuele II, 11, 00186 Roma RM, Italy",
+                    "house_id":"b1172492-5d6f-4a66-8459-a8ed026f9296",
+                    "sensors":[
+                        {
+                            "sensor_id":"45930342-9d93-4b4b-92b1-12e611d3130a",
+                            "status":"on",
+                            "type":"TEMPERATURE"
+                        },
+                        {
+                            "sensor_id":"58b2d91d-8ed1-4242-a91f-453b3a5385ba",
+                            "status":"on",
+                            "type":"HUMIDITY"
+                        },
+                        {
+                            "sensor_id":"1288958f-9e49-4975-8f47-02797a5f2cf0",
+                            "status":"on",
+                            "type":"AIR_CONDITIONER"
+                        }
+                    ],
+                    "title":"HOUSE TITLE NEW #1"
+                }
+            ],
+            "last_name":"newFamilyweb",
+            "password":"123456789",
+            "phone":"123-456-789",
+            "user_id":"fbf27542-bf18-4c16-a34e-b8027664e931",
+            "username":"UserFromWeb"
         }
     ],
     "microservices":{

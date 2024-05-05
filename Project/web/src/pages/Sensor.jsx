@@ -6,7 +6,7 @@ import NewspaperSharpIcon from "@mui/icons-material/NewspaperSharp";
 import { StyledText } from "../components/text/Text.styles";
 import { useNavigate, useLocation} from "react-router-dom";
 // import Image from "../components/avatar/Image";
-import {catalogUrl, catalogPort, analyticUrl, analyticPort} from "../generalConfig";
+import {catalogUrl, catalogPort, analyticUrl, analyticPort, commandUrl, commandPort} from "../generalConfig";
 
 
 const Dashboard = () => {
@@ -17,20 +17,31 @@ const Dashboard = () => {
   const house_id = location.state.house_id;
   const houseData = location.state.house;
   const [sensorsData, setSensorsData] = useState([]);
+  const [commandStatus, setCommandStatus] = useState(null);
 
   useEffect(() => {
     getSensorsList();
-    viewSensorRecords();
   }, []);
 
   const getSensorsList = () => {
     let userData = JSON.parse(localStorage.getItem("userData"));
     userData.houses.map((item) => {
       if(item.house_id === house_id) {
-        console.log(item.sensors);
+        // console.log(item.sensors);
         setSensors(item.sensors);
+        viewSensorRecords(findTemp_Humid_SensorIds(item.sensors));
       }
     });
+  }
+
+  const findTemp_Humid_SensorIds = (sensors) => {
+    let temp_humid_sensors = [];
+    sensors.map((item) => {
+      if(item.type === 'TEMPERATURE' || item.type === 'HUMIDITY') {
+        temp_humid_sensors.push(item.sensor_id);
+      }
+    });
+    return temp_humid_sensors;
   }
 
   function findMinForSensorId(sensorId) {
@@ -44,7 +55,7 @@ const Dashboard = () => {
   }
 
   const viewSensorRecords = (sensor_ids) => {
-    console.log('this is called !!!!')
+    console.log('SENSOR IDS', sensor_ids);
     fetch(`${analyticUrl}${analyticPort}/analytic/fullAnalytics`, {
       method: 'POST',
       headers: {
@@ -52,7 +63,7 @@ const Dashboard = () => {
         'access-control-allow-origin': '*',
       },
       body: JSON.stringify({
-        sensorIds: ["3912fee4-af3f-43cf-9024-1c259f6a0459", "d04c5452-e9af-445b-adf4-415d7bfd31e7"],
+        sensorIds: sensor_ids,
         period: "4h"
     })
     }).then(response => response.json())
@@ -63,8 +74,30 @@ const Dashboard = () => {
     .catch((error) => {
       console.error('Error:', error);
     });
-
   }
+
+  const sendCommand = () => {
+    fetch(`${commandUrl}${commandPort}/command/airConiditioner`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'access-control-allow-origin': '*',
+      },
+      body: JSON.stringify({
+          sensorId: "e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
+          temperature: 50,
+          humidity: 20,
+          status: "ON",
+          actionType: "manual"
+      })
+    }).then(response => response.json())
+    .then(data => {
+      setCommandStatus(data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  };
 
   return (
     <div>
@@ -117,7 +150,7 @@ const Dashboard = () => {
                   >
                     <Grid item>
                       <StyledText variant="textTitle" style={{fontSize: 18}}>
-                      {item.type} : {item.status}
+                      {item.type} : {commandStatus? commandStatus.data.status : item.status}
                       </StyledText>
                         <StyledText style={{fontSize: 8}}>{item.sensor_id}</StyledText>
 
@@ -127,7 +160,8 @@ const Dashboard = () => {
                           <input type="text" placeholder="Enter the humidity" style={{marginTop: 5, width: '80%'}}/>
                           <input type="text" placeholder="Enter the status" style={{marginTop: 5, width: '80%'}}/>
                           <br/>
-                          <button style={{backgroundColor: 'blue', color: 'white', borderRadius: 5, padding: 5, marginTop: 5}}>Send</button>
+                          <button style={{backgroundColor: 'blue', color: 'white', borderRadius: 5, padding: 5, marginTop: 5}} onClick={()=>sendCommand()}>Send</button>
+                          {commandStatus? commandStatus.status : ''}
                         </Grid>
 
                     </Grid>

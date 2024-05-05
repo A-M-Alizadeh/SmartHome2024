@@ -7,6 +7,7 @@ import { StyledButton } from "../components/button/Button.styles";
 import { Link, useNavigate } from "react-router-dom";
 import SignupIcons from "../components/icons/SignupIcons";
 import { StyledLink } from "../components/link/Link.styles";
+import {catalogUrl, catalogPort} from "../generalConfig";
 
 const Signup = () => {
   // const [email, setEmail] = useState("");
@@ -24,9 +25,15 @@ const Signup = () => {
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
 
   const [values, setValues] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
+    username: "",
+    first_name: "newname",
+    last_name: "newFamilyName",
+    email: "newuser@gmail.com",
+    phone: "123-456-789",
+    password: "123456789",
+    confirmPassword: "123456789",
+    houseTitle: "HOUSE TITLE NEW #1",
+    houseAddress: "Corso Vittorio Emanuele II, 11, 00186 Roma RM, Italy",
   });
 
   const handleInput = (event) => {
@@ -35,23 +42,23 @@ const Signup = () => {
   };
 
   const hanldeSubmit = () => {
-    fetch("http://localhost:8082/fullRegister", {
+    fetch(`${catalogUrl}${catalogPort}/auth/fullRegister`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         user:{
-          username: 'newUser1', 
-          password: '123456789',
-          email: "newuser@gmail.com",
-          first_name: "newname",
-          last_name: "newFamilyName",
-          phone: "123-456-789",
+          username: values.username, 
+          password: values.password,
+          email: values.email,
+          first_name: values.first_name,
+          last_name: values.last_name,
+          phone: values.phone,
         },
         house:{
-          title: "New House 1",
-          address: "New House 1 Address.sq 1 block 1",
+          title: values.houseTitle,
+          address: values.houseAddress
         },
         sensors:[
           {
@@ -97,10 +104,10 @@ const Signup = () => {
           <Grid item xs={12}>
             <StyledInput
               onChange={handleInput}
-              value={values.email}
-              placeholder="Email"
-              type="email"
-              name="email"
+              value={values.username}
+              placeholder="Username"
+              type="text"
+              name="username"
               style={
                 emailBorderColor
                   ? { border: "1px solid #dddddd" }
@@ -108,6 +115,97 @@ const Signup = () => {
               }
             ></StyledInput>
           </Grid>
+
+          <Grid item xs={12}>
+            <StyledInput
+              onChange={handleInput}
+              value={values.first_name}
+              placeholder="first Name"
+              type="text"
+              name="first_name"
+              style={
+                confirmpassBorderColor
+                  ? { border: "1px solid #dddddd" }
+                  : { border: "1px solid red" }
+              }
+            ></StyledInput>
+          </Grid>
+
+          <Grid item xs={12}>
+            <StyledInput
+              onChange={handleInput}
+              value={values.last_name}
+              placeholder="Last Name"
+              type="text"
+              name="last_name"
+              style={
+                confirmpassBorderColor
+                  ? { border: "1px solid #dddddd" }
+                  : { border: "1px solid red" }
+              }
+            ></StyledInput>
+          </Grid>
+
+          <Grid item xs={12}>
+            <StyledInput
+              onChange={handleInput}
+              value={values.email}
+              placeholder="Email"
+              type="text"
+              name="email"
+              style={
+                confirmpassBorderColor
+                  ? { border: "1px solid #dddddd" }
+                  : { border: "1px solid red" }
+              }
+            ></StyledInput>
+          </Grid>
+
+          <Grid item xs={12}>
+            <StyledInput
+              onChange={handleInput}
+              value={values.phone}
+              placeholder="Phone"
+              type="text"
+              name="phone"
+              style={
+                confirmpassBorderColor
+                  ? { border: "1px solid #dddddd" }
+                  : { border: "1px solid red" }
+              }
+            ></StyledInput>
+          </Grid>
+
+          <Grid item xs={12}>
+            <StyledInput
+              onChange={handleInput}
+              value={values.houseTitle}
+              placeholder="House Title"
+              type="text"
+              name="houseTitle"
+              style={
+                confirmpassBorderColor
+                  ? { border: "1px solid #dddddd" }
+                  : { border: "1px solid red" }
+              }
+            ></StyledInput>
+          </Grid>
+
+          <Grid item xs={12}>
+            <StyledInput
+              onChange={handleInput}
+              value={values.houseAddress}
+              placeholder="House Address"
+              type="text"
+              name="houseAddress"
+              style={
+                confirmpassBorderColor
+                  ? { border: "1px solid #dddddd" }
+                  : { border: "1px solid red" }
+              }
+            ></StyledInput>
+          </Grid>
+
           <Grid item xs={12}>
             <StyledInput
               onChange={handleInput}
@@ -122,128 +220,9 @@ const Signup = () => {
               }
             ></StyledInput>
           </Grid>
-          <Grid item xs={12}>
-            <StyledInput
-              onChange={handleInput}
-              value={values.confirmPassword}
-              placeholder="Confirm Password"
-              type="password"
-              name="confirmPassword"
-              style={
-                confirmpassBorderColor
-                  ? { border: "1px solid #dddddd" }
-                  : { border: "1px solid red" }
-              }
-            ></StyledInput>
-          </Grid>
-
-
-
-
-
-
-
-
-          <Grid item xs={12}>
-            <StyledInput
-              onChange={handleInput}
-              value={values.confirmPassword}
-              placeholder="Username"
-              type="password"
-              name="confirmPassword"
-              style={
-                confirmpassBorderColor
-                  ? { border: "1px solid #dddddd" }
-                  : { border: "1px solid red" }
-              }
-            ></StyledInput>
-          </Grid>
-          <Grid item xs={12}>
-            <StyledInput
-              onChange={handleInput}
-              value={values.confirmPassword}
-              placeholder="First Name"
-              type="password"
-              name="confirmPassword"
-              style={
-                confirmpassBorderColor
-                  ? { border: "1px solid #dddddd" }
-                  : { border: "1px solid red" }
-              }
-            ></StyledInput>
-          </Grid>
-          <Grid item xs={12}>
-            <StyledInput
-              onChange={handleInput}
-              value={values.confirmPassword}
-              placeholder="Last Name"
-              type="password"
-              name="confirmPassword"
-              style={
-                confirmpassBorderColor
-                  ? { border: "1px solid #dddddd" }
-                  : { border: "1px solid red" }
-              }
-            ></StyledInput>
-          </Grid>
-          <Grid item xs={12}>
-            <StyledInput
-              onChange={handleInput}
-              value={values.confirmPassword}
-              placeholder="Phone"
-              type="password"
-              name="confirmPassword"
-              style={
-                confirmpassBorderColor
-                  ? { border: "1px solid #dddddd" }
-                  : { border: "1px solid red" }
-              }
-            ></StyledInput>
-          </Grid>
-          <Grid item xs={12}>
-            <StyledInput
-              onChange={handleInput}
-              value={values.confirmPassword}
-              placeholder="House Title"
-              type="password"
-              name="confirmPassword"
-              style={
-                confirmpassBorderColor
-                  ? { border: "1px solid #dddddd" }
-                  : { border: "1px solid red" }
-              }
-            ></StyledInput>
-          </Grid>
-          <Grid item xs={12}>
-            <StyledInput
-              onChange={handleInput}
-              value={values.confirmPassword}
-              placeholder="House Address"
-              type="password"
-              name="confirmPassword"
-              style={
-                confirmpassBorderColor
-                  ? { border: "1px solid #dddddd" }
-                  : { border: "1px solid red" }
-              }
-            ></StyledInput>
-          </Grid>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </Grid>
+
+
         <Grid item xs={11} sx={{ marginTop: { xs: 3, sm: 4, md: 5 } }}>
           <StyledButton
             onClick={hanldeSubmit}

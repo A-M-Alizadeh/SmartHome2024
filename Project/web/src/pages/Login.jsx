@@ -15,8 +15,8 @@ const Login = () => {
   const password_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
 
   const [values, setValues] = useState({
-    email: "",
-    password: "",
+    email: "newAuthUsername",
+    password: "123456789",
   });
 
   const handleInput = (event) => {
@@ -32,7 +32,7 @@ const Login = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({username: 'newAuthUsername', password: '123456789'}),
+      body: JSON.stringify({username: values.email, password: values.password}),
     })
       .then((res) => res.json())
       .then((data) => {
