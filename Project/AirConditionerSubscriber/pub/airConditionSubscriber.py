@@ -50,12 +50,13 @@ class SensorsSubscriber:
 
     def notify(self, topic, payload): #use senML
         try:
-            if "air_conditioner" in topic:
+            if f"{config['airConditionerId']}/air_conditioner" in topic:
                 # colorPrinter( f'sensor ${topic}:  ${payload}recieved','green')
                 
                 try:
                     json_string = payload.decode('utf-8')
                     data = json.loads(json_string)
+                    colorPrinter(f'AirConditioner data recieved ====> : {data}', 'green')
                     sendDataToDB(data, findMicro(self.restInfo, 'analytics'))
                     sendStatusUpdateRequest(data['v']['status'], findMicro(self.restInfo, 'catalog'))
                     if data['v']['status'] == 'ON':
@@ -92,10 +93,12 @@ if __name__ == "__main__":
     # customTopic = mqttInfo['common_topic']+"#" #listen to everything
     #listen only to specific user and air_condition
     # customTopic = mqttInfo['common_topic']+config['userId']+config['houseId']+'/'+config['airConditionerId']+"/air_condition"
-    customTopic = mqttInfo['common_topic']+config['userId']+'/+/+'+"/air_conditioner"
-    print(customTopic, '&&&&&&&&&&&&&&&&&&&')
+    # customTopic = mqttInfo['common_topic']+config['userId']+'/+/+'+"/air_conditioner"
+    # print(customTopic, '&&&&&&&&&&&&&&&&&&&')
+    topic = mqttInfo['common_topic']+config['userId']+'/'+config['houseId']+'/'+config['airConditionerId']+'/'+'air_conditioner'
 
-    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_command', mqttInfo['broker'], mqttInfo['subPort'], customTopic, mqttInfo, restInfo)
+
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+config['airConditionerId']+'Subscriber_command', mqttInfo['broker'], mqttInfo['subPort'], topic, mqttInfo, restInfo)
     subscriber.start()
 
     colorPrinter(f'AIRCONDITION Subscriber Started', 'pink')

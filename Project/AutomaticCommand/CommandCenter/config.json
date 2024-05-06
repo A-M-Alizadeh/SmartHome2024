@@ -29,7 +29,7 @@
   },
   "offHours": {
     "1": {"start": 22, "end": 7},
-    "2": {"start": 12, "end": 15}
+    "2": {"start": 14, "end": 15}
   },
   "modelUpdateInterval": 30,
   "modelHistoricalDataDuration": "2h",

@@ -76,7 +76,8 @@ const Dashboard = () => {
     });
   }
 
-  const sendCommand = () => {
+  const sendCommand = (airSensorId) => {
+    let userId = JSON.parse(localStorage.getItem("userData"))["user_id"];
     fetch(`${commandUrl}${commandPort}/command/airConiditioner`, {
       method: 'POST',
       headers: {
@@ -84,11 +85,13 @@ const Dashboard = () => {
         'access-control-allow-origin': '*',
       },
       body: JSON.stringify({
-          sensorId: "e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
-          temperature: 50,
-          humidity: 20,
-          status: "ON",
-          actionType: "manual"
+        userId: userId,
+        houseId: house_id,
+        sensorId: airSensorId,
+        temperature: 50,
+        humidity: 20,
+        status: "ON",
+        actionType: "manual"
       })
     }).then(response => response.json())
     .then(data => {
@@ -160,7 +163,7 @@ const Dashboard = () => {
                           <input type="text" placeholder="Enter the humidity" style={{marginTop: 5, width: '80%'}}/>
                           <input type="text" placeholder="Enter the status" style={{marginTop: 5, width: '80%'}}/>
                           <br/>
-                          <button style={{backgroundColor: 'blue', color: 'white', borderRadius: 5, padding: 5, marginTop: 5}} onClick={()=>sendCommand()}>Send</button>
+                          <button style={{backgroundColor: 'blue', color: 'white', borderRadius: 5, padding: 5, marginTop: 5}} onClick={()=>sendCommand(item.sensor_id)}>Send</button>
                           {commandStatus? commandStatus.status : ''}
                         </Grid>
 

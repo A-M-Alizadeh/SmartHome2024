@@ -9,6 +9,11 @@ hum_pub_path=$(pwd)"/HumidityPublisher/pub/humidityPublisher.py"
 temp_pub_path=$(pwd)"/TemperaturePublisher/pub/temperaturePublisher.py"
 subs_path=$(pwd)"/DeviceSubscribers/sub/DeviceSubscribers.py"
 
+air2_sub_path=$(pwd)"/AirConditionerSubscriber2/pub/airConditionSubscriber.py"
+auto2_path=$(pwd)"/AutomaticCommand2/CommandCenter/decisionMaker.py"
+hum2_pub_path=$(pwd)"/HumidityPublisher2/pub/humidityPublisher.py"
+temp2_pub_path=$(pwd)"/TemperaturePublisher2/pub/temperaturePublisher.py"
+
 osascript -e 'tell app "Terminal"
     do script "influxd"
 end tell'
@@ -39,5 +44,19 @@ osascript -e 'tell app "Terminal"
 end tell'
 osascript -e 'tell app "Terminal"
     do script "python3 '$subs_path'"
+end tell'
+
+# Second House
+osascript -e 'tell app "Terminal"
+    do script "python3 '$air2_sub_path'"
+end tell'
+osascript -e 'tell app "Terminal"
+    do script "python3 '$auto2_path'"
+end tell'
+osascript -e 'tell app "Terminal"
+    do script "python3 '$hum2_pub_path'"
+end tell'
+osascript -e 'tell app "Terminal"
+    do script "python3 '$temp2_pub_path'"
 end tell'
 
