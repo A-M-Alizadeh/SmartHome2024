@@ -35,7 +35,7 @@
                         },
                         {
                             "sensor_id":"e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
-                            "status":"OFF",
+                            "status":"ON",
                             "type":"AIR_CONDITIONER"
                         }
                     ]
@@ -56,11 +56,33 @@
                         },
                         {
                             "sensor_id":"82593b94-ef93-4103-8a68-d82cd31a36bc",
-                            "status":"OFF",
+                            "status":"ON",
                             "type":"AIR_CONDITIONER"
                         }
                     ],
                     "title":"Second House"
+                },
+                {
+                    "address":"Via Roma 55",
+                    "house_id":"0cc83402-2133-47e5-b216-841e13f04080",
+                    "sensors":[
+                        {
+                            "sensor_id":"e31136d9-ba6c-4021-8a6f-97eef026056a",
+                            "status":"on",
+                            "type":"HUMIDITY"
+                        },
+                        {
+                            "sensor_id":"e85dc210-7007-406c-b711-fe08982a713c",
+                            "status":"on",
+                            "type":"AIR_CONDITIONER"
+                        },
+                        {
+                            "sensor_id":"05c3b17f-5084-4a18-99b6-c8b4bbaa92f3",
+                            "status":"on",
+                            "type":"TEMPERATURE"
+                        }
+                    ],
+                    "title":"Third House"
                 }
             ]
         },

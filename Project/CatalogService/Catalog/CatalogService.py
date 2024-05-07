@@ -22,7 +22,7 @@ class PublicServer(object):
         if "fullservices" in uri:
             return json.dumps(getFullServices())
     def OPTIONS(self, *args, **kwargs):
-        cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
+        cherrypy_cors.preflight(allowed_methods=['GET', 'POST', 'PUT', 'DELETE'])
         
 class UserServer(object):
     exposed = True
@@ -49,7 +49,7 @@ class UserServer(object):
             return dataManager.delete_user(params.get("userId"))
         return "URL not found !"
     def OPTIONS(self, *args, **kwargs):
-        cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
+        cherrypy_cors.preflight(allowed_methods=['GET', 'POST', 'PUT', 'DELETE'])
 
 class HouseServer(object):
     exposed = True
@@ -77,7 +77,7 @@ class HouseServer(object):
         return "URL not found !"
     
     def OPTIONS(self, *args, **kwargs):
-        cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
+        cherrypy_cors.preflight(allowed_methods=['GET', 'POST', 'PUT', 'DELETE'])
         
 
 class DeviceServer(object):
@@ -110,7 +110,7 @@ class DeviceServer(object):
             return dataManager.delete_sensor(params.get("userId").replace('"', ''), params.get("houseId").replace('"', ''), params.get("sensorId").replace('"', ''))
 
     def OPTIONS(self, *args, **kwargs):
-        cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
+        cherrypy_cors.preflight(allowed_methods=['GET', 'POST', 'PUT', 'DELETE'])
 
 # -------------------------------------------- Auth --------------------------------------------
 class AuthServer(object):
@@ -140,7 +140,7 @@ class AuthServer(object):
     
     #fixing cors preflight by OPTIONS method
     def OPTIONS(self, *args, **kwargs):
-        cherrypy_cors.preflight(allowed_methods=['GET', 'POST'])
+        cherrypy_cors.preflight(allowed_methods=['GET', 'POST', 'PUT', 'DELETE'])
 
 
 # class Server(object):
