@@ -151,8 +151,17 @@ const Dashboard = () => {
       alert('Please fill all the fields');
       return;
     }
-
+    
     let userId = JSON.parse(localStorage.getItem("userData"))["user_id"];
+    console.log('BODY', JSON.stringify({
+      userId: userId,
+      houseId: house_id,
+      sensorId: airSensorId,
+      temperature: parseFloat(tempValue),
+      humidity: parseFloat(humidValue),
+      status: statusValue,
+      actionType: "manual"
+    }))
     fetch(`${commandUrl}${commandPort}/command/airConiditioner`, {
       method: 'POST',
       headers: {
@@ -163,8 +172,8 @@ const Dashboard = () => {
         userId: userId,
         houseId: house_id,
         sensorId: airSensorId,
-        temperature: tempValue,
-        humidity: humidValue,
+        temperature: parseFloat(tempValue),
+        humidity: parseFloat(humidValue),
         status: statusValue,
         actionType: "manual"
       })

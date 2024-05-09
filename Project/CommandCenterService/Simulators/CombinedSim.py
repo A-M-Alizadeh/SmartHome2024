@@ -4,8 +4,8 @@ import random
 
 class CombinedSim:
     def __init__(self):
-        self.humiditySim = HumiditySim.HumiditySensor(40, 3)
-        self.temperatureSim = TemperatureSim.TemperatureSensor(20, 1)
+        self.humiditySim = HumiditySim.HumiditySensor(50, 20)
+        self.temperatureSim = TemperatureSim.TemperatureSensor(25, 10)
 
     def getHumidity(self,sensor_id,type,unit):
         return self.humiditySim.generate_humidity_data(sensor_id,type,unit)

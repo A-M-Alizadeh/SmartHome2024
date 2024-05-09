@@ -63,6 +63,7 @@ class DecisionMaker:
 
     def getUserCommands(self):
         try:
+            print("Getting User Decisions............../ AIR2", self.sensorsInfo["airConditioner"], config["modelHistoricalDataDuration"])
             reqBody = {
                 "sensorId": self.sensorsInfo["airConditioner"],
                 "period": config["modelHistoricalDataDuration"]
@@ -70,13 +71,13 @@ class DecisionMaker:
             result = requests.post(f'{self.findMicro("analytics")["url"]}{self.findMicro("analytics")["port"]}/analytic/commandAnalytics', json=reqBody)
             #filter the manual commands
             filtered_data = [entry for entry in result.json()["records"] if entry['actionType'] == 'manual']
-            # print("User Decisions: ", filtered_data)
+            print("User Decisions: ", filtered_data)
             self.userDecisions = filtered_data
             self.connectionError = False
         except Exception as e:
             self.userDecisions = None
             self.connectionError = True
-            print("Error: ", e)
+            print("Error: ", str(e))
 
         if self.connectionError:
             return
@@ -95,16 +96,17 @@ class DecisionMaker:
         # Convert time window to string format matching the data
         time_window_start_str = time_window_start.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00')
         time_window_end_str = time_window_end.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00')
-        # print("Time Window Start:", time_window_start_str)
-        # print("Time Window End:", time_window_end_str)
+        print("Time Window Start:", time_window_start_str)
+        print("Time Window End:", time_window_end_str)
+        print("Filtered Data:", filtered_data)
         # Find items within the time window
         matching_items = [item for item in filtered_data if time_window_start_str <= item['time'] <= time_window_end_str]
-        # print("Matching Items:")
-        # print(matching_items)
+        print("Matching Items:")
+        print(matching_items)
 
         # print("Matching Items:", matching_items[0:5])
         if len(matching_items) > 0:
-
+            print("Matching Items Found............../ AIR2")
             # Extract temperature and humidity values from the records
             temperatures = [record['temperature'] for record in matching_items]
             humidities = [record['humidity'] for record in matching_items]
@@ -133,7 +135,7 @@ class DecisionMaker:
                 "humidity": overall_weighted_avg_humid
             }
         else:
-            # print("No matching items found.")
+            print("No matching items found.")
             self.userDecisionsAvg = None
 
     def predictWithNextValues(self):
@@ -152,20 +154,20 @@ class DecisionMaker:
         temperature_df = temperature_df[:min_size]
         humidity_df = humidity_df[:min_size]
 
-        # # Remove time information from one DataFrame and create a separate DataFrame for timestamps
-        time_df = pd.DataFrame({'Time': [entry['time'] for record in temperature_records for entry in record['records']]})
-        time_df['Time'] = pd.to_datetime(time_df['Time'])
-        time_diff = time_df['Time'].diff().fillna(pd.Timedelta(seconds=0))
-        time_df.reset_index(drop=True, inplace=True)
-        time_diff_mean = time_diff.mean()
-        time_diff = time_diff.apply(lambda x: time_diff_mean if x == pd.Timedelta(seconds=0) else x)
-        # Create a regular time series
-        start_time = time_df['Time'].iloc[0]
-        end_time = time_df['Time'].iloc[-1]
-        regular_time_series = pd.date_range(start=start_time, end=end_time, freq=time_diff_mean)
+        # Remove time information from one DataFrame and create a separate DataFrame for timestamps
+        # time_df = pd.DataFrame({'Time': [entry['time'] for record in temperature_records for entry in record['records']]})
+        # time_df['Time'] = pd.to_datetime(time_df['Time'])
+        # time_diff = time_df['Time'].diff().fillna(pd.Timedelta(seconds=0))
+        # time_df.reset_index(drop=True, inplace=True)
+        # time_diff_mean = time_diff.mean()
+        # time_diff = time_diff.apply(lambda x: time_diff_mean if x == pd.Timedelta(seconds=0) else x)
+        # # Create a regular time series
+        # start_time = time_df['Time'].iloc[0]
+        # end_time = time_df['Time'].iloc[-1]
+        # regular_time_series = pd.date_range(start=start_time, end=end_time, freq=time_diff_mean)
 
-        # Reindex DataFrame with the regular time series
-        timeee_df = time_df.set_index('Time').reindex(regular_time_series).reset_index()
+        # # Reindex DataFrame with the regular time series
+        # timeee_df = time_df.set_index('Time').reindex(regular_time_series).reset_index()
 
         # Fit ARIMA model for temperature
         # print("Temperature Train: ", temperature_df)
@@ -287,8 +289,10 @@ class DecisionMaker:
         # self.getServicesInfo()
         self.getHistoricalData()
         self.getUserCommands()
+        print("--------------Step1")
         if self.connectionError:
             return
+        print("-------------------Step2")
         self.predictWithNextValues()
         self.makeDecision()
         self.sendCommand()
