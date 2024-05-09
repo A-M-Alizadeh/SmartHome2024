@@ -6,10 +6,6 @@ from CommandCenter.commandPublisher import CommandPublisher
 import requests
 import os
 
-config = {}
-path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-with open(f'{path}/CommandCenter/config.json') as json_file:
-        config = json.load(json_file)
 #--------------------------------------------REST API------------------------------------------------
 def getConnectionInfo():
     response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
@@ -49,8 +45,16 @@ class Server(object):
 
 # -------------------------------------------- Main --------------------------------------------
 if __name__ == '__main__':
+    config = {}
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(f'{path}/CommandCenter/config.json') as json_file:
+        config = json.load(json_file)
+
     connectionInfo = getConnectionInfo()
     commandPublisher = CommandPublisher(connectionInfo['clientId']+"Publisher_command", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    commandPublisher.readConfig()
+    commandPublisher.getConnectionInfo()
+    commandPublisher.getSensorData()
     commandPublisher.start()
     
     serverConf = requests.get(f"{config['baseUrl']}{config['basePort']}/public?apiinfo=command")

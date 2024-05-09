@@ -10,6 +10,8 @@ from Utils.Utils import ApiConfReader,colorPrinter, getFullServices
 from Catalog.DataManager import DataManager
 from Auth.tools import check_jwt
 import cherrypy_cors
+
+
 class PublicServer(object):
     exposed =True
     def GET(self, *uri, **params):

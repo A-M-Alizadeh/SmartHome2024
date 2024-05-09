@@ -6,12 +6,6 @@ from DBConnector.influx.influxUtil import InfluxDBManager
 import requests
 import os
 
-config = {}
-path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-with open(f'{path}/DBConnector/config.json') as json_file:
-        config = json.load(json_file)
-
-
 class AnalyticsServer(object):
     exposed = True
 
@@ -98,6 +92,12 @@ class DBConnectorServer(object):
 
 # -------------------------------------------- Main --------------------------------------------
 if __name__ == '__main__':
+
+    config = {}
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(f'{path}/DBConnector/config.json') as json_file:
+        config = json.load(json_file)
+
     dbConnector = InfluxDBManager()
     serverConf = requests.get(f"{config['baseUrl']}{config['basePort']}/public?apiinfo=analytics")
     serverConf = serverConf.json()

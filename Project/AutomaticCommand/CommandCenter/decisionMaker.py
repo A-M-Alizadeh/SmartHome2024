@@ -10,11 +10,6 @@ import time
 # statsmodels 0.14.1
 
 
-config = {}
-path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-with open(f'{path}/CommandCenter/config.json') as json_file:
-        config = json.load(json_file)
-
 class DecisionMaker:
     def __init__(self) -> None:
         self.microsInfo = None
@@ -296,7 +291,8 @@ class DecisionMaker:
 
     def sendCommand(self):
         try:
-            url = f'{config["commandUrl"]}{config["commandPort"]}/command/airConiditioner'
+            url = f'{self.findMicro("command")["url"]}{self.findMicro("command")["port"]}/command/airConiditioner'
+            # url = f'{config["commandUrl"]}{config["commandPort"]}/command/airConiditioner'
             payload = {
                 "userId": config["userId"],
                 "houseId": config["houseId"],
@@ -320,7 +316,7 @@ class DecisionMaker:
             print('An error occurred with the Auto Command: ', str(e))
 
     def run(self):
-        self.getServicesInfo()
+        # self.getServicesInfo()
         self.getHistoricalData()
         self.getUserCommands()
         if self.connectionError:
@@ -331,7 +327,13 @@ class DecisionMaker:
 
 
 if __name__ == "__main__":
+    config = {}
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(f'{path}/CommandCenter/config.json') as json_file:
+        config = json.load(json_file)
+        
     decisionMaker = DecisionMaker()
+    decisionMaker.getServicesInfo()
     schedule.every(config["modelCommandInterval"]).seconds.do(decisionMaker.run)
     # Run the scheduler loop indefinitely
     while True:
