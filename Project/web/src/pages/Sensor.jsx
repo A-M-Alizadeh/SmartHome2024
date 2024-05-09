@@ -179,22 +179,22 @@ const Dashboard = () => {
   };
 
   const deleteSensor = (sensor_id) => {
-    // let userData = JSON.parse(localStorage.getItem("userData"));
-    // fetch(`${catalogUrl}${catalogPort}/device/deletesensor?userId=${userData.user_id}&houseId=${house_id}&sensorId=${sensor_id}`, {
-    //   method: 'DELETE',
-    //   headers: {
-    //     'Authorization': `Bearer ${userData.password}`
-    //   }
-    // }).then(response => response.json())
-    //   .then(data => {
-    //     console.log('Success:', data);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error:', error);
-    //   })
-    //   .finally(() => {
-    //     getSensorsList();
-    //   });
+    let userData = JSON.parse(localStorage.getItem("userData"));
+    fetch(`${catalogUrl}${catalogPort}/device/deletesensor?userId=${userData.user_id}&houseId=${house_id}&sensorId=${sensor_id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${userData.password}`
+      }
+    }).then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+      .finally(() => {
+        getSensorsList();
+      });
   }
 
   return (

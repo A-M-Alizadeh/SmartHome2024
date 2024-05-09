@@ -127,7 +127,10 @@ class AuthServer(object):
         if "register" in uri:
             return dataManager.register_user(json.loads(cherrypy.request.body.read()))
         if "fullRegister" in uri:
-            return dataManager.full_register(json.loads(cherrypy.request.body.read()))
+            result = dataManager.full_register(json.loads(cherrypy.request.body.read()))
+            if result == False:
+                raise cherrypy.HTTPError(400, "User already exists")
+            return json.dumps(result)
         #TODO this one needs check_jwt
         if "logout" in uri:
             bearer = cherrypy.request.headers.get("Authorization").split(" ")[1]
@@ -145,72 +148,17 @@ class AuthServer(object):
         cherrypy_cors.preflight(allowed_methods=['GET', 'POST', 'PUT', 'DELETE'])
 
 
-# class Server(object):
-#     exposed = True
-#     @cherrypy.tools.check_jwt()
-# -------------------------------------------- CRUD --------------------------------------------
-# -------------------------------------------- Read --------------------------------------------
-    # def GET(self, *uri, **params):
-        # if "apiinfo" in params:
-        #       return json.dumps(ApiConfReader(params.get("apiinfo")))
-        # -------------------------------------------- Full --------------------------------------------
-        # if "allusers" in uri:
-        #     return json.dumps(get_all_users())
-        # if "allhouses" in uri:
-        #     return json.dumps(get_user_houses(params.get("userId")))
-        # if "allsensors" in uri:
-        #     return json.dumps(get_all_sensors(params.get("userId"), params.get("houseId")))
-        # -------------------------------------------- Find By Id --------------------------------------------
-        # if "finduser" in uri:
-        #     return json.dumps(get_user_by_id(params.get("userId")))
-        # if "findhouse" in uri:
-        #     return json.dumps(get_house_by_id(params.get("userId"), params.get("houseId")))
-        # if "findsensor" in uri:
-        #     return json.dumps(get_sensor_by_id(params.get("userId"), params.get("houseId"), params.get("sensorId")))
-        # -------------------------------------------- Find Only By Id --------------------------------------------
-        # if "findhouseonly" in uri:
-        #     return json.dumps(find_house_only_by_id(params.get("houseId")))
-        # if "findsensoronly" in uri:
-        #     return json.dumps(find_sensor_only_by_id(params.get("sensorId")))
-        
-        # return "URL not found !"
+@staticmethod
+def error_page_default(status, message, traceback, version):
+    cherrypy.response.headers['Content-Type'] = 'application/json'
+    # Customize error response based on status code
+    if status == 400:
+        return json.dumps({"error": {"code": status, "message": message}})
+    else:
+        return json.dumps({"error": {"code": status, "message": message}})
 
-# -------------------------------------------- Create --------------------------------------------
-    # def POST(self, *uri, **params):
-        # if "fullregister" in uri:
-        #     return full_register(json.loads(cherrypy.request.body.read()))
-        # if "newuser" in uri:
-        #     return new_user(json.loads(cherrypy.request.body.read()))
-        # if "newhouse" in uri:
-        #     return new_house(params.get("userId"), json.loads(cherrypy.request.body.read()))
-        # if "newsensor" in uri:
-        #     return new_sensor(params.get("userId"), params.get("houseId"), json.loads(cherrypy.request.body.read()))
-        # return "URL not found !"
-
-# -------------------------------------------- Update --------------------------------------------
-    # def PUT(self, *uri, **params):
-    #     if "updateuser" in uri:
-    #         return update_user(params.get("userId"), json.loads(cherrypy.request.body.read()))
-    #     if "updatehouse" in uri:
-    #         return update_house(params.get("userId"), params.get("houseId"), json.loads(cherrypy.request.body.read()))
-    #     if "updatesensor" in uri:
-    #         return update_sensor(params.get("userId"), params.get("houseId"), params.get("sensorId"), json.loads(cherrypy.request.body.read()))
-    #     return "URL not found !"
-
-# -------------------------------------------- Delete --------------------------------------------
-    # def DELETE(self, *uri, **params):
-    #     if "deleteuser" in uri:
-    #         return delete_user(params.get("userId"))
-    #     if "deletehouse" in uri:
-    #         return delete_house(params.get("userId"), params.get("houseId"))
-    #     if "deletesensor" in uri:
-    #         return delete_sensor(params.get("userId"), params.get("houseId"), params.get("sensorId"))
-    #     return "URL not found !"
-    
-    # def stopServer(self):
-    #     cherrypy.engine.exit()
-    #     return "Server stopped !"
-
+# Configure CherryPy to use the custom error handler globally
+cherrypy.config.update({'error_page.default': error_page_default})
 
 # -------------------------------------------- Main --------------------------------------------
 

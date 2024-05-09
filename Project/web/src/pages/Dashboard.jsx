@@ -70,24 +70,24 @@ const Dashboard = () => {
   }
 
   const deleteHouse = (house_id) => {
-    // let userData = JSON.parse(localStorage.getItem("userData"));
-    // fetch(`${catalogUrl}${catalogPort}/house/deletehouse?userId=${userData.user_id}&houseId=${house_id}`, {
-    //   method: 'DELETE',
-    //   headers: {
-    //     'Authorization': `Bearer ${userData.password}`
-    //   }})
-    // .then(response => response.json())
-    //   .then(data => {
-    //     console.log('Success:', data);
+    let userData = JSON.parse(localStorage.getItem("userData"));
+    fetch(`${catalogUrl}${catalogPort}/house/deletehouse?userId=${userData.user_id}&houseId=${house_id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${userData.password}`
+      }})
+    .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
         
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error:', error);
-    //   })
-    //   .finally(() => {
-    //     console.log('done');
-    //     getHousesList();
-    //   });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+      .finally(() => {
+        console.log('done');
+        getHousesList();
+      });
   }
 
   return (

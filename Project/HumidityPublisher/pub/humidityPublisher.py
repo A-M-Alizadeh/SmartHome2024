@@ -65,8 +65,9 @@ if __name__ == "__main__":
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     with open(f'{path}/Utils/config.json') as json_file:
         config = json.load(json_file)
-        
-    connectionInfo = getConnectionInfo()
+    
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
+    connectionInfo = response.json()
     # sensorData = getSensorData()
 
     publisher = SensorPublisher(connectionInfo['clientId']+config["humidSensorId"]+"Publisher_humid", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber

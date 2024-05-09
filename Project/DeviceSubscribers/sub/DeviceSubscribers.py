@@ -5,11 +5,6 @@ from Utils.Utils import colorPrinter
 import json
 import os
 
-#--------------------------------------------REST API------------------------------------------------
-def getConnectionInfo():
-    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
-    data = response.json()
-    return data
 #--------------------------------------------MQTT------------------------------------------------
 class SensorsSubscriber:
     def __init__(self,clientID, broker, port, topic, mqttInfo, restInfo):
@@ -63,8 +58,8 @@ if __name__ == "__main__":
     with open(f'{path}/Utils/config.json') as json_file:
         config = json.load(json_file)
 
-
-    connectionInfo = getConnectionInfo()
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
+    connectionInfo = response.json()
     mqttInfo = connectionInfo['mqtt']
     restInfo = connectionInfo['micros']
 

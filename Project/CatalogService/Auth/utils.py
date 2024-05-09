@@ -3,7 +3,13 @@ from Auth.config import SECRET_KEY
 from Utils.Utils import colorPrinter
 
 def encode_token(password):
-    return jwt.encode({"password": password}, SECRET_KEY, algorithm='HS256')
+    try:
+        encoded_token = jwt.encode({"password": str(password)}, SECRET_KEY, algorithm='HS256')
+        return encoded_token
+    except Exception as e:
+        print('Error encoding token:', e)
+        colorPrinter(str(e), "red")
+        return None
 
 def decode_token(token):
     try:
@@ -22,7 +28,8 @@ def check_user_password(userId, password):
 
 # if __name__ == '__main__':
 #     password = "123456789"
-#     encoded = encode_token(password)
+#     # encoded = encode_token(password)
+#     encoded = jwt.encode({"password": str(password)}, SECRET_KEY, algorithm='HS256')
 #     decoded = decode_token(encoded)
 #     colorPrinter(str(encoded), "green")
 #     colorPrinter(str(decoded), "blue")

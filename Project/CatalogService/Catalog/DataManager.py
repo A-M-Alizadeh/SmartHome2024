@@ -16,20 +16,27 @@ class DataManager:
         self.catalog = CatalogReader()
 
     def full_register(self,input):
-        user = input["user"]
-        house = input["house"]
-        sensors = input["sensors"]
-        newUser = User(user["username"], user["password"], user["email"], user["first_name"], user["last_name"], user["phone"])
-        newHouse = House(house["address"], house["title"])
-        for sensor in sensors:
-            newSensor = Sensor(SensorTypes[sensor["type"]])
-            newHouse.add_sensor(newSensor)
-        newUser.add_house(newHouse)
-        addUsertoCatalog(newUser.toJson())
-        return newUser.toJson()
+        try:
+            if self.if_user_exists(input["user"]["username"]):
+                return False
+            user = input["user"]
+            house = input["house"]
+            sensors = input["sensors"]
+            newUser = User(user["username"], encode_token(user["password"]), user["email"], user["first_name"], user["last_name"], user["phone"])
+            newHouse = House(house["address"], house["title"])
+            for sensor in sensors:
+                newSensor = Sensor(SensorTypes[sensor["type"]])
+                newHouse.add_sensor(newSensor)
+            newUser.add_house(newHouse)
+            addUsertoCatalog(newUser.toJson())
+            return newUser.toJson()
+        except Exception as e:
+            colorPrinter(str(e), "red")
+            return None
 
     #-------------------------------------------- Auth --------------------------------------------
     def if_user_exists(self,username):
+        colorPrinter('HHHHHOOOOOOOOO USER EXISTS', "yellow")
         users = CatalogReader()["users"]
         for user in users:
             if user.get("username") == username:
@@ -37,12 +44,20 @@ class DataManager:
         return False
     
     def register_user(self,user):
-        if self.if_user_exists(user["username"]):
-            return "User already exists"
-        user["password"] = encode_token(user["password"])
-        newUser = User(user["username"], user["password"], user["email"])
-        addUsertoCatalog(newUser.toJson())
-        return newUser.toJson()
+        colorPrinter('HHHHHOOOOOOOOO', "yellow")
+        try:
+            if self.if_user_exists(user["username"]):
+              return {"error": "User already exists"}
+            colorPrinter(f'HHHHHOOOOOOOOO {user["password"]}', "yellow")
+            user["password"] = encode_token(user["password"])
+            colorPrinter(f'HHHHHOOOOOOOOO {user["password"]}', "yellow")
+            newUser = User(user["username"], user["password"], user["email"])
+            addUsertoCatalog(newUser.toJson())
+            return newUser.toJson()
+        except Exception as e:
+            colorPrinter(str(e), "red")
+            return None
+
 
     def login_user(self,user):
         colorPrinter(str(user), "yellow")

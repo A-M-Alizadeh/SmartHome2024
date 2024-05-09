@@ -32,7 +32,7 @@
     "2": {"start": 12, "end": 14}
   },
   "modelUpdateInterval": 30,
-  "modelHistoricalDataDuration": "3d",
+  "modelHistoricalDataDuration": "5m",
   "modelCommandInterval": 20
 
 }

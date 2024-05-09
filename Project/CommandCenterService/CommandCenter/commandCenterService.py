@@ -6,12 +6,6 @@ from CommandCenter.commandPublisher import CommandPublisher
 import requests
 import os
 
-#--------------------------------------------REST API------------------------------------------------
-def getConnectionInfo():
-    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
-    data = response.json()
-    return data
-
 class Server(object):
     exposed = True
 
@@ -50,7 +44,10 @@ if __name__ == '__main__':
     with open(f'{path}/CommandCenter/config.json') as json_file:
         config = json.load(json_file)
 
-    connectionInfo = getConnectionInfo()
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
+    data = response.json()
+
+    connectionInfo = data
     commandPublisher = CommandPublisher(connectionInfo['clientId']+"Publisher_command", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
     commandPublisher.readConfig()
     commandPublisher.getConnectionInfo()

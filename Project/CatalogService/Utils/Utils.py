@@ -136,7 +136,7 @@ def isValideToken(token): # Check if a token is valid in the Catalog.json file
 def addUsertoCatalog(user): # Add a user to the Catalog.json file
     data = CatalogReader()
     data["users"].append(json.loads(user))
-    colorPrinter(str(data), "blue")
+    # colorPrinter(str(data), "blue")
     CatalogWriter(data)
     return user
 

@@ -8,27 +8,6 @@ from Simulators.CombinedSim import CombinedSim
 import json
 import os
 
-# config = {}
-# path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# with open(f'{path}/CommandCenter/config.json') as json_file:
-#         config = json.load(json_file)
-#--------------------------------------------REST API------------------------------------------------
-# def getConnectionInfo():
-#     response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
-#     data = response.json()
-#     return data
-
-# def getSensorData():
-#     data = {}
-#     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#     with open(f'{path}/CommandCenter/config.json') as json_file:
-#         data = json.load(json_file)
-#     url = f"{config['baseUrl']}{config['basePort']}/device/findsensor?userId={data['userId']}&houseId={data['houseId']}&sensorId={data['airConditionerId']}"
-#     headers = {'Content-Type': 'application/json', 'Authorization': f'Bearer {data["token"]}'}
-#     response = requests.get(url, headers={'Content-Type': 'application/json', 'Authorization': f'{data["token"]}'})
-#     data = response.json()
-#     colorPrinter(f'Sensor Data Received: {data}', 'yellow')
-#     return data
 
 #--------------------------------------------MQTT------------------------------------------------
 class CommandPublisher:

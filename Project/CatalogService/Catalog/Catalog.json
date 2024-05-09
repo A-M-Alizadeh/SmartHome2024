@@ -6,6 +6,14 @@
         {
             "user_id":"eac499f4-7c72-4f55-85ae-4ce1e173b096",
             "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM"
+        },
+        {
+            "user_id":"cd5ec430-b5bf-41ac-95c7-680e3c2da492",
+            "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM"
+        },
+        {
+            "user_id":"c79acbf4-9201-45b5-8e80-187e584440b8",
+            "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM"
         }
     ],
     "users":[
@@ -83,111 +91,41 @@
                         }
                     ],
                     "title":"Third House"
-                },
-                {
-                    "address":"sadfasdfasdf",
-                    "house_id":"0ff09ada-e84c-471f-84ed-9ec55470c456",
-                    "sensors":[
-                        {
-                            "sensor_id":"92172675-e24c-4d00-a980-3cdc9c951d78",
-                            "status":"on",
-                            "type":"TEMPERATURE"
-                        },
-                        {
-                            "sensor_id":"73816e25-dedd-4bf1-910a-844378de2c5b",
-                            "status":"on",
-                            "type":"HUMIDITY"
-                        },
-                        {
-                            "sensor_id":"1acec7b6-1efb-4204-9662-0d75a897c285",
-                            "status":"on",
-                            "type":"AIR_CONDITIONER"
-                        },
-                        {
-                            "sensor_id":"95dcceff-26bc-40b8-991f-991715adb495",
-                            "status":"on",
-                            "type":"AIR_CONDITIONER"
-                        }
-                    ],
-                    "title":"asdfasdf"
                 }
             ]
-        },
-        {
-            "email":"postman@mail.com",
-            "first_name":"",
-            "houses":[],
-            "last_name":"",
-            "password":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM",
-            "phone":"",
-            "user_id":"cd5ec430-b5bf-41ac-95c7-680e3c2da492",
-            "username":"PostmanUser"
         },
         {
             "email":"newuser@gmail.com",
             "first_name":"newname",
             "houses":[
                 {
-                    "address":"New House 1 Address.sq 1 block 1",
-                    "house_id":"eeda44a4-f5d3-44d8-8eab-51a78ec732ef",
+                    "address":"IN THE CITY",
+                    "house_id":"60f39d13-06e4-4c0f-92be-d8ea2c544479",
                     "sensors":[
                         {
-                            "sensor_id":"4e736323-62ad-4af6-9699-592ca235c328",
+                            "sensor_id":"d3790785-52f3-4a86-b8b6-b887f8a139d2",
                             "status":"on",
                             "type":"TEMPERATURE"
                         },
                         {
-                            "sensor_id":"f4ca9d0a-92d7-45df-92c1-6cd41e57eca1",
+                            "sensor_id":"a6417c50-98db-4858-b931-b63334b440e6",
                             "status":"on",
                             "type":"HUMIDITY"
                         },
                         {
-                            "sensor_id":"57436523-5420-42b3-bca6-36803b0b0689",
+                            "sensor_id":"e43874d4-f479-443f-9069-c392a69be2bd",
                             "status":"on",
                             "type":"AIR_CONDITIONER"
                         }
                     ],
-                    "title":"New House 1"
+                    "title":"MY HOUSE"
                 }
             ],
             "last_name":"newFamilyName",
-            "password":"123456789",
+            "password":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM",
             "phone":"123-456-789",
-            "user_id":"a8a9fd16-0e01-4ef1-a2e3-30e2fae129e6",
-            "username":"newUser1"
-        },
-        {
-            "email":"newuser33@gmail.com",
-            "first_name":"webname",
-            "houses":[
-                {
-                    "address":"Corso Vittorio Emanuele II, 11, 00186 Roma RM, Italy",
-                    "house_id":"b1172492-5d6f-4a66-8459-a8ed026f9296",
-                    "sensors":[
-                        {
-                            "sensor_id":"45930342-9d93-4b4b-92b1-12e611d3130a",
-                            "status":"on",
-                            "type":"TEMPERATURE"
-                        },
-                        {
-                            "sensor_id":"58b2d91d-8ed1-4242-a91f-453b3a5385ba",
-                            "status":"on",
-                            "type":"HUMIDITY"
-                        },
-                        {
-                            "sensor_id":"1288958f-9e49-4975-8f47-02797a5f2cf0",
-                            "status":"on",
-                            "type":"AIR_CONDITIONER"
-                        }
-                    ],
-                    "title":"HOUSE TITLE NEW #1"
-                }
-            ],
-            "last_name":"newFamilyweb",
-            "password":"123456789",
-            "phone":"123-456-789",
-            "user_id":"fbf27542-bf18-4c16-a34e-b8027664e931",
-            "username":"UserFromWeb"
+            "user_id":"c79acbf4-9201-45b5-8e80-187e584440b8",
+            "username":"user1"
         }
     ],
     "microservices":{

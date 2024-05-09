@@ -8,13 +8,6 @@ from Simulators.CombinedSim import CombinedSim
 import json
 import os
 
-
-#--------------------------------------------REST API------------------------------------------------
-def getConnectionInfo():
-    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
-    data = response.json()
-    return data
-
 #--------------------------------------------MQTT------------------------------------------------
 class SensorPublisher:
     def __init__(self, clientID, broker, port, topic):
@@ -67,8 +60,8 @@ if __name__ == "__main__":
     with open(f'{path}/Utils/config.json') as json_file:
         config = json.load(json_file)
 
-    connectionInfo = getConnectionInfo()
-    # sensors = getSensorsList()
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
+    connectionInfo = response.json()
 
     publisher = SensorPublisher(connectionInfo['clientId']+config["tempSensorId"]+"Publisher_temp", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
     publisher.getConnectionInfo()

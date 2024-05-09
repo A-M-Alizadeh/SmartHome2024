@@ -11,10 +11,6 @@ class AnalyticsServer(object):
 
     def GET(self, *uri, **params):
         return "Analytics GET  Server !"
-        # if "deleter" in uri:
-        #     colorPrinter("Deleting data", "red")
-        #     dbConnector.myDelete()
-        #     return "Analytics GET  Server !"
     
     def POST(self, *uri, **params):
         if "analytics" in uri:
@@ -30,7 +26,7 @@ class AnalyticsServer(object):
             data = json.loads(cherrypy.request.body.read())
             return json.dumps(dbConnector.readCommands(data["sensorId"], data["period"])) #this one does not work properly
         # if "customPeriod" in uri:
-        #write a function to get data from influxdb with custom period
+        #write a function to get data from influxdb with custom period with start and end time
 
     def PUT(self, *uri, **params):
         return "Analytics PUT  Server !"

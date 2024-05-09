@@ -28,6 +28,7 @@ class DecisionMaker:
         self.suggestedValues = None
         self.connectionError = False
         
+
     def findMicro(self, microName):
         for micro in self.microsInfo['micros']:
             if micro['name'] == microName:
@@ -103,23 +104,6 @@ class DecisionMaker:
 
         # print("Matching Items:", matching_items[0:5])
         if len(matching_items) > 0:
-            # getting the avg of the user decisions
-            # Initialize variables to store the sum of temperature and humidity
-            # total_temp = 0
-            # total_humid = 0
-
-            # # Iterate through the data and sum up temperature and humidity
-            # for item in matching_items:
-            #     total_temp += item['temperature']
-            #     total_humid += item['humidity']
-
-            # # Calculate the average temperature and humidity
-            # avg_temp = total_temp / len(matching_items)
-            # avg_humid = total_humid / len(matching_items)
-
-            # # print("Average Temperature:", avg_temp)
-            # # print("Average Humidity:", avg_humid)
-            # Calculate weighted averages
 
             # Extract temperature and humidity values from the records
             temperatures = [record['temperature'] for record in matching_items]
@@ -143,10 +127,6 @@ class DecisionMaker:
             # Calculate overall weighted average
             overall_weighted_avg_temp = sum(weight * avg_temp for weight, avg_temp in zip(weights, weighted_avg_temps))
             overall_weighted_avg_humid = sum(weight * avg_humid for weight, avg_humid in zip(weights, weighted_avg_humids))
-
-            # Calculate weighted averages
-            # weighted_avg_temperature = sum(weight * temp for weight, temp in zip(weights, temperatures))
-            # weighted_avg_humidity = sum(weight * humid for weight, humid in zip(weights, humidities))
 
             self.userDecisionsAvg = {
                 "temperature": overall_weighted_avg_temp,
@@ -186,18 +166,6 @@ class DecisionMaker:
 
         # Reindex DataFrame with the regular time series
         timeee_df = time_df.set_index('Time').reindex(regular_time_series).reset_index()
-        # print("Temperature DataFrame: ", len(temperature_df))
-        # print(temperature_df)
-        # print("\nHumidity DataFrame: ", len(humidity_values))
-        # print(humidity_df)
-        # print("\nTime DataFrame: ", len(timeee_df))
-        # print(timeee_df)
-        
-        # Fit ARIMA model to temperature data
-         # Split the data into training and testing sets
-        # train_size = int(len(temperature_df))  # 80% training data, 20% testing data
-        # temp_train, temp_test = temperature_df.iloc[:train_size], temperature_df.iloc[train_size:]
-        # humid_train, humid_test = humidity_df.iloc[:train_size], humidity_df.iloc[train_size:]
 
         # Fit ARIMA model for temperature
         # print("Temperature Train: ", temperature_df)

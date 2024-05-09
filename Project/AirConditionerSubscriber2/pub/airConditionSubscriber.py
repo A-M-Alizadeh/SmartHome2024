@@ -4,13 +4,6 @@ from MQTT import MyMQTT
 from Utils.Utils import colorPrinter,colorPrinterdouble, printCircle
 import json
 import os
-
-#--------------------------------------------REST API------------------------------------------------
-path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-def getConnectionInfo():
-    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
-    data = response.json()
-    return data
 #--------------------------------------------MQTT------------------------------------------------
 class SensorsSubscriber:
     def __init__(self,clientID, broker, port, topic, mqttInfo, restInfo):
@@ -84,8 +77,8 @@ if __name__ == "__main__":
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     with open(f'{path}/Utils/config.json') as json_file:
         config = json.load(json_file)
-
-    connectionInfo = getConnectionInfo()
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
+    connectionInfo = response.json()
     mqttInfo = connectionInfo['mqtt']
     restInfo = connectionInfo['micros']
 
