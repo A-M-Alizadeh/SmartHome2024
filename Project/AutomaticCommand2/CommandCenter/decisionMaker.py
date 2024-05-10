@@ -7,11 +7,12 @@ import requests
 from datetime import datetime, timedelta
 import schedule
 import time
+from CommandCenter.commandPublisher import CommandPublisher
 # statsmodels 0.14.1
 
 
 class DecisionMaker:
-    def __init__(self) -> None:
+    def __init__(self, publisher) -> None:
         self.microsInfo = None
         self.historicalData = None
         self.userDecisions = None
@@ -27,6 +28,7 @@ class DecisionMaker:
         self.userDecisionsAvg = None
         self.suggestedValues = None
         self.connectionError = False
+        self.publisher = publisher
         
 
     def findMicro(self, microName):
@@ -308,17 +310,24 @@ class DecisionMaker:
         except Exception as e:
             print('An error occurred with the Auto Command: ', str(e))
 
+        
+    def sendMQTTCommand(self):
+        try:
+            topiccc = 'smart_house/'+config['userId']+'/'+config['houseId']+'/'+self.sensorsInfo['airConditioner']+'/'+'air_conditioner'
+            self.publisher.publish(self.suggestedValues['temperature'], self.suggestedValues['humidity'], 'auto', self.suggestedValues['status'], topiccc, self.sensorsInfo['airConditioner'])
+        except Exception as e:
+            print("Error: ", str(e))
+
     def run(self):
         # self.getServicesInfo()
         self.getHistoricalData()
         self.getUserCommands()
-        print("--------------Step1")
         if self.connectionError:
             return
-        print("-------------------Step2")
         self.predictWithNextValues()
         self.makeDecision()
-        self.sendCommand()
+        # self.sendCommand()
+        self.sendMQTTCommand()
 
 
 if __name__ == "__main__":
@@ -327,9 +336,21 @@ if __name__ == "__main__":
     with open(f'{path}/CommandCenter/config.json') as json_file:
         config = json.load(json_file)
         
-    decisionMaker = DecisionMaker()
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
+    connectionInfo = response.json()
+
+    commandPublisher = CommandPublisher(connectionInfo['clientId']+"AutoPublisher_command2", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    commandPublisher.readConfig()
+    commandPublisher.getConnectionInfo()
+    commandPublisher.getSensorData()
+    commandPublisher.start()
+
+    decisionMaker = DecisionMaker(commandPublisher)
     decisionMaker.getServicesInfo()
+
+
     schedule.every(config["modelCommandInterval"]).seconds.do(decisionMaker.run)
+    
     # Run the scheduler loop indefinitely
     while True:
         schedule.run_pending()

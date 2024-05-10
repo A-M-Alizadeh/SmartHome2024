@@ -322,10 +322,8 @@ class DecisionMaker:
         # self.getServicesInfo()
         self.getHistoricalData()
         self.getUserCommands()
-        print("--------------Step1")
         if self.connectionError:
             return
-        print("-------------------Step2")
         self.predictWithNextValues()
         self.makeDecision()
         # self.sendCommand()
@@ -339,9 +337,8 @@ if __name__ == "__main__":
         config = json.load(json_file)
         
     response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
-    data = response.json()
+    connectionInfo = response.json()
 
-    connectionInfo = data
     commandPublisher = CommandPublisher(connectionInfo['clientId']+"AutoPublisher_command", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
     commandPublisher.readConfig()
     commandPublisher.getConnectionInfo()
@@ -353,6 +350,7 @@ if __name__ == "__main__":
 
 
     schedule.every(config["modelCommandInterval"]).seconds.do(decisionMaker.run)
+    
     # Run the scheduler loop indefinitely
     while True:
         schedule.run_pending()
