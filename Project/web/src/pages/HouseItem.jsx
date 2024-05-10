@@ -34,8 +34,8 @@ const HouseItem = ({house, deleteHouse, editHouse}) => {
               >
                 {editMode ? (
                   <div>
-                    <Input placeholder="House Title"  style={{marginRight: 10, color: 'white'}} onChange={(e) => setTitle(e.target.value)} />
-                    <Input placeholder="House Address" style={{marginRight: 10, color: 'white'}} onChange={(e) => setAddress(e.target.value)} />
+                    <Input placeholder="House Title"  style={{marginRight: 10, color: 'white'}} onChange={(e) => setTitle(e.target.value)} value={title} />
+                    <Input placeholder="House Address" style={{marginRight: 10, color: 'white'}} onChange={(e) => setAddress(e.target.value)} value={address} />
                   </div>
                 ) : (
                   <Grid item>
