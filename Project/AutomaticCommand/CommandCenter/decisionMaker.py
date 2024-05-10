@@ -12,7 +12,7 @@ from CommandCenter.commandPublisher import CommandPublisher
 
 
 class DecisionMaker:
-    def __init__(self, publisher) -> None:
+    def __init__(self, publisher, config) -> None:
         self.microsInfo = None
         self.historicalData = None
         self.userDecisions = None
@@ -29,7 +29,10 @@ class DecisionMaker:
         self.suggestedValues = None
         self.connectionError = False
         self.publisher = publisher
-        
+        self.config = config
+
+    def printConfig(self):
+        print("Config: ", self.config) 
 
     def findMicro(self, microName):
         for micro in self.microsInfo['micros']:
@@ -37,9 +40,9 @@ class DecisionMaker:
                 return micro
         return None
         
-    def getServicesInfo(self):
+    def getServicesInfo(self, url, port):
         try:
-            result = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
+            result = requests.get(f'{url}{port}/public/fullservices')
             self.microsInfo = result.json()
             self.connectionError = False
         except Exception as e:
@@ -47,12 +50,11 @@ class DecisionMaker:
             self.connectionError = True
             print("Error: ", str(e))
 
-
     def getHistoricalData(self):
         try:
             reqBody = {
                 "sensorIds": [self.sensorsInfo["temperature"], self.sensorsInfo["humidity"]],
-                "period": config["modelHistoricalDataDuration"]
+                "period": self.config["modelHistoricalDataDuration"]
             }
             result = requests.post(f'{self.findMicro("analytics")["url"]}{self.findMicro("analytics")["port"]}/analytic/fullAnalytics', json=reqBody)
             self.historicalData = result.json()
@@ -62,13 +64,12 @@ class DecisionMaker:
             self.connectionError = True
             print("Error: ", e)
 
-
     def getUserCommands(self):
         try:
-            print("Getting User Decisions............../ AIR2", self.sensorsInfo["airConditioner"], config["modelHistoricalDataDuration"])
+            print("Getting User Decisions............../ AIR2", self.sensorsInfo["airConditioner"], self.config["modelHistoricalDataDuration"])
             reqBody = {
                 "sensorId": self.sensorsInfo["airConditioner"],
-                "period": config["modelHistoricalDataDuration"]
+                "period": self.config["modelHistoricalDataDuration"]
             }
             result = requests.post(f'{self.findMicro("analytics")["url"]}{self.findMicro("analytics")["port"]}/analytic/commandAnalytics', json=reqBody)
             #filter the manual commands
@@ -212,7 +213,6 @@ class DecisionMaker:
                 "temperature": self.comfortEnvironment[str(current_month)]['temperature'],
                 "humidity": self.comfortEnvironment[str(current_month)]['humidity']
             }
-        
 
     def makeDecision(self):
         current_date = datetime.now()
@@ -220,7 +220,7 @@ class DecisionMaker:
         current_hour = current_date.hour
 
         is_off_hours = False
-        for key, value in config["offHours"].items():
+        for key, value in self.config["offHours"].items():
             start_hour = value["start"]
             end_hour = value["end"]
             
@@ -289,9 +289,9 @@ class DecisionMaker:
             url = f'{self.findMicro("command")["url"]}{self.findMicro("command")["port"]}/command/airConiditioner'
             # url = f'{config["commandUrl"]}{config["commandPort"]}/command/airConiditioner'
             payload = {
-                "userId": config["userId"],
-                "houseId": config["houseId"],
-                "sensorId": config["airConditionerId"],
+                "userId": self.config["userId"],
+                "houseId": self.config["houseId"],
+                "sensorId": self.config["airConditionerId"],
                 "temperature": self.suggestedValues['temperature'],
                 "humidity": self.suggestedValues['humidity'],
                 "status": self.suggestedValues['status'],
@@ -309,11 +309,10 @@ class DecisionMaker:
                 print('Failed to send request. Status code:', response.status_code)
         except Exception as e:
             print('An error occurred with the Auto Command: ', str(e))
-
         
     def sendMQTTCommand(self):
         try:
-            topiccc = 'smart_house/'+config['userId']+'/'+config['houseId']+'/'+self.sensorsInfo['airConditioner']+'/'+'air_conditioner'
+            topiccc = 'smart_house/'+self.config['userId']+'/'+self.config['houseId']+'/'+self.sensorsInfo['airConditioner']+'/'+'air_conditioner'
             self.publisher.publish(self.suggestedValues['temperature'], self.suggestedValues['humidity'], 'auto', self.suggestedValues['status'], topiccc, self.sensorsInfo['airConditioner'])
         except Exception as e:
             print("Error: ", str(e))
@@ -331,12 +330,15 @@ class DecisionMaker:
 
 
 if __name__ == "__main__":
-    config = {}
+    fullConfig = {}
     path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     with open(f'{path}/CommandCenter/config.json') as json_file:
-        config = json.load(json_file)
+        fullConfig = json.load(json_file)
+    
+    config1 = fullConfig["decisionMakersData"][0]
+    config2 = fullConfig["decisionMakersData"][1]
         
-    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
+    response = requests.get(f'{fullConfig["baseUrl"]}{fullConfig["basePort"]}/public/mqtt')
     connectionInfo = response.json()
 
     commandPublisher = CommandPublisher(connectionInfo['clientId']+"AutoPublisher_command", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
@@ -345,16 +347,40 @@ if __name__ == "__main__":
     commandPublisher.getSensorData()
     commandPublisher.start()
 
-    decisionMaker = DecisionMaker(commandPublisher)
-    decisionMaker.getServicesInfo()
+    decisionMaker1 = DecisionMaker(commandPublisher, config1)
+    decisionMaker2 = DecisionMaker(commandPublisher, config2)
+
+    decisionMaker1.getServicesInfo(fullConfig["baseUrl"], fullConfig["basePort"])
+    decisionMaker2.getServicesInfo(fullConfig["baseUrl"], fullConfig["basePort"])
+
+    def runner1():
+        decisionMaker1.run()
+        time.sleep(config1["modelCommandInterval"])
+    def runner2():
+        decisionMaker2.run()
+        time.sleep(config2["modelCommandInterval"])
+        # exit()
 
 
-    schedule.every(config["modelCommandInterval"]).seconds.do(decisionMaker.run)
+    # print("Decision Maker 1: ---------------------------------------------------------")
+    # decisionMaker1.printConfig()
+    # print("Decision Maker 2: ---------------------------------------------------------")
+    # decisionMaker2.printConfig()
+
+    def looping ():
+        schedule.every(config1["modelCommandInterval"]).seconds.do(runner1)
+        while True:
+            schedule.run_pending()
+            time.sleep(5)
+    schedule.every(config2["modelCommandInterval"]).seconds.do(runner2)
+    while True:
+        looping()
     
     # Run the scheduler loop indefinitely
-    while True:
-        schedule.run_pending()
-        time.sleep(config["modelCommandInterval"])  # Sleep for 1 second to avoid high CPU usage
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(5)  # Sleep for 1 second to avoid high CPU usage
+        # time.sleep(config2["modelCommandInterval"])
     
 
 
