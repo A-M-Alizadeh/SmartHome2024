@@ -91,6 +91,28 @@
                         }
                     ],
                     "title":"Third House"
+                },
+                {
+                    "address":"sdcasdcasdc",
+                    "house_id":"f3eaa20c-9716-4afa-bcb2-8870084e29f2",
+                    "sensors":[
+                        {
+                            "sensor_id":"dbe4d079-ef32-4a00-a661-c227e8284a23",
+                            "status":"on",
+                            "type":"TEMPERATURE"
+                        },
+                        {
+                            "sensor_id":"3319506f-5a66-4208-877c-c2eed9d094b1",
+                            "status":"on",
+                            "type":"HUMIDITY"
+                        },
+                        {
+                            "sensor_id":"07b124fc-6e26-46ff-8277-64ea0ca6a546",
+                            "status":"on",
+                            "type":"AIR_CONDITIONER"
+                        }
+                    ],
+                    "title":"cdasdcasd"
                 }
             ]
         },

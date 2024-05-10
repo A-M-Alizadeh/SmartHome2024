@@ -60,7 +60,7 @@ class InfluxDBManager:
                     type = record['type']
                     unit = record['unit']
                     counter += 1
-                print(record)
+                # print(record)
                 records.append({"value": record['_value'], "time": record['_time'].isoformat()})
         return {"records": records, "type": type, "unit": unit, "sensorId": sensorId, "period": period}
     
@@ -78,7 +78,7 @@ class InfluxDBManager:
         tables = self.query_api.query(query, org="IOTPolito")
         for table in tables:
             for record in table.records:
-                print('Record:', record['result'],record['_value'])
+                # print('Record:', record['result'],record['_value'])
                 # result = {record['result']: record['_value']}
                 result = record['_value']
         return result
@@ -97,7 +97,7 @@ class InfluxDBManager:
         tables = self.query_api.query(query, org="IOTPolito")
         for table in tables:
             for record in table.records:
-                print('Record:', record['result'],record['_value'])
+                # print('Record:', record['result'],record['_value'])
                 # result = {record['result']: record['_value']}
                 result = record['_value']
         return result
@@ -116,7 +116,7 @@ class InfluxDBManager:
         tables = self.query_api.query(query, org="IOTPolito")
         for table in tables:
             for record in table.records:
-                print('Record:', record['result'],record['_value'])
+                # print('Record:', record['result'],record['_value'])
                 # result = {record['result']: record['_value']}
                 result = record['_value']
         return result
@@ -133,7 +133,7 @@ class InfluxDBManager:
         tables = self.query_api.query(query, org="IOTPolito")
         for table in tables:
             for record in table.records:
-                print('Record:', record['result'],record['_value'])
+                # print('Record:', record['result'],record['_value'])
                 # result = {record['result']: record['_value']}
                 result = record['_value']
         return result
@@ -174,7 +174,7 @@ class InfluxDBManager:
         tables = self.query_api.query(query, org="IOTPolito")
         for table in tables:
             for record in table.records:
-                print('Record:', record)
+                # print('Record:', record)
                 result.append({"time": record['_time'].isoformat(),"temperature": record['temperature'], "humidity": record['humidity'], "status": record['status'], "actionType": record['actionType']})
         return {"records": result, "sensorId": sensorId, "period": period}
 

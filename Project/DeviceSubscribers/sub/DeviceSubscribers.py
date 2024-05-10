@@ -30,14 +30,16 @@ class SensorsSubscriber:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','blue')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
-                self.sendDataToDB(data,self.findMicro('analytics'))
+                # send an alarm if humidity is above 80%
+                # self.sendDataToDB(data,self.findMicro('analytics'))
                 colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
 
             if "temperature" in topic:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','red')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
-                self.sendDataToDB(data, self.findMicro('analytics'))
+                #send an alarm if temperature is above 40
+                # self.sendDataToDB(data, self.findMicro('analytics'))
                 colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
                 
         except Exception as e:
@@ -85,10 +87,10 @@ if __name__ == "__main__":
     # customTopic = mqttInfo['common_topic']+config['userId']+"/+/+/"+"/temperature"
 
     
-    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_humidity', mqttInfo['broker'], mqttInfo['subPort'], customTopic, mqttInfo, restInfo)
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+'notifSubscriber', mqttInfo['broker'], mqttInfo['subPort'], customTopic, mqttInfo, restInfo)
     subscriber.start()
 
-    colorPrinter(f'HUMIDITY Subscriber Started', 'pink')
+    colorPrinter(f'Notif Subscriber Started', 'pink')
     colorPrinter(f'{subscriber.topic}', 'pink')
     colorPrinter(f'{subscriber.mqttClient.clientID}', 'pink')
     while True:

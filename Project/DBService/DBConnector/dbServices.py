@@ -5,6 +5,8 @@ import cherrypy_cors
 from DBConnector.influx.influxUtil import InfluxDBManager
 import requests
 import os
+from DBConnector.DeviceSubscribers import SensorsSubscriber
+import time
 
 class AnalyticsServer(object):
     exposed = True
@@ -94,6 +96,11 @@ if __name__ == '__main__':
     with open(f'{path}/DBConnector/config.json') as json_file:
         config = json.load(json_file)
 
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
+    connectionInfo = response.json()
+    mqttInfo = connectionInfo['mqtt']
+    restInfo = connectionInfo['micros']
+
     dbConnector = InfluxDBManager()
     serverConf = requests.get(f"{config['baseUrl']}{config['basePort']}/public?apiinfo=analytics")
     serverConf = serverConf.json()
@@ -112,4 +119,16 @@ if __name__ == '__main__':
     cherrypy_cors.install()
     cherrypy.config.update({'server.socket_host': '0.0.0.0','web.socket_ip': serverConf["url"], 'server.socket_port': serverConf["port"]})
     cherrypy.engine.start()
-    cherrypy.engine.block()
+    # cherrypy.engine.block() #this line blocks the main thread and the code below will not be executed :)
+
+
+# -------------------------------------------- MQTT Subscriber --------------------------------------------
+    customTopic = mqttInfo['common_topic']+"#"
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+'dbSubscriber', mqttInfo['broker'], mqttInfo['subPort'], customTopic, mqttInfo, restInfo, dbConnector)
+    subscriber.start()
+
+    colorPrinter(f'HUMIDITY Subscriber Started', 'pink')
+    colorPrinter(f'{subscriber.topic}', 'pink')
+    colorPrinter(f'{subscriber.mqttClient.clientID}', 'pink')
+    while True:
+        time.sleep(1)
