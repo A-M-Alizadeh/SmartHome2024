@@ -244,14 +244,14 @@ const Dashboard = () => {
       <Box sx={{ display: "flex", justifyContent: "flex-start", padding: 0 }}>
         <LineChart
           series={[
-            { curve: "linear", data: humidChartData ? humidChartData.value : [1, 2, 3, 4, 5, 6] , label: "Humidity", color: '#4e79a7'},
+            { curve: "linear", data: humidChartData ? humidChartData.value : [] , label: "Humidity", color: '#4e79a7'},
           ]}
           width={1000}
           height={400}
         />
         <LineChart
           series={[
-            { curve: "linear", data: tempChartData ? tempChartData.value : [1, 2, 3, 4, 5, 6], label: "Temperature", color: '#e15759' }
+            { curve: "linear", data: tempChartData ? tempChartData.value : [], label: "Temperature", color: '#e15759' }
           ]}
           width={1000}
           height={400}

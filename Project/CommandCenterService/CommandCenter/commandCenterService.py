@@ -48,7 +48,7 @@ if __name__ == '__main__':
     data = response.json()
 
     connectionInfo = data
-    commandPublisher = CommandPublisher(connectionInfo['clientId']+"Publisher_command", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    commandPublisher = CommandPublisher(connectionInfo['clientId']+"CC_Publisher_command", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
     commandPublisher.readConfig()
     commandPublisher.getConnectionInfo()
     commandPublisher.getSensorData()

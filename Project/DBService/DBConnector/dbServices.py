@@ -131,4 +131,4 @@ if __name__ == '__main__':
     colorPrinter(f'{subscriber.topic}', 'pink')
     colorPrinter(f'{subscriber.mqttClient.clientID}', 'pink')
     while True:
-        time.sleep(1)
+        time.sleep(10) # if this is set to 1, i think it will be a problem for the server to handle the requests

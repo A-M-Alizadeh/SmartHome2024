@@ -65,7 +65,15 @@ class SensorsSubscriber:
                 # colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
 
             if "command" in topic:
-                colorPrinter( f'sensor ${topic}:  ${payload}recieved','green')
+                colorPrinter( f'AirConditioner ${topic}:  ${payload}recieved','green')
+                json_string = payload.decode('utf-8')
+                data = json.loads(json_string)
+                self.writeCommand(data)
+                self.sendDataToDB(data, self.findMicro('analytics'))
+                colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
+                
+            if "air_conditioner" in topic:
+                colorPrinter( f'AirConditioner ${topic}:  ${payload}recieved','green')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
                 self.writeCommand(data)
