@@ -10,9 +10,11 @@ temp_pub_path=$(pwd)"/TemperaturePublisher/pub/temperaturePublisher.py"
 subs_path=$(pwd)"/DeviceSubscribers/sub/DeviceSubscribers.py"
 
 air2_sub_path=$(pwd)"/AirConditionerSubscriber2/pub/airConditionSubscriber.py"
-auto2_path=$(pwd)"/AutomaticCommand2/CommandCenter/decisionMaker.py"
+# auto2_path=$(pwd)"/AutomaticCommand2/CommandCenter/decisionMaker.py"
 hum2_pub_path=$(pwd)"/HumidityPublisher2/pub/humidityPublisher.py"
 temp2_pub_path=$(pwd)"/TemperaturePublisher2/pub/temperaturePublisher.py"
+
+smartTelBot_path=$(pwd)"/smartTelegramBot/main.py"
 
 osascript -e 'tell app "Terminal"
     do script "influxd"
@@ -58,5 +60,11 @@ osascript -e 'tell app "Terminal"
 end tell'
 osascript -e 'tell app "Terminal"
     do script "python3 '$temp2_pub_path'"
+end tell'
+
+sleep 3
+# Smart Telegram Bot
+osascript -e 'tell app "Terminal"
+    do script "python3 '$smartTelBot_path'"
 end tell'
 

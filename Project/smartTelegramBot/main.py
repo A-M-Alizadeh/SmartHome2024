@@ -128,7 +128,7 @@ class SensorsSubscriber:
 #13 in each step the data will be saved in a variable
 
 path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-with open(f'{path}/telegramBot/config.json') as json_file:
+with open(f'{path}/smartTelegramBot/config.json') as json_file:
     config = json.load(json_file)
 
 
@@ -486,7 +486,7 @@ def main() -> None:
     myBot = app.bot
     customTopic = "smart_house"+"/"+userData["user_id"]+"/#"
     print("CUSTOM TOPIC===========> ", customTopic)
-    subscriber = SensorsSubscriber("smartHouse"+'notifSubscriber2', "test.mosquitto.org", 1883, customTopic, myBot, "34026780")
+    subscriber = SensorsSubscriber("smartHouse"+'teleBotSubscriber', "test.mosquitto.org", 1883, customTopic, myBot, "34026780")
     subscriber.start()
     # while True:
     #     time.sleep(1)
