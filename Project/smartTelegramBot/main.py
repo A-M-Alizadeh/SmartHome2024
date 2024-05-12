@@ -79,7 +79,7 @@ class SensorsSubscriber:
     def notify(self, topic, payload): #use senML
         print("TELBOT ??? ", self.telegramBot, self.chat_id)
         try:
-            if "notif" in topic:
+            if "humidity" in topic:
                 print( f'sensor ${topic}:  ${payload}recieved')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
@@ -88,14 +88,14 @@ class SensorsSubscriber:
                 # self.sendDataToDB(data,self.findMicro('analytics'))
                 # print(f'Writing data to InfluxDB: {str(data)}', 'yellow')
 
-            # if "temperature" in topic:
-            #     print( f'sensor ${topic}:  ${payload}recieved')
-            #     json_string = payload.decode('utf-8')
-            #     data = json.loads(json_string)
-            #     self.telegramBot.send_message(chat_id=self.chat_id, text=f'Temperature:')
-            #     #send an alarm if temperature is above 40
-            #     # self.sendDataToDB(data, self.findMicro('analytics'))
-            #     # print(f'Writing data to InfluxDB: {str(data)}', 'yellow')
+            if "temperature" in topic:
+                print( f'sensor ${topic}:  ${payload}recieved')
+                json_string = payload.decode('utf-8')
+                data = json.loads(json_string)
+                self.telegramBot.send_message(chat_id=self.chat_id, text=f'Temperature:')
+                #send an alarm if temperature is above 40
+                # self.sendDataToDB(data, self.findMicro('analytics'))
+                # print(f'Writing data to InfluxDB: {str(data)}', 'yellow')
                 
         except Exception as e:
             print(f'Error in Sending the message {str(e)}')
