@@ -31,6 +31,7 @@ class SensorsSubscriber:
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
                 # send an alarm if humidity is above 80%
+                # alaram can be a publisher through MQTT or a notification through email or SMS or to mobile app
                 # self.sendDataToDB(data,self.findMicro('analytics'))
                 colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
 

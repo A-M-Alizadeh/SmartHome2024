@@ -23,6 +23,8 @@ pip install statsmodels 0.14.1
 pip install schedule
 pip install cherrypy-cors
 pip install schedule
+pip install python-telegram-bot-21.1.1
+pip install aiogram-3.6.0
 pip install -e .
 ```
 
