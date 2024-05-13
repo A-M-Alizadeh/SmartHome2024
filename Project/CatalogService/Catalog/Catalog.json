@@ -43,7 +43,7 @@
                         },
                         {
                             "sensor_id":"e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
-                            "status":"ON",
+                            "status":"OFF",
                             "type":"AIR_CONDITIONER"
                         }
                     ]
@@ -64,7 +64,7 @@
                         },
                         {
                             "sensor_id":"82593b94-ef93-4103-8a68-d82cd31a36bc",
-                            "status":"ON",
+                            "status":"OFF",
                             "type":"AIR_CONDITIONER"
                         }
                     ],
