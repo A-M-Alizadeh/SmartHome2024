@@ -185,229 +185,237 @@ state_map = {
     SENSOR,
 ) = map(str, range(11))
 
-# Define the different keyboard states
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Start the conversation and ask user for action."""
 
-    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
-    connectionInfo = response.json()
-    mqttInfo = connectionInfo['mqtt']
-    restInfo = connectionInfo['micros']
-    context.user_data["mqttInfo"] = connectionInfo
-    context.user_data["restInfo"] = restInfo
+class TeleBot:
+    def __init__(self, token):
+        self.token = token
+        self.bot = Bot(token)
+        self.chat_id = None
 
-    chat_id = update.message.chat_id
-    print("CHAT ID =================================> ", chat_id)
-    config["chat_id"] = chat_id
+    # Define the different keyboard states
+    async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """Start the conversation and ask user for action."""
 
-    reply_keyboard = [
-        [InlineKeyboardButton("Login", callback_data=LOGIN)],
-    ]
+        response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
+        connectionInfo = response.json()
+        mqttInfo = connectionInfo['mqtt']
+        restInfo = connectionInfo['micros']
+        context.user_data["mqttInfo"] = connectionInfo
+        context.user_data["restInfo"] = restInfo
 
-    await update.message.reply_text(
-        "Hi! I'm your house sensor bot. I can provide you with the status of your sensors. "
-        "To start, please click on the login button.",
-        reply_markup=InlineKeyboardMarkup(reply_keyboard),
-    )
+        chat_id = update.message.chat_id
+        print("CHAT ID =================================> ", chat_id)
+        config["chat_id"] = chat_id
 
-    return SELECTING_ACTION
+        reply_keyboard = [
+            [InlineKeyboardButton("Login", callback_data=LOGIN)],
+        ]
 
-def start_over(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Starts the conversation over"""
-    return start(update, context)
+        await update.message.reply_text(
+            "Hi! I'm your house sensor bot. I can provide you with the status of your sensors. "
+            "To start, please click on the login button.",
+            reply_markup=InlineKeyboardMarkup(reply_keyboard),
+        )
 
-async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Prompt user to login"""
+        return SELECTING_ACTION
 
-    result = await authenticate(config["username"], config["password"])
-    context.user_data["userData"] = result
+    def start_over(self,update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """Starts the conversation over"""
+        return self.start(update, context)
 
-    reply_keyboard = [
-        [InlineKeyboardButton("Username", callback_data=USERNAME), InlineKeyboardButton("Password", callback_data=PASSWORD)],
-        [InlineKeyboardButton("Show Houses", callback_data=DONE)],
-        [InlineKeyboardButton("Back", callback_data=BACK)],
-    ]
+    async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """Prompt user to login"""
 
-    message = update.message or update.callback_query.message
+        result = await authenticate(config["username"], config["password"])
+        context.user_data["userData"] = result
 
-    await message.reply_text(
-        "Please enter your username and password.",
-        reply_markup=InlineKeyboardMarkup(reply_keyboard),
-    )
+        reply_keyboard = [
+            [InlineKeyboardButton("Username", callback_data=USERNAME), InlineKeyboardButton("Password", callback_data=PASSWORD)],
+            [InlineKeyboardButton("Show Houses", callback_data=DONE)],
+            [InlineKeyboardButton("Back", callback_data=BACK)],
+        ]
 
-    return SELECTING_ACTION
+        message = update.message or update.callback_query.message
 
+        await message.reply_text(
+            "Please enter your username and password.",
+            reply_markup=InlineKeyboardMarkup(reply_keyboard),
+        )
 
-async def username(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Prompt user to enter username"""
-    message = update.message or update.callback_query.message
-    username = message.text  # Get the entered username
-    context.user_data["username"] = username  # Store the username in user_data
-
-    await message.reply_text("Please enter your password.")
-
-    return TYPING_REPLY
+        return SELECTING_ACTION
 
 
-async def password(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Prompt user to enter password"""
-    message = update.message or update.callback_query.message
-    password = message.text  # Get the entered password
-    context.user_data["password"] = password  # Store the password in user_data
+    async def username(self,update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """Prompt user to enter username"""
+        message = update.message or update.callback_query.message
+        username = message.text  # Get the entered username
+        context.user_data["username"] = username  # Store the username in user_data
 
-    await message.reply_text("Trying to login...")
+        await message.reply_text("Please enter your password.")
 
-    return TYPING_REPLY
-
-async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Prompt user to enter password"""
-    message = update.message or update.callback_query.message
-    await message.reply_text("Trying to login...")
-
-    return TYPING_REPLY
+        return TYPING_REPLY
 
 
-async def fillHousesData(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Fill the houses data"""
-    # houses = userData["houses"]
-    houses = context.user_data["userData"]["houses"]
-    reply_keyboard = [
-        [InlineKeyboardButton(house["title"], callback_data=f"{SELECT_HOUSE}:{house['house_id']}")] 
-        for house in houses
-    ]
-    reply_keyboard.append([InlineKeyboardButton("Logout", callback_data=LOGOUT)])
-    message = update.message or update.callback_query.message
+    async def password(self,update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """Prompt user to enter password"""
+        message = update.message or update.callback_query.message
+        password = message.text  # Get the entered password
+        context.user_data["password"] = password  # Store the password in user_data
 
-    await message.reply_text(
-        "Please select a house:", reply_markup=InlineKeyboardMarkup(reply_keyboard)
-    )
+        await message.reply_text("Trying to login...")
 
-    return SELECTING_HOUSE
+        return TYPING_REPLY
 
+    async def done(self,update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """Prompt user to enter password"""
+        message = update.message or update.callback_query.message
+        await message.reply_text("Trying to login...")
 
-async def fillSensorsData(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Fill the sensors data when a house is selected"""
-    callback_data = update.callback_query.data.split(":")
-
-    house_id = callback_data[1]  # Extract the house_id from the callback data
-    house = next((house for house in context.user_data["userData"]["houses"] if house["house_id"] == house_id), None)  
-
-    # if house is None:
-    #     await update.callback_query.answer("Invalid house selected.")
-    #     return SELECTING_HOUSE
+        return TYPING_REPLY
 
 
-    sensors = [sensor for sensor in house["sensors"] if sensor["type"] != "AIR_CONDITIONER"] # Get the sensors of the selected house
+    async def fillHousesData(self,update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """Fill the houses data"""
+        # houses = userData["houses"]
+        houses = context.user_data["userData"]["houses"]
+        reply_keyboard = [
+            [InlineKeyboardButton(house["title"], callback_data=f"{SELECT_HOUSE}:{house['house_id']}")] 
+            for house in houses
+        ]
+        reply_keyboard.append([InlineKeyboardButton("Logout", callback_data=LOGOUT)])
+        message = update.message or update.callback_query.message
 
-    result = await getSensorsHistoricalData(context.user_data["restInfo"], [sensor["sensor_id"] for sensor in sensors], context.user_data["userData"])
-    context.user_data["sensorsStats"] = result
+        await message.reply_text(
+            "Please select a house:", reply_markup=InlineKeyboardMarkup(reply_keyboard)
+        )
 
-    for sensor in sensors:
-        sensor["stats"] = next((stat for stat in result if stat["sensorId"] == sensor["sensor_id"]), None)
+        return SELECTING_HOUSE
 
-    print("SENSOR => ", sensor)
+
+    async def fillSensorsData(self,update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """Fill the sensors data when a house is selected"""
+        callback_data = update.callback_query.data.split(":")
+
+        house_id = callback_data[1]  # Extract the house_id from the callback data
+        house = next((house for house in context.user_data["userData"]["houses"] if house["house_id"] == house_id), None)  
+
+        # if house is None:
+        #     await update.callback_query.answer("Invalid house selected.")
+        #     return SELECTING_HOUSE
+
+
+        sensors = [sensor for sensor in house["sensors"] if sensor["type"] != "AIR_CONDITIONER"] # Get the sensors of the selected house
+
+        result = await getSensorsHistoricalData(context.user_data["restInfo"], [sensor["sensor_id"] for sensor in sensors], context.user_data["userData"])
+        context.user_data["sensorsStats"] = result
+
+        for sensor in sensors:
+            sensor["stats"] = next((stat for stat in result if stat["sensorId"] == sensor["sensor_id"]), None)
+
+        print("SENSOR => ", sensor)
+        
+        print("RESULT => ", result)
+        reply_keyboard = [[InlineKeyboardButton(f'{sensor["type"]}        Min:{round(sensor["stats"]["min"],1)}, Max:{round(sensor["stats"]["max"],1)}, Mean: {round(sensor["stats"]["mean"],1)}, last:{round(sensor["stats"]["lastValue"],1)}', callback_data=f"{SELECT_SENSOR}:{sensor['sensor_id']}")] for sensor in sensors]
+        reply_keyboard.append([InlineKeyboardButton("Back", callback_data=BACK_TO_PREVIOUS)])
+
+        await update.callback_query.answer()
+        await update.callback_query.edit_message_text(
+            "Please select a sensor:", reply_markup=InlineKeyboardMarkup(reply_keyboard)
+        )
+
+        return SELECTING_SENSOR
+
+    async def fetchAllData(self,update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """Prompt user to select a house"""
+        # Here you would call fillHousesData instead of calling fillSensorsData directly
+        return await self.fillHousesData(update, context)
+
+    async def select_sensor(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """Prompt user to select a sensor"""
+        # Here you would call fillSensorsData instead of calling fillSensorDetails directly
+        return await self.fillSensorsData(update, context)
     
-    print("RESULT => ", result)
-    reply_keyboard = [[InlineKeyboardButton(f'{sensor["type"]}        Min:{round(sensor["stats"]["min"],1)}, Max:{round(sensor["stats"]["max"],1)}, Mean: {round(sensor["stats"]["mean"],1)}, last:{round(sensor["stats"]["lastValue"],1)}', callback_data=f"{SELECT_SENSOR}:{sensor['sensor_id']}")] for sensor in sensors]
-    reply_keyboard.append([InlineKeyboardButton("Back", callback_data=BACK_TO_PREVIOUS)])
+    async def logout(self,update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """Logout user"""
+        reply_keyboard = [
+            [InlineKeyboardButton("Login", callback_data=LOGIN)],
+        ]
 
-    await update.callback_query.answer()
-    await update.callback_query.edit_message_text(
-        "Please select a sensor:", reply_markup=InlineKeyboardMarkup(reply_keyboard)
-    )
+        await update.message.reply_text(
+            "You have been logged out. Please click on the login button to login again.",
+            reply_markup=InlineKeyboardMarkup(reply_keyboard),
+        )
 
-    return SELECTING_SENSOR
+        return SELECTING_ACTION
 
-async def fetchAllData(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Prompt user to select a house"""
-    # Here you would call fillHousesData instead of calling fillSensorsData directly
-    return await fillHousesData(update, context)
+    async def end(self,update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """End conversation from inline button"""
+        await update.callback_query.answer()
+        await update.callback_query.edit_message_text("Goodbye!")
 
-async def select_sensor(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Prompt user to select a sensor"""
-    # Here you would call fillSensorsData instead of calling fillSensorDetails directly
-    return await fillSensorsData(update, context)
- 
-async def logout(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Logout user"""
-    reply_keyboard = [
-        [InlineKeyboardButton("Login", callback_data=LOGIN)],
-    ]
+        return ConversationHandler.END
 
-    await update.message.reply_text(
-        "You have been logged out. Please click on the login button to login again.",
-        reply_markup=InlineKeyboardMarkup(reply_keyboard),
-    )
+    async def backToPrevious(self,update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """End conversation from inline button"""
+        await update.callback_query.answer()
+        await update.callback_query.edit_message_text("Selecting house...")
 
-    return SELECTING_ACTION
-
-async def end(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """End conversation from inline button"""
-    await update.callback_query.answer()
-    await update.callback_query.edit_message_text("Goodbye!")
-
-    return ConversationHandler.END
-
-async def backToPrevious(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """End conversation from inline button"""
-    await update.callback_query.answer()
-    await update.callback_query.edit_message_text("Selecting house...")
-
-    return SELECTING_HOUSE
+        return SELECTING_HOUSE
 
 
 
-def error(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Log Errors caused by Updates."""
-    logger.warning('Update "%s" caused error "%s"', update, context.error)
+    def error(self,update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        """Log Errors caused by Updates."""
+        logger.warning('Update "%s" caused error "%s"', update, context.error)
 
-    return ConversationHandler.END
+        return ConversationHandler.END
 
 
-def main() -> None:
-    # """Run the bot."""
-    # # Create the Application
-    app = Application.builder().token(config["TOKEN"]).build()
+    def main(self) -> None:
+        # """Run the bot."""
+        # # Create the Application
+        app = Application.builder().token(config["TOKEN"]).build()
 
-    # Add the command handlers
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("stop", end))
+        # Add the command handlers
+        app.add_handler(CommandHandler("start", self.start))
+        app.add_handler(CommandHandler("stop", self.end))
 
-    # Add the callback query handlers
-    app.add_handler(CallbackQueryHandler(login, pattern=f"^{LOGIN}$"))
-    app.add_handler(CallbackQueryHandler(username, pattern=f"^{USERNAME}$"))
-    app.add_handler(CallbackQueryHandler(password, pattern=f"^{PASSWORD}$"))
-    app.add_handler(CallbackQueryHandler(fillHousesData, pattern=f"^{DONE}$")) #this should be done
-    app.add_handler(CallbackQueryHandler(fillSensorsData, pattern=f"^{SELECT_SENSOR}$"))
-    app.add_handler(CallbackQueryHandler(end, pattern=f"^{LOGOUT}$"))
-    app.add_handler(CallbackQueryHandler(backToPrevious, pattern=f"^{BACK_TO_PREVIOUS}$"))
-    app.add_handler(CallbackQueryHandler(end, pattern=f"^{BACK}$"))
-    # app.add_handler(CallbackQueryHandler(backToPrevious, pattern=f"^{BACK}$"))
-    # app.add_handler(CallbackQueryHandler(fetchAllData, pattern=f"^{BACK}$"))
-    # app.add_handler(CallbackQueryHandler(backToPrevious, pattern=f"^{BACK}$"))
+        # Add the callback query handlers
+        app.add_handler(CallbackQueryHandler(self.login, pattern=f"^{LOGIN}$"))
+        app.add_handler(CallbackQueryHandler(self.username, pattern=f"^{USERNAME}$"))
+        app.add_handler(CallbackQueryHandler(self.password, pattern=f"^{PASSWORD}$"))
+        app.add_handler(CallbackQueryHandler(self.fillHousesData, pattern=f"^{DONE}$")) #this should be done
+        app.add_handler(CallbackQueryHandler(self.fillSensorsData, pattern=f"^{SELECT_SENSOR}$"))
+        app.add_handler(CallbackQueryHandler(self.end, pattern=f"^{LOGOUT}$"))
+        app.add_handler(CallbackQueryHandler(self.backToPrevious, pattern=f"^{BACK_TO_PREVIOUS}$"))
+        app.add_handler(CallbackQueryHandler(self.end, pattern=f"^{BACK}$"))
+        # app.add_handler(CallbackQueryHandler(backToPrevious, pattern=f"^{BACK}$"))
+        # app.add_handler(CallbackQueryHandler(fetchAllData, pattern=f"^{BACK}$"))
+        # app.add_handler(CallbackQueryHandler(backToPrevious, pattern=f"^{BACK}$"))
 
-    # # Add the callback query handler for selecting a house
-    app.add_handler(CallbackQueryHandler(fillSensorsData))
+        # # Add the callback query handler for selecting a house
+        app.add_handler(CallbackQueryHandler(self.fillSensorsData))
 
-    # Add the message handler
-    app.add_handler(MessageHandler(filters.Text, start))
+        # Add the message handler
+        app.add_handler(MessageHandler(filters.Text, self.start))
 
-    # Add the error handler
-    app.add_error_handler(error)
+        # Add the error handler
+        app.add_error_handler(self.error)
 
-    # Start the MQTT Subscriber
-    # myBot = Bot(config["TOKEN"])
-    myBot = app.bot
-    customTopic = "smart_house"+"/"+config['userId']+"/#"
-    print("CUSTOM TOPIC===========> ", customTopic)
-    subscriber = SensorsSubscriber("smartHouse"+'teleBotSubscriber', "test.mosquitto.org", 1883, customTopic, myBot, "34026780")
-    subscriber.start()
-    # while True:
-    #     time.sleep(1)
+        # Start the MQTT Subscriber
+        # myBot = Bot(config["TOKEN"])
+        myBot = app.bot
+        customTopic = "smart_house"+"/"+config['userId']+"/#"
+        print("CUSTOM TOPIC===========> ", customTopic)
+        subscriber = SensorsSubscriber("smartHouse"+'teleBotSubscriber', "test.mosquitto.org", 1883, customTopic, myBot, "34026780")
+        subscriber.start()
+        # while True:
+        #     time.sleep(1)
 
-    # Start the Bot
-    app.run_polling()
+        # Start the Bot
+        app.run_polling()
 
 
 if __name__ == "__main__":
-    main()
+    telBot = TeleBot(config["TOKEN"])
+    telBot.main()
