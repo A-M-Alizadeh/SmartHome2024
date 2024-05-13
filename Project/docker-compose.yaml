@@ -29,8 +29,10 @@ services:
     container_name: db-container
     expose:
       - "8084"
+      - "1883"
     ports:
       - "8084:8084"
+      - "1888:1883"
     volumes:
       - ./DBService:/app
     networks:
@@ -111,6 +113,43 @@ services:
       - ./DeviceSubscribers:/app
     networks:
       - servicesNetwork
+  
+  air_condition_service2:
+    build: ./AirConditionerSubscriber2
+    container_name: air-condition-container
+    expose:
+      - "1883"
+    ports:
+      - "1881:1883"
+    volumes:
+      - ./AirConditionerSubscriber2:/app
+    networks:
+      - servicesNetwork
+
+  humidity_publisher_service2:
+    build: ./HumidityPublisher2
+    container_name: humidity-pub-container
+    expose:
+      - "1883"
+    ports:
+      - "1882:1883"
+    volumes:
+      - ./HumidityPublisher2:/app
+    networks:
+      - servicesNetwork
+
+  temperature_publisher_service2:
+    build: ./TemperaturePublisher2
+    container_name: temp-pub-container
+    expose:
+      - "1883"
+    ports:
+      - "1889:1883"
+    volumes:
+      - ./TemperaturePublisher2:/app
+    networks:
+      - servicesNetwork
+      
 
 networks:
   servicesNetwork:

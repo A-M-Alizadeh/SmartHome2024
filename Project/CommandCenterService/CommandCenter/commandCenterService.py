@@ -6,16 +6,6 @@ from CommandCenter.commandPublisher import CommandPublisher
 import requests
 import os
 
-config = {}
-path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-with open(f'{path}/CommandCenter/config.json') as json_file:
-        config = json.load(json_file)
-#--------------------------------------------REST API------------------------------------------------
-def getConnectionInfo():
-    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
-    data = response.json()
-    return data
-
 class Server(object):
     exposed = True
 
@@ -26,13 +16,14 @@ class Server(object):
         if "airConiditioner" in uri:
             colorPrinter("POST /airConiditioner", "yellow")
             data = json.loads(cherrypy.request.body.read())
+            topiccc = 'smart_house/'+data['userId']+'/'+data['houseId']+'/'+data["sensorId"]+'/'+'air_conditioner'
             colorPrinter(str(data), "orange")
             if data["status"] == "OFF":
                 print("Turning off the air conditioner") # this needs more work if we want to implement it
-                commandPublisher.publish(0, 0, data["actionType"], data["status"])
+                commandPublisher.publish(0, 0, data["actionType"], data["status"], topiccc, data["sensorId"])
                 return json.dumps({"status": "success", "message": "Air conditioner turned off successfully !", "data": data})
             else:
-                commandPublisher.publish(data["temperature"], data["humidity"], data["actionType"], data["status"])
+                commandPublisher.publish(data["temperature"], data["humidity"], data["actionType"], data["status"], topiccc, data["sensorId"])
                 return json.dumps({"status": "success", "message": "Command received successfully 2 !", "data": data})
         return json.dumps({"status": "error", "message": "Invalid request !"})
 
@@ -48,8 +39,19 @@ class Server(object):
 
 # -------------------------------------------- Main --------------------------------------------
 if __name__ == '__main__':
-    connectionInfo = getConnectionInfo()
-    commandPublisher = CommandPublisher(connectionInfo['clientId']+"Publisher_command", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    config = {}
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(f'{path}/CommandCenter/config.json') as json_file:
+        config = json.load(json_file)
+
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
+    data = response.json()
+
+    connectionInfo = data
+    commandPublisher = CommandPublisher(connectionInfo['clientId']+"CC_Publisher_command", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    commandPublisher.readConfig()
+    commandPublisher.getConnectionInfo()
+    commandPublisher.getSensorData()
     commandPublisher.start()
     
     serverConf = requests.get(f"{config['baseUrl']}{config['basePort']}/public?apiinfo=command")

@@ -1,0 +1,10 @@
+{
+  "username": "newAuthUsername",
+  "password": "123456789",
+  "chat_id": "34026780",
+  "userId": "eac499f4-7c72-4f55-85ae-4ce1e173b096",
+  "TOKEN" : "6827687252:AAHEmzXPMfYPA-_yk_kPI4W_Cq9Y7FZx77o",
+  "BOT_USERNAME" : "@smartHouse_IOT_bot",
+  "baseUrl": "http://localhost:",
+  "basePort": 8080
+}

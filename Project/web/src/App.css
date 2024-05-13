@@ -1,0 +1,34 @@
+html {
+
+  background-color: #ffffff;
+}
+body {
+  background-color: #ffffff;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+ 
+}
+
+body::-webkit-scrollbar {
+  /* display: none !important; */
+}
+
+::-webkit-scrollbar {
+  /* display: none !important; */
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border: 1px solid #5a5a5a;
+  border-radius: 4px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #446985;
+  border-radius: 3px;
+}

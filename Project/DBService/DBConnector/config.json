@@ -1,4 +1,4 @@
 {
-  "baseUrl": "http://catalog_service:",
+  "baseUrl": "http://localhost:",
   "basePort": 8080
 }

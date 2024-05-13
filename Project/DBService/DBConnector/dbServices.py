@@ -5,22 +5,14 @@ import cherrypy_cors
 from DBConnector.influx.influxUtil import InfluxDBManager
 import requests
 import os
-
-config = {}
-path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-with open(f'{path}/DBConnector/config.json') as json_file:
-        config = json.load(json_file)
-
+from DBConnector.DeviceSubscribers import SensorsSubscriber
+import time
 
 class AnalyticsServer(object):
     exposed = True
 
     def GET(self, *uri, **params):
         return "Analytics GET  Server !"
-        # if "deleter" in uri:
-        #     colorPrinter("Deleting data", "red")
-        #     dbConnector.myDelete()
-        #     return "Analytics GET  Server !"
     
     def POST(self, *uri, **params):
         if "analytics" in uri:
@@ -36,7 +28,7 @@ class AnalyticsServer(object):
             data = json.loads(cherrypy.request.body.read())
             return json.dumps(dbConnector.readCommands(data["sensorId"], data["period"])) #this one does not work properly
         # if "customPeriod" in uri:
-        #write a function to get data from influxdb with custom period
+        #write a function to get data from influxdb with custom period with start and end time
 
     def PUT(self, *uri, **params):
         return "Analytics PUT  Server !"
@@ -80,8 +72,8 @@ class DBConnectorServer(object):
                 .tag("type", data['n'])
                 .tag("status", data['v']['status'])
                 .tag("actionType", data['v']['actionType'])
-                .field("humidity", data['v']['humidity'])
-                .field("temperature", data['v']['temperature'])
+                .field("humidity", float(data['v']['humidity']))
+                .field("temperature", float(data['v']['temperature']))
             )
             dbConnector.writeData(point)
             return json.dumps({"message": "work on progress"})
@@ -98,6 +90,17 @@ class DBConnectorServer(object):
 
 # -------------------------------------------- Main --------------------------------------------
 if __name__ == '__main__':
+
+    config = {}
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(f'{path}/DBConnector/config.json') as json_file:
+        config = json.load(json_file)
+
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
+    connectionInfo = response.json()
+    mqttInfo = connectionInfo['mqtt']
+    restInfo = connectionInfo['micros']
+
     dbConnector = InfluxDBManager()
     serverConf = requests.get(f"{config['baseUrl']}{config['basePort']}/public?apiinfo=analytics")
     serverConf = serverConf.json()
@@ -116,4 +119,16 @@ if __name__ == '__main__':
     cherrypy_cors.install()
     cherrypy.config.update({'server.socket_host': '0.0.0.0','web.socket_ip': serverConf["url"], 'server.socket_port': serverConf["port"]})
     cherrypy.engine.start()
-    cherrypy.engine.block()
+    # cherrypy.engine.block() #this line blocks the main thread and the code below will not be executed :)
+
+
+# -------------------------------------------- MQTT Subscriber --------------------------------------------
+    customTopic = mqttInfo['common_topic']+"#"
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+'dbSubscriber', mqttInfo['broker'], mqttInfo['subPort'], customTopic, mqttInfo, restInfo, dbConnector)
+    subscriber.start()
+
+    colorPrinter(f'HUMIDITY Subscriber Started', 'pink')
+    colorPrinter(f'{subscriber.topic}', 'pink')
+    colorPrinter(f'{subscriber.mqttClient.clientID}', 'pink')
+    while True:
+        time.sleep(10) # if this is set to 1, i think it will be a problem for the server to handle the requests

@@ -5,8 +5,8 @@
   "humidSensorId": "d04c5452-e9af-445b-adf4-415d7bfd31e7",
   "airConditionerId": "e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
   "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM",
-  "baseUrl": "http://catalog_service:",
+  "baseUrl": "http://localhost:",
   "basePort": 8080,
-  "commandUrl": "http://command_service:",
+  "commandUrl": "http://localhost:",
   "commandPort": 8081
 }

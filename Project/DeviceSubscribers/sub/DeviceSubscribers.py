@@ -4,37 +4,27 @@ from MQTT import MyMQTT
 from Utils.Utils import colorPrinter
 import json
 import os
+import requests
 
-
-config = {}
-path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-with open(f'{path}/Utils/config.json') as json_file:
-        config = json.load(json_file)
-
-
-def findMicro(micros, microName):
-    for micro in micros:
-        if micro['name'] == microName:
-            return micro
-    return None
-
-#--------------------------------------------REST API------------------------------------------------
-def getConnectionInfo():
-    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
-    data = response.json()
-    return data
-
-def sendDataToDB(data, microInfo):
-    colorPrinter(f'Sending data to {str(microInfo)}', 'yellow')
-    response = requests.post(f'{microInfo["url"]}{microInfo["port"]}/db/measurement', json=data)
-    return response.json()
 #--------------------------------------------MQTT------------------------------------------------
 class SensorsSubscriber:
-    def __init__(self,clientID, broker, port, topic, mqttInfo, restInfo):
+    def __init__(self,clientID, broker, port, topic, mqttInfo, restInfo,config):
         self.mqttClient = MyMQTT(clientID, broker, port, self)
         self.topic = topic
         self.mqttInfo = mqttInfo
         self.restInfo = restInfo
+        self.config = config
+
+    def sendDataToDB(self, data, microInfo):
+        colorPrinter(f'Sending data to {str(microInfo)}', 'yellow')
+        response = requests.post(f'{microInfo["url"]}{microInfo["port"]}/db/measurement', json=data)
+        return response.json()
+    
+    def findMicro(self,microName):
+        for micro in self.restInfo:
+            if micro['name'] == microName:
+                return micro
+        return None
 
     def notify(self, topic, payload): #use senML
         try:
@@ -42,15 +32,29 @@ class SensorsSubscriber:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','blue')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
-                sendDataToDB(data,findMicro(self.restInfo, 'analytics'))
-                colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
+                if data['v'] > self.config['humidThreshold']:
+                    response = requests.post(
+                    url='https://api.telegram.org/bot{0}/{1}'.format(self.config['botToken'], 'sendMessage'),
+                    data={'chat_id': self.config['chat_id'], 'text': f'Notice: Humidity is above {data["v"]} !!!'}
+                    ).json()
+                # send an alarm if humidity is above 80%
+                # alaram can be a publisher through MQTT or a notification through email or SMS or to mobile app
+                # self.sendDataToDB(data,self.findMicro('analytics'))
+                # colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
 
             if "temperature" in topic:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','red')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
-                sendDataToDB(data, findMicro(self.restInfo, 'analytics'))
-                colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
+                print(data)
+                if data['v'] > self.config['tempThreshold']:
+                    response = requests.post(
+                    url='https://api.telegram.org/bot{0}/{1}'.format(self.config['botToken'], 'sendMessage'),
+                    data={'chat_id': self.config['chat_id'], 'text': f'Notice: Temperature is above {data["v"]} !!!'}
+                    ).json()
+                #send an alarm if temperature is above 40
+                # self.sendDataToDB(data, self.findMicro('analytics'))
+                # colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
                 
         except Exception as e:
             colorPrinter(f'Error saving data {e}', 'orange')
@@ -65,12 +69,18 @@ class SensorsSubscriber:
 
 #--------------------------------------------MAIN------------------------------------------------
 if __name__ == "__main__":
-    connectionInfo = getConnectionInfo()
+    config = {}
+    path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(f'{path}/Utils/config.json') as json_file:
+        config = json.load(json_file)
+
+    response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
+    connectionInfo = response.json()
     mqttInfo = connectionInfo['mqtt']
     restInfo = connectionInfo['micros']
 
     #listen to everything
-    customTopic = mqttInfo['common_topic']+"#"
+    customTopic = mqttInfo['common_topic']+ config['userId']+"/#"
     
     #listen only to specific user
     # customTopic = mqttInfo['common_topic']+config['userId']+"/#"
@@ -90,13 +100,12 @@ if __name__ == "__main__":
     #listen to all sensors with the same type and user
     # customTopic = mqttInfo['common_topic']+config['userId']+"/+/+/"+"/temperature"
 
-
-
     
-    subscriber = SensorsSubscriber(mqttInfo['clientId']+'Subscriber_humidity', mqttInfo['broker'], mqttInfo['subPort'], customTopic, mqttInfo, restInfo)
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+'notifSubscriber', mqttInfo['broker'], mqttInfo['subPort'], customTopic, mqttInfo, restInfo,config)
+
     subscriber.start()
 
-    colorPrinter(f'HUMIDITY Subscriber Started', 'pink')
+    colorPrinter(f'Notif Subscriber Started', 'pink')
     colorPrinter(f'{subscriber.topic}', 'pink')
     colorPrinter(f'{subscriber.mqttClient.clientID}', 'pink')
     while True:
