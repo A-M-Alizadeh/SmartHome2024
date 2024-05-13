@@ -1,7 +1,7 @@
 {
-  "token": "IV-sgDsRPDIbjS4IFdjrtYb2Q2kkid_A3o996eeFQeRNTiVvOWZS5ajCBAzMUX8RxrTyurXilXX3I6O6wjJ5HA==",
+  "token": "RgCPbLDYAOPFrJb38UJ3wu7_epFRUdFZaC5s_6BPYC0x_U6ShvHFvKz41A1mQhqmrStTcgCczSD9j6pJyIrV9A==",
   "org": "IOTPolito",
-  "url": "http://localhost:",
+  "url": "http://influx_service:",
   "port": 8086,
   "bucketName":"READINGS"
 }

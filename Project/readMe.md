@@ -28,6 +28,8 @@ pip install aiogram-3.6.0
 pip install -e .
 ```
 
+
+For Docker if you get a Permission Denied -> do chmod +x dockerRunner.sh in folders
 you might need to use `pip3` instead of `pip`
 This command installs the project as an editable package, allowing you to import modules seamlessly from any script within the project.
 

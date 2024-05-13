@@ -116,7 +116,7 @@ services:
   
   air_condition_service2:
     build: ./AirConditionerSubscriber2
-    container_name: air-condition-container
+    container_name: air-condition-container2
     expose:
       - "1883"
     ports:
@@ -128,7 +128,7 @@ services:
 
   humidity_publisher_service2:
     build: ./HumidityPublisher2
-    container_name: humidity-pub-container
+    container_name: humidity-pub-container2
     expose:
       - "1883"
     ports:
@@ -140,7 +140,7 @@ services:
 
   temperature_publisher_service2:
     build: ./TemperaturePublisher2
-    container_name: temp-pub-container
+    container_name: temp-pub-container2
     expose:
       - "1883"
     ports:
@@ -149,6 +149,33 @@ services:
       - ./TemperaturePublisher2:/app
     networks:
       - servicesNetwork
+
+  front_end:
+    build: ./web
+    container_name: front-end-container
+    expose:
+      - "5173"
+    ports:
+      - "5173:5173"
+    networks:
+      - servicesNetwork
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+
+  telegram_bot:
+    build: ./smartTelegramBot
+    container_name: telegram-bot-container
+    expose:
+      - "1883"
+    ports:
+      - "1880:1883"
+    networks:
+      - servicesNetwork
+    volumes:
+      - ./smartTelegramBot:/app
       
 
 networks:

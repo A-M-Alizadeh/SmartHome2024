@@ -128,7 +128,7 @@ class SensorsSubscriber:
 #13 in each step the data will be saved in a variable
 
 path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-with open(f'{path}/smartTelegramBot/config.json') as json_file:
+with open(f'./config.json') as json_file: #{path}smartTelegramBot/config.json
     config = json.load(json_file)
 
 def findMicro(microName, microsInfo):
@@ -198,6 +198,7 @@ class TeleBot:
 
         response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
         connectionInfo = response.json()
+        print("RESPONSE ================================> ", connectionInfo)
         mqttInfo = connectionInfo['mqtt']
         restInfo = connectionInfo['micros']
         context.user_data["mqttInfo"] = connectionInfo
@@ -223,10 +224,11 @@ class TeleBot:
         """Starts the conversation over"""
         return self.start(update, context)
 
-    async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    async def login(self,update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         """Prompt user to login"""
 
         result = await authenticate(config["username"], config["password"])
+        print("RESULT ==========================>>> ", result)
         context.user_data["userData"] = result
 
         reply_keyboard = [
