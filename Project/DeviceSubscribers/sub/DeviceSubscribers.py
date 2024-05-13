@@ -4,6 +4,7 @@ from MQTT import MyMQTT
 from Utils.Utils import colorPrinter
 import json
 import os
+import requests
 
 #--------------------------------------------MQTT------------------------------------------------
 class SensorsSubscriber:
@@ -30,6 +31,11 @@ class SensorsSubscriber:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','blue')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
+                if data['v'] > 30:
+                    response = requests.post(
+                    url='https://api.telegram.org/bot{0}/{1}'.format('6827687252:AAHEmzXPMfYPA-_yk_kPI4W_Cq9Y7FZx77o', 'sendMessage'),
+                    data={'chat_id': 34026780, 'text': 'Notice: Humidity is above 50 !!!'}
+                    ).json()
                 # send an alarm if humidity is above 80%
                 # alaram can be a publisher through MQTT or a notification through email or SMS or to mobile app
                 # self.sendDataToDB(data,self.findMicro('analytics'))
@@ -39,6 +45,12 @@ class SensorsSubscriber:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','red')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
+                print(data)
+                if data['v'] > 20:
+                    response = requests.post(
+                    url='https://api.telegram.org/bot{0}/{1}'.format('6827687252:AAHEmzXPMfYPA-_yk_kPI4W_Cq9Y7FZx77o', 'sendMessage'),
+                    data={'chat_id': 34026780, 'text': 'Notice: Temperature is above 40 !!!'}
+                    ).json()
                 #send an alarm if temperature is above 40
                 # self.sendDataToDB(data, self.findMicro('analytics'))
                 colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
