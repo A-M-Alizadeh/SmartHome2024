@@ -8,11 +8,12 @@ import requests
 
 #--------------------------------------------MQTT------------------------------------------------
 class SensorsSubscriber:
-    def __init__(self,clientID, broker, port, topic, mqttInfo, restInfo):
+    def __init__(self,clientID, broker, port, topic, mqttInfo, restInfo,config):
         self.mqttClient = MyMQTT(clientID, broker, port, self)
         self.topic = topic
         self.mqttInfo = mqttInfo
         self.restInfo = restInfo
+        self.config = config
 
     def sendDataToDB(self, data, microInfo):
         colorPrinter(f'Sending data to {str(microInfo)}', 'yellow')
@@ -31,29 +32,29 @@ class SensorsSubscriber:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','blue')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
-                if data['v'] > 30:
+                if data['v'] > self.config['humidThreshold']:
                     response = requests.post(
-                    url='https://api.telegram.org/bot{0}/{1}'.format('6827687252:AAHEmzXPMfYPA-_yk_kPI4W_Cq9Y7FZx77o', 'sendMessage'),
-                    data={'chat_id': 34026780, 'text': 'Notice: Humidity is above 50 !!!'}
+                    url='https://api.telegram.org/bot{0}/{1}'.format(self.config['botToken'], 'sendMessage'),
+                    data={'chat_id': self.config['chat_id'], 'text': f'Notice: Humidity is above {data["v"]} !!!'}
                     ).json()
                 # send an alarm if humidity is above 80%
                 # alaram can be a publisher through MQTT or a notification through email or SMS or to mobile app
                 # self.sendDataToDB(data,self.findMicro('analytics'))
-                colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
+                # colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
 
             if "temperature" in topic:
                 colorPrinter( f'sensor ${topic}:  ${payload}recieved','red')
                 json_string = payload.decode('utf-8')
                 data = json.loads(json_string)
                 print(data)
-                if data['v'] > 20:
+                if data['v'] > self.config['tempThreshold']:
                     response = requests.post(
-                    url='https://api.telegram.org/bot{0}/{1}'.format('6827687252:AAHEmzXPMfYPA-_yk_kPI4W_Cq9Y7FZx77o', 'sendMessage'),
-                    data={'chat_id': 34026780, 'text': 'Notice: Temperature is above 40 !!!'}
+                    url='https://api.telegram.org/bot{0}/{1}'.format(self.config['botToken'], 'sendMessage'),
+                    data={'chat_id': self.config['chat_id'], 'text': f'Notice: Temperature is above {data["v"]} !!!'}
                     ).json()
                 #send an alarm if temperature is above 40
                 # self.sendDataToDB(data, self.findMicro('analytics'))
-                colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
+                # colorPrinter(f'Writing data to InfluxDB: {str(data)}', 'yellow')
                 
         except Exception as e:
             colorPrinter(f'Error saving data {e}', 'orange')
@@ -79,7 +80,7 @@ if __name__ == "__main__":
     restInfo = connectionInfo['micros']
 
     #listen to everything
-    customTopic = mqttInfo['common_topic']+"#"
+    customTopic = mqttInfo['common_topic']+ config['userId']+"/#"
     
     #listen only to specific user
     # customTopic = mqttInfo['common_topic']+config['userId']+"/#"
@@ -100,7 +101,8 @@ if __name__ == "__main__":
     # customTopic = mqttInfo['common_topic']+config['userId']+"/+/+/"+"/temperature"
 
     
-    subscriber = SensorsSubscriber(mqttInfo['clientId']+'notifSubscriber', mqttInfo['broker'], mqttInfo['subPort'], customTopic, mqttInfo, restInfo)
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+'notifSubscriber', mqttInfo['broker'], mqttInfo['subPort'], customTopic, mqttInfo, restInfo,config)
+
     subscriber.start()
 
     colorPrinter(f'Notif Subscriber Started', 'pink')

@@ -131,91 +131,6 @@ path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 with open(f'{path}/smartTelegramBot/config.json') as json_file:
     config = json.load(json_file)
 
-
-userData = {
-    "user_id": "eac499f4-7c72-4f55-85ae-4ce1e173b096",
-    "username": "newAuthUsername",
-    "password": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM",
-    "email": "useremail@mail.com",
-    "first_name": "Alexiiii",
-    "last_name": "Gray345555",
-    "phone": "123-456-789",
-    "houses": [
-        {
-            "address": "Monte Carlo 51",
-            "house_id": "cc4f3045-4a19-4857-8155-2e131f8c7f11",
-            "title": "Casa Blanca 2",
-            "sensors": [
-                {
-                    "sensor_id": "d04c5452-e9af-445b-adf4-415d7bfd31e7",
-                    "status": "on",
-                    "type": "HUMIDITY"
-                },
-                {
-                    "sensor_id": "3912fee4-af3f-43cf-9024-1c259f6a0459",
-                    "status": "on",
-                    "type": "TEMPERATURE"
-                },
-                {
-                    "sensor_id": "e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
-                    "status": "ON",
-                    "type": "AIR_CONDITIONER"
-                }
-            ]
-        },
-        {
-            "address": "Corso Traiano",
-            "house_id": "1a26837d-0636-43a7-96cd-c6f88b62fb97",
-            "sensors": [
-                {
-                    "sensor_id": "ff4cdd3d-1a39-4505-ba03-345664439bea",
-                    "status": "on",
-                    "type": "HUMIDITY"
-                },
-                {
-                    "sensor_id": "0b0950b2-5dd2-4190-82c0-277e79880c88",
-                    "status": "on",
-                    "type": "TEMPERATURE"
-                },
-                {
-                    "sensor_id": "82593b94-ef93-4103-8a68-d82cd31a36bc",
-                    "status": "ON",
-                    "type": "AIR_CONDITIONER"
-                }
-            ],
-            "title": "Second House"
-        },
-        {
-            "address": "Via Roma 55",
-            "house_id": "0cc83402-2133-47e5-b216-841e13f04080",
-            "sensors": [
-                {
-                    "sensor_id": "e31136d9-ba6c-4021-8a6f-97eef026056a",
-                    "status": "on",
-                    "type": "HUMIDITY"
-                },
-                {
-                    "sensor_id": "e85dc210-7007-406c-b711-fe08982a713c",
-                    "status": "on",
-                    "type": "AIR_CONDITIONER"
-                },
-                {
-                    "sensor_id": "05c3b17f-5084-4a18-99b6-c8b4bbaa92f3",
-                    "status": "on",
-                    "type": "TEMPERATURE"
-                }
-            ],
-            "title": "Third House"
-        },
-        {
-            "title": "afdasdfdsfgdsfg",
-            "address": "asdfasdfasdf",
-            "house_id": "769b6f2f-392e-431f-9cb5-c5f92203b6f3",
-            "sensors": []
-        }
-    ]
-}
-
 def findMicro(microName, microsInfo):
     for micro in microsInfo:
         if micro['name'] == microName:
@@ -355,7 +270,7 @@ async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def fillHousesData(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Fill the houses data"""
     # houses = userData["houses"]
-    houses = userData["houses"]
+    houses = context.user_data["userData"]["houses"]
     reply_keyboard = [
         [InlineKeyboardButton(house["title"], callback_data=f"{SELECT_HOUSE}:{house['house_id']}")] 
         for house in houses
@@ -375,7 +290,7 @@ async def fillSensorsData(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     callback_data = update.callback_query.data.split(":")
 
     house_id = callback_data[1]  # Extract the house_id from the callback data
-    house = next((house for house in userData["houses"] if house["house_id"] == house_id), None)  
+    house = next((house for house in context.user_data["userData"]["houses"] if house["house_id"] == house_id), None)  
 
     # if house is None:
     #     await update.callback_query.answer("Invalid house selected.")
@@ -471,7 +386,6 @@ def main() -> None:
     # app.add_handler(CallbackQueryHandler(fetchAllData, pattern=f"^{BACK}$"))
     # app.add_handler(CallbackQueryHandler(backToPrevious, pattern=f"^{BACK}$"))
 
-
     # # Add the callback query handler for selecting a house
     app.add_handler(CallbackQueryHandler(fillSensorsData))
 
@@ -484,7 +398,7 @@ def main() -> None:
     # Start the MQTT Subscriber
     # myBot = Bot(config["TOKEN"])
     myBot = app.bot
-    customTopic = "smart_house"+"/"+userData["user_id"]+"/#"
+    customTopic = "smart_house"+"/"+config['userId']+"/#"
     print("CUSTOM TOPIC===========> ", customTopic)
     subscriber = SensorsSubscriber("smartHouse"+'teleBotSubscriber', "test.mosquitto.org", 1883, customTopic, myBot, "34026780")
     subscriber.start()
@@ -493,8 +407,6 @@ def main() -> None:
 
     # Start the Bot
     app.run_polling()
-
-
 
 
 if __name__ == "__main__":

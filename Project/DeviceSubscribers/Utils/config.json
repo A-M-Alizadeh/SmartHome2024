@@ -6,5 +6,9 @@
   "airConditionerId": "e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
   "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXNzd29yZCI6IjEyMzQ1Njc4OSJ9.qN5Ihir6Wn8LFLg33d3PhqMtDovDE1-UaqTPeIYakVM",
   "baseUrl": "http://localhost:",
-  "basePort": 8080
+  "basePort": 8080,
+  "botToken": "6827687252:AAHEmzXPMfYPA-_yk_kPI4W_Cq9Y7FZx77o",
+  "chat_id": 34026780,
+  "humidThreshold": 20,
+  "tempThreshold": 10
 }
