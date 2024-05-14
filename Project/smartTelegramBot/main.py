@@ -223,7 +223,7 @@ class TeleBot:
         """Starts the conversation over"""
         return self.start(update, context)
 
-    async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    async def login(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         """Prompt user to login"""
 
         result = await authenticate(config["username"], config["password"])
@@ -407,8 +407,8 @@ class TeleBot:
         myBot = app.bot
         customTopic = "smart_house"+"/"+config['userId']+"/#"
         print("CUSTOM TOPIC===========> ", customTopic)
-        subscriber = SensorsSubscriber("smartHouse"+'teleBotSubscriber', "test.mosquitto.org", 1883, customTopic, myBot, "34026780")
-        subscriber.start()
+        # subscriber = SensorsSubscriber("smartHouse"+'teleBotSubscriber', "test.mosquitto.org", 1883, customTopic, myBot, "34026780")
+        # subscriber.start()
         # while True:
         #     time.sleep(1)
 

@@ -90,7 +90,7 @@ if __name__ == "__main__":
     topic = mqttInfo['common_topic']+config['userId']+'/'+config['houseId']+'/'+config['airConditionerId']+'/'+'air_conditioner'
 
 
-    subscriber = SensorsSubscriber(mqttInfo['clientId']+config['airConditionerId']+'Subscriber_command', mqttInfo['broker'], mqttInfo['subPort'], topic, mqttInfo, restInfo)
+    subscriber = SensorsSubscriber(mqttInfo['clientId']+config['airConditionerId']+'Subscriber_command1', mqttInfo['broker'], mqttInfo['subPort'], topic, mqttInfo, restInfo)
     subscriber.start()
 
     colorPrinter(f'AIRCONDITION Subscriber Started', 'pink')

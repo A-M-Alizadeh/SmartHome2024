@@ -63,7 +63,7 @@ if __name__ == "__main__":
     response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/mqtt')
     connectionInfo = response.json()
 
-    publisher = SensorPublisher(connectionInfo['clientId']+config["tempSensorId"]+"Publisher_temp", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    publisher = SensorPublisher(connectionInfo['clientId']+config["tempSensorId"]+"Publisher_temp1", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
     publisher.getConnectionInfo()
     publisher.getSensorData()
     publisher.start()

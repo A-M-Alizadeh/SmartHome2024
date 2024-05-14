@@ -43,7 +43,7 @@
                         },
                         {
                             "sensor_id":"e8073adc-38a8-44e6-a8e2-532bce5cd8bb",
-                            "status":"OFF",
+                            "status":"ON",
                             "type":"AIR_CONDITIONER"
                         }
                     ]
@@ -64,14 +64,15 @@
                         },
                         {
                             "sensor_id":"82593b94-ef93-4103-8a68-d82cd31a36bc",
-                            "status":"OFF",
+                            "status":"ON",
                             "type":"AIR_CONDITIONER"
                         }
                     ],
                     "title":"Second House"
                 },
                 {
-                    "address":"Via Roma 55",
+                    "title":"Third Houseerfe ",
+                    "address":"Via Roma 5fr erf ",
                     "house_id":"0cc83402-2133-47e5-b216-841e13f04080",
                     "sensors":[
                         {
@@ -89,14 +90,7 @@
                             "status":"on",
                             "type":"TEMPERATURE"
                         }
-                    ],
-                    "title":"Third House"
-                },
-                {
-                    "title":"afdasdfdsfgdsfg",
-                    "address":"asdfasdfasdf",
-                    "house_id":"769b6f2f-392e-431f-9cb5-c5f92203b6f3",
-                    "sensors":[]
+                    ]
                 }
             ]
         },

@@ -70,7 +70,7 @@ if __name__ == "__main__":
     connectionInfo = response.json()
     # sensorData = getSensorData()
 
-    publisher = SensorPublisher(connectionInfo['clientId']+config["humidSensorId"]+"Publisher_humid", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
+    publisher = SensorPublisher(connectionInfo['clientId']+config["humidSensorId"]+"Publisher_humid1", connectionInfo['broker'], connectionInfo['pubPort'], connectionInfo['common_topic'])#ids are unique for publisher and subscriber
     publisher.getConnectionInfo()
     publisher.getSensorData()
     publisher.start()
