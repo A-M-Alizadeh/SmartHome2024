@@ -22,7 +22,7 @@ const HouseItem = ({house, deleteHouse, editHouse}) => {
 
     return (
         <Grid item xs={12} md={6} lg={3}>
-          <Box bgcolor="#0047b3" borderRadius={2} width="100%" height="300px">
+          <Box bgcolor="#0047b3" borderRadius={2} width="100%" height="310px">
             <Grid item container sx={{ padding: 2 }}>
               <Grid
                 item
@@ -76,7 +76,7 @@ const HouseItem = ({house, deleteHouse, editHouse}) => {
                 
               </Grid>
               <div style={{justifyContent: 'space-between'}}>
-                <Button variant="contained" color="primary" onClick={()=>deleteHouse(house.house_id)} style={{backgroundColor: 'darkred',fontSize: 8, marginTop: 3, marginRight: 122}}>Delete</Button>
+                <Button variant="contained" color="primary" onClick={()=>deleteHouse(house.house_id)} style={{backgroundColor: 'darkred',fontSize: 8, marginTop: 3, marginRight: 10}}>Delete</Button>
                 <Button variant="contained" color="primary" onClick={()=>handleEditButton()} style={{backgroundColor: editMode? 'green' : 'orange',fontSize: 8, marginTop: 3}}>{editMode ? "Save" : "Edit"}</Button>
               </div>
             </Grid>
