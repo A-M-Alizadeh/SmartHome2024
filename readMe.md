@@ -1,3 +1,11 @@
+Promo: https://youtu.be/yrzlZDTjVYI
+
+Demonstration: https://youtu.be/HB25DsqmRJo
+
+Slides: https://www.canva.com/design/DAGFUAekRl8/rK_VpgdL51GZ_64KQpuhAg/edit?utm_content=DAGFUAekRl8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+
+
+[![Watch the demo](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://youtu.be/HB25DsqmRJo) 
 
 # Smart House (IoT)
 This project aims to make any home smart using two sensors namely Humidity and Temperature. It is composed of 3 main parts : 
@@ -28,7 +36,4 @@ Provides limited features of Mobile Application
 
 ## Screenshots
 ![Project Diagram](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-## Authors
-
-- [@GrayDev](https://github.com/A-M-Alizadeh)
 

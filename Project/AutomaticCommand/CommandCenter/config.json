@@ -31,7 +31,7 @@
  },
  "offHours": {
    "1": {"start": 24, "end": 7},
-   "2": {"start": 12, "end": 14}
+   "2": {"start": 14, "end": 16}
  },
  "modelUpdateInterval": 30,
  "modelHistoricalDataDuration": "2h",
@@ -62,7 +62,7 @@
  },
  "offHours": {
    "1": {"start": 24, "end": 7},
-   "2": {"start": 12, "end": 14}
+   "2": {"start": 14, "end": 16}
  },
  "modelUpdateInterval": 30,
  "modelHistoricalDataDuration": "2h",
