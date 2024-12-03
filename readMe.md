@@ -49,15 +49,6 @@ The Smart House IoT system integrates the following components:
 
 ---
 
-## 📸 Screenshots  
-### Web Dashboard:  
-![Web Dashboard](https://via.placeholder.com/468x300?text=App+Screenshot+Here)  
-
-### Mobile App:  
-![Mobile App](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-
----
-
 ## 🛠️ Tech Stack  
 - **Python:** Backend services and sensor emulation.  
 - **MQTT:** Real-time messaging protocol.  
