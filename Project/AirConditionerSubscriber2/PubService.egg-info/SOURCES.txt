@@ -3,15 +3,8 @@ PubService.egg-info/PKG-INFO
 PubService.egg-info/SOURCES.txt
 PubService.egg-info/dependency_links.txt
 PubService.egg-info/top_level.txt
-Simulators/CombinedSim.py
-Simulators/HumiditySim.py
-Simulators/TemperatureSim.py
-Simulators/Test.py
-Simulators/__init__.py
 Utils/Utils.py
 Utils/__init__.py
 pub/MQTT.py
 pub/__init__.py
 pub/airConditionSubscriber.py
-pub/humidityPublisher.py
-pub/temperaturePublisher.py

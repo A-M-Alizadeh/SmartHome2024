@@ -5,7 +5,6 @@ SubService.egg-info/dependency_links.txt
 SubService.egg-info/top_level.txt
 Utils/Utils.py
 Utils/__init__.py
+sub/DeviceSubscribers.py
 sub/MQTT.py
 sub/__init__.py
-sub/humiditySubscriber.py
-sub/tempratureSubscriber.py

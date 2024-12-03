@@ -12,6 +12,4 @@ Utils/Utils.py
 Utils/__init__.py
 pub/MQTT.py
 pub/__init__.py
-pub/airConditionSubscriber.py
 pub/humidityPublisher.py
-pub/temperaturePublisher.py

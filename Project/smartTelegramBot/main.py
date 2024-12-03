@@ -195,6 +195,8 @@ class TeleBot:
     # Define the different keyboard states
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         """Start the conversation and ask user for action."""
+        chat_id = update.message.chat_id
+        print("CHAT ID =================================> ", chat_id)
 
         response = requests.get(f'{config["baseUrl"]}{config["basePort"]}/public/fullservices')
         connectionInfo = response.json()
@@ -203,8 +205,6 @@ class TeleBot:
         context.user_data["mqttInfo"] = connectionInfo
         context.user_data["restInfo"] = restInfo
 
-        chat_id = update.message.chat_id
-        print("CHAT ID =================================> ", chat_id)
         config["chat_id"] = chat_id
 
         reply_keyboard = [

@@ -1,4 +1,6 @@
 setup.py
+DBConnector/DeviceSubscribers.py
+DBConnector/MQTT.py
 DBConnector/__init__.py
 DBConnector/dbServices.py
 DBConnector/influx/__init__.py
@@ -9,8 +11,3 @@ DBService.egg-info/dependency_links.txt
 DBService.egg-info/top_level.txt
 Utils/Utils.py
 Utils/__init__.py
-Utils/Simulators/CombinedSim.py
-Utils/Simulators/HumiditySim.py
-Utils/Simulators/TemperatureSim.py
-Utils/Simulators/Test.py
-Utils/Simulators/__init__.py

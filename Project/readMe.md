@@ -4,6 +4,7 @@ Promo: https://youtu.be/yrzlZDTjVYI
 Demonstration: https://youtu.be/HB25DsqmRJo
 
 Slides: https://www.canva.com/design/DAGFUAekRl8/rK_VpgdL51GZ_64KQpuhAg/edit?utm_content=DAGFUAekRl8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+
 # Smart House (IoT)
 python version = 3.11.6
 
